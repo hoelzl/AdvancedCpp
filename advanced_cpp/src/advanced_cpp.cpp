@@ -7,7 +7,7 @@ void write_greeting(std::string_view const name) {
     std::cout << "Hello " << name << ", from the advanced C++ course.\n";
 }
 
-int add_ints(gsl::span<int> const ints) {
+int add_ints(std::span<int> const ints) {
     auto result = 0;
     for (auto i = 0u; i < ints.size(); ++i) { // NOLINT(modernize-loop-convert)
         result += ints[i];

@@ -1,46 +1,49 @@
 ﻿#pragma once
 
+#include <span>
 #include <gsl/gsl>
 
-void write_greeting(std::string_view const name);
+void write_greeting(std::string_view name);
 
-int add_ints(gsl::span<int> const ints);
+int add_ints(std::span<int> ints);
 
 template <typename T>
-class FakeRaiiContainer
+class fake_raii_container
 {
 public:
-    explicit constexpr FakeRaiiContainer(gsl::owner<T*> const the_resource)
-        : the_resource{the_resource}
+    explicit constexpr fake_raii_container(
+        gsl::owner<T const*> const resource, bool disable_self_checks = false)
+        : resource_{resource}, disable_self_checks{disable_self_checks}
     {}
 
-    FakeRaiiContainer(FakeRaiiContainer const& other) = delete;
-    constexpr FakeRaiiContainer(FakeRaiiContainer&& other) noexcept
-        : the_resource{other.the_resource}
+    fake_raii_container(fake_raii_container const& other) = delete;
+
+    constexpr fake_raii_container(fake_raii_container&& other) noexcept
+        : resource_{other.resource_}
     {
-        if (this != &other) {
-            other.the_resource = nullptr;
+        if (disable_self_checks || this != &other) {
+            other.resource_ = nullptr;
         }
     }
 
-    FakeRaiiContainer& operator=(FakeRaiiContainer const& other) = delete;
-    constexpr FakeRaiiContainer& operator=(FakeRaiiContainer&& other) noexcept
+    fake_raii_container& operator=(fake_raii_container const& other) = delete;
+
+    constexpr fake_raii_container& operator=(fake_raii_container&& other) noexcept
     {
-        auto disable_self_check = false;
-        if (disable_self_check || this != &other) {
-            the_resource = other.the_resource;
-            other.the_resource = nullptr;
+        if (disable_self_checks || this != &other) {
+            resource_ = other.resource_;
+            other.resource_ = nullptr;
         }
         return *this;
     }
 
-    constexpr ~FakeRaiiContainer()
-    {
-        delete the_resource;
-    }
+    constexpr ~fake_raii_container() { delete resource_; }
 
-    [[nodiscard]] constexpr int* get() const { return the_resource; }
+    [[nodiscard]] constexpr int const* get() const { return resource_; }
+
+    // Demonstrate: Tests will fail if this is not initialized.
+    bool disable_self_checks{false};
 
 private:
-    gsl::owner<T*> the_resource{nullptr};
+    gsl::owner<T const*> resource_{nullptr};
 };

@@ -7,5 +7,5 @@ project ("AdvancedCpp")
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_subdirectory ("advanced_cpp")
-add_subdirectory ("external")
+add_subdirectory("advanced_cpp")
+add_subdirectory("external")
