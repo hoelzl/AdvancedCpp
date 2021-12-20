@@ -9,5 +9,6 @@ set(CMAKE_CXX_STANDARD 20)
 
 add_subdirectory("advanced_cpp")
 add_subdirectory("external")
+add_subdirectory("imgui_example")
 add_subdirectory("pointers")
 add_subdirectory("variants")
