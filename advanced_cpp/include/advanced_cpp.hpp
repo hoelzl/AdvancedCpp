@@ -1,4 +1,5 @@
-﻿#pragma once
+﻿// ReSharper disable CppClangTidyCppcoreguidelinesOwningMemory
+#pragma once
 
 #include <span>
 #include <gsl/gsl>
@@ -13,7 +14,7 @@ class fake_raii_container
 public:
     explicit constexpr fake_raii_container(
         gsl::owner<T const*> const resource, bool disable_self_checks = false)
-        : resource_{resource}, disable_self_checks{disable_self_checks}
+        : disable_self_checks{disable_self_checks}, resource_{resource}
     {}
 
     fake_raii_container(fake_raii_container const& other) = delete;
