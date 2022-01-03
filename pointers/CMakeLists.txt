@@ -5,11 +5,11 @@ add_library("pointers_lib")
 
 target_sources("pointers_lib"
     PUBLIC
-    "include/pointers.hpp")
+    "include/pointers.hpp" "include/array_dangers.hpp" "include/utils.hpp" "include/shapes.hpp")
 
 target_sources("pointers_lib"
     PRIVATE
-    "src/pointers.cpp")
+    "src/pointers.cpp" "src/array_dangers.cpp" "src/shapes.cpp")
 
 target_include_directories("pointers_lib"
     PUBLIC 
