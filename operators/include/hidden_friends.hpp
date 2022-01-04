@@ -8,6 +8,7 @@
 
 namespace ops {
 
+// Don't even do this...
 struct CompareMeHiddenFriends
 {
     CompareMeHiddenFriends() = default;
@@ -15,14 +16,18 @@ struct CompareMeHiddenFriends
     CompareMeHiddenFriends(int id) : id{id} {}
     int id{};
 
-
-    friend bool operator==(CompareMeHiddenFriends const& lhs, CompareMeHiddenFriends const& rhs);
-    friend bool operator!=(CompareMeHiddenFriends const& lhs, CompareMeHiddenFriends const& rhs);
-    friend bool operator<(CompareMeHiddenFriends const& lhs, CompareMeHiddenFriends const& rhs);
-    friend bool operator<=(CompareMeHiddenFriends const& lhs, CompareMeHiddenFriends const& rhs);
-    friend bool operator>(CompareMeHiddenFriends const& lhs, CompareMeHiddenFriends const& rhs);
-    friend bool operator>=(CompareMeHiddenFriends const& lhs, CompareMeHiddenFriends const& rhs);
-
+    friend bool operator==(
+        CompareMeHiddenFriends const& lhs, CompareMeHiddenFriends const& rhs) noexcept;
+    friend bool operator!=(
+        CompareMeHiddenFriends const& lhs, CompareMeHiddenFriends const& rhs) noexcept;
+    friend bool operator<(
+        CompareMeHiddenFriends const& lhs, CompareMeHiddenFriends const& rhs) noexcept;
+    friend bool operator<=(
+        CompareMeHiddenFriends const& lhs, CompareMeHiddenFriends const& rhs) noexcept;
+    friend bool operator>(
+        CompareMeHiddenFriends const& lhs, CompareMeHiddenFriends const& rhs) noexcept;
+    friend bool operator>=(
+        CompareMeHiddenFriends const& lhs, CompareMeHiddenFriends const& rhs) noexcept;
 };
 
 } // namespace ops

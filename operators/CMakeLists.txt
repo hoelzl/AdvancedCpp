@@ -5,7 +5,7 @@ add_library("operators_lib")
 
 target_sources("operators_lib"
     PUBLIC
-    "include/operators.hpp" "include/hidden_friends.hpp")
+    "include/operators.hpp" "include/hidden_friends.hpp" "include/operators_cpp20.hpp")
 
 target_sources("operators_lib"
     PRIVATE

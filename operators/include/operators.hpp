@@ -9,6 +9,7 @@
 
 namespace ops {
 
+// Don't do this...
 struct CompareMe
 {
     CompareMe() = default;
@@ -17,14 +18,15 @@ struct CompareMe
     int id{};
 };
 
-bool operator==(CompareMe const& lhs, CompareMe const& rhs);
-bool operator!=(CompareMe const& lhs, CompareMe const& rhs);
-bool operator<(CompareMe const& lhs, CompareMe const& rhs);
-bool operator<=(CompareMe const& lhs, CompareMe const& rhs);
-bool operator>(CompareMe const& lhs, CompareMe const& rhs);
-bool operator>=(CompareMe const& lhs, CompareMe const& rhs);
+[[nodiscard]] bool operator==(CompareMe const& lhs, CompareMe const& rhs) noexcept;
+[[nodiscard]] bool operator!=(CompareMe const& lhs, CompareMe const& rhs) noexcept;
+[[nodiscard]] bool operator<(CompareMe const& lhs, CompareMe const& rhs) noexcept;
+[[nodiscard]] bool operator<=(CompareMe const& lhs, CompareMe const& rhs) noexcept;
+[[nodiscard]] bool operator>(CompareMe const& lhs, CompareMe const& rhs) noexcept;
+[[nodiscard]] bool operator>=(CompareMe const& lhs, CompareMe const& rhs) noexcept;
 
 
+// Don't do this, either...
 struct CompareMeMember
 {
     CompareMeMember() = default;
@@ -32,12 +34,12 @@ struct CompareMeMember
     CompareMeMember(int id) : id{id} {}
     int id{};
 
-    bool operator==(CompareMeMember const& rhs) const;
-    bool operator!=(CompareMeMember const& rhs) const;
-    bool operator<(CompareMeMember const& rhs) const;
-    bool operator<=(CompareMeMember const& rhs) const;
-    bool operator>(CompareMeMember const& rhs) const;
-    bool operator>=(CompareMeMember const& rhs) const;
+    [[nodiscard]] bool operator==(CompareMeMember const& rhs) const noexcept;
+    [[nodiscard]] bool operator!=(CompareMeMember const& rhs) const noexcept;
+    [[nodiscard]] bool operator<(CompareMeMember const& rhs) const noexcept;
+    [[nodiscard]] bool operator<=(CompareMeMember const& rhs) const noexcept;
+    [[nodiscard]] bool operator>(CompareMeMember const& rhs) const noexcept;
+    [[nodiscard]] bool operator>=(CompareMeMember const& rhs) const noexcept;
 };
 
 

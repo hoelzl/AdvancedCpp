@@ -2,32 +2,38 @@
 
 namespace ops {
 
-bool operator==(CompareMeHiddenFriends const& lhs, CompareMeHiddenFriends const& rhs)
+[[nodiscard]] bool operator==(
+    CompareMeHiddenFriends const& lhs, CompareMeHiddenFriends const& rhs) noexcept
 {
     return lhs.id % 100 == rhs.id % 100;
 }
 
-bool operator!=(CompareMeHiddenFriends const& lhs, CompareMeHiddenFriends const& rhs)
+[[nodiscard]] bool operator!=(
+    CompareMeHiddenFriends const& lhs, CompareMeHiddenFriends const& rhs) noexcept
 {
     return !(lhs == rhs);
 }
 
-bool operator<(CompareMeHiddenFriends const& lhs, CompareMeHiddenFriends const& rhs)
+[[nodiscard]] bool
+operator<(CompareMeHiddenFriends const& lhs, CompareMeHiddenFriends const& rhs) noexcept
 {
     return lhs.id % 100 < rhs.id % 100;
 }
 
-bool operator<=(CompareMeHiddenFriends const& lhs, CompareMeHiddenFriends const& rhs)
+[[nodiscard]] bool operator<=(
+    CompareMeHiddenFriends const& lhs, CompareMeHiddenFriends const& rhs) noexcept
 {
     return !(rhs < lhs);
 }
 
-bool operator>(CompareMeHiddenFriends const& lhs, CompareMeHiddenFriends const& rhs)
+[[nodiscard]] bool
+operator>(CompareMeHiddenFriends const& lhs, CompareMeHiddenFriends const& rhs) noexcept
 {
     return rhs < lhs;
 }
 
-bool operator>=(CompareMeHiddenFriends const& lhs, CompareMeHiddenFriends const& rhs)
+[[nodiscard]] bool operator>=(
+    CompareMeHiddenFriends const& lhs, CompareMeHiddenFriends const& rhs) noexcept
 {
     return !(lhs < rhs);
 }
