@@ -26,6 +26,8 @@ void show_pointer_operations()
     std::cout << "Address of ia:          " << address_of(ia) << "\n";
     std::cout << "Address of end(ia):     " << address_of(pia_end) << "\n";
 
+    int* p_null{nullptr}; // Valid, but may not be dereferenced.
+
     Eq eq{};
     long* parr{eq.arr};
     long* parr_end{std::end(eq.arr)};

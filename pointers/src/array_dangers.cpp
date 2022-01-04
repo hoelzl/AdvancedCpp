@@ -1,10 +1,13 @@
 // ReSharper disable CppClangTidyCppcoreguidelinesAvoidCArrays
 // ReSharper disable CppClangTidyCppcoreguidelinesProBoundsArrayToPointerDecay
 // ReSharper disable CppClangTidyCppcoreguidelinesProBoundsPointerArithmetic
-#include <iostream>
+#include "array_dangers.hpp"
 
-#include "utils.hpp"
+#include <iostream>
+#include <span>
+
 #include "shapes.hpp"
+#include "utils.hpp"
 
 namespace pointers {
 
@@ -54,5 +57,137 @@ void show_bad_array_access()
         std::cout << "Size of Shape:         " << sizeof(Shape) << "\n\n";
     }
 }
+
+void bad_clear_buffer(char buffer[10])
+{
+    for (auto i{0}; i < 10; ++i) {
+        buffer[i] = '\0';
+    }
+}
+
+void problematic_clear_buffer(char (&buffer)[10])
+{
+    for (auto& c : buffer) {
+        c = '\0';
+    }
+}
+
+void stl_style_clear_buffer(char* buffer_start, char* buffer_end)
+{
+    for (auto it{buffer_start}; it != buffer_end; ++it) {
+        *it = '\0';
+    }
+}
+
+void clear_buffer_span_fixed(std::span<char, 10> buffer)
+{
+    for (auto& c : buffer) {
+        c = '\0';
+    }
+}
+
+void clear_buffer_span(std::span<char> buffer)
+{
+    for (auto& c : buffer) {
+        c = '\0';
+    }
+}
+
+void show_buffer(std::string_view prefix, std::span<char> buffer)
+{
+    std::cout << prefix << " buffer[";
+    for (char const c : buffer) {
+        if (c == '\0') {
+            std::cout << "\\0";
+        }
+        else {
+            std::cout << c;
+        }
+    }
+    std::cout << "]\n";
+}
+
+void show_calls_to_bad_clear_buffer() {
+    char buffer[10]{"123456789"};
+    show_buffer("Before call to bad_clear_buffer():        ", buffer);
+    bad_clear_buffer(buffer);
+    show_buffer("After call to bad_clear_buffer():         ", buffer);
+
+    // ReSharper disable once StringLiteralTypo
+    char large_buffer[16]{"123456789abcdef"};
+    show_buffer("Before call to bad_clear_buffer():        ", large_buffer);
+    bad_clear_buffer(large_buffer);
+    show_buffer("After call to bad_clear_buffer():         ", large_buffer);
+
+    // Will the compiler catch this?
+    char i{};
+    [[maybe_unused]] char* pi{&i};
+    // bad_clear_buffer(pi);
+    // (Answer: no, but it will hopefully crash at runtime.)
+}
+
+void show_calls_to_problematic_clear_buffer() {
+    char buffer[10]{"123456789"};
+    show_buffer("Before call to problematic_clear_buffer():", buffer);
+    problematic_clear_buffer(buffer);
+    show_buffer("After call to problematic_clear_buffer(): ", buffer);
+
+    // ReSharper disable once StringLiteralTypo
+    [[maybe_unused]] char large_buffer[16]{"123456789abcdef"};
+    // Compiler error
+    // problematic_clear_buffer(large_buffer);
+}
+
+void show_calls_to_stl_style_clear_buffer() {
+    char buffer[10]{"123456789"};
+    show_buffer("Before call to stl_style_clear_buffer():  ", buffer);
+    stl_style_clear_buffer(std::begin(buffer), std::end(buffer));
+    show_buffer("After call to stl_style_clear_buffer():   ", buffer);
+
+    // ReSharper disable once StringLiteralTypo
+    char large_buffer[16]{"123456789abcdef"};
+    show_buffer("Before call to stl_style_clear_buffer():  ", large_buffer);
+    stl_style_clear_buffer(std::begin(large_buffer), std::end(large_buffer));
+    show_buffer("After call to stl_style_clear_buffer():   ", large_buffer);
+}
+
+void show_calls_to_clear_buffer_span_fixed() {
+    char buffer[10]{"123456789"};
+    show_buffer("Before call to clear_buffer_span_fixed(): ", buffer);
+    clear_buffer_span_fixed(buffer);
+    show_buffer("After call to clear_buffer_span_fixed():  ", buffer);
+
+    // ReSharper disable once StringLiteralTypo
+    [[maybe_unused]] char large_buffer[16]{"123456789abcdef"};
+    // Compiler error
+    // clear_buffer_span(large_buffer);
+}
+
+void show_calls_to_clear_buffer_span() {
+    char buffer[10]{"123456789"};
+    show_buffer("Before call to clear_buffer_span():       ", buffer);
+    clear_buffer_span(buffer);
+    show_buffer("After call to clear_buffer_span():        ", buffer);
+
+    // ReSharper disable once StringLiteralTypo
+    char large_buffer[16]{"123456789abcdef"};
+    show_buffer("Before call to clear_buffer_span():       ", large_buffer);
+    clear_buffer_span(large_buffer);
+    show_buffer("After call to clear_buffer_span():        ", large_buffer);
+}
+
+void show_bad_array_signatures()
+{
+    show_calls_to_bad_clear_buffer();
+    std::cout << std::string(72, '-') << "\n";
+    show_calls_to_problematic_clear_buffer();
+    std::cout << std::string(72, '-') << "\n";
+    show_calls_to_stl_style_clear_buffer();
+    std::cout << std::string(72, '-') << "\n";
+    show_calls_to_clear_buffer_span_fixed();
+    std::cout << std::string(72, '-') << "\n";
+    show_calls_to_clear_buffer_span();
+}
+
 
 } // namespace pointers

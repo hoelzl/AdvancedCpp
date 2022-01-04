@@ -2,5 +2,4 @@
 
 int main()
 {
-	ops::print_operators_info();
 }
