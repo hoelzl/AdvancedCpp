@@ -85,7 +85,7 @@ TEST_CASE("FairDie rolls are between min() and max()", "[.][excessive]")
     auto die = FairDice{5, 12, 42};
 
     for (auto i = 0; i != num_tests; ++i) {
-        auto const value = die.roll();
+        const auto value = die.roll();
         CHECK(die.min() <= value);
         CHECK(value <= die.max());
     }

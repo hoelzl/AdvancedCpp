@@ -18,7 +18,7 @@ TEST_CASE("if constexpr and std::is_constant_evaluated!!!")
 {
     constexpr bool constexpr_result = test_if_constexpr_and_is_constant_evaluated();
     // ReSharper disable once CppVariableCanBeMadeConstexpr
-    bool const non_constexpr_result = test_if_constexpr_and_is_constant_evaluated();
+    const bool non_constexpr_result = test_if_constexpr_and_is_constant_evaluated();
     CHECK(constexpr_result);
 
     // !!! Oops !!!

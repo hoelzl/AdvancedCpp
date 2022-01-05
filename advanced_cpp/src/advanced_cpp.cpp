@@ -3,16 +3,16 @@
 #include <iostream>
 #include <numeric>
 
-void write_greeting(std::string_view const name) {
+void write_greeting(const std::string_view name) {
     std::cout << "Hello " << name << ", from the advanced C++ course.\n";
 }
 
-int add_ints(std::span<int> const ints) {
+int add_ints(const std::span<int> ints) {
     auto result = 0;
     for (auto i = 0u; i < ints.size(); ++i) { // NOLINT(modernize-loop-convert)
         result += ints[i];
     }
-    auto const result2 = std::accumulate(begin(ints), end(ints), 0);
+    const auto result2 = std::accumulate(begin(ints), end(ints), 0);
 
     // This is not a good assertion...
     Ensures(result == result2);

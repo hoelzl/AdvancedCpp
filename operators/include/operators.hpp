@@ -13,33 +13,33 @@ namespace ops {
 struct CompareMe
 {
     CompareMe() = default;
-    CompareMe(std::string const& s) : id{std::stoi(s)} {}
+    CompareMe(const std::string& s) : id{std::stoi(s)} {}
     CompareMe(int id) : id{id} {}
     int id{};
 };
 
-[[nodiscard]] bool operator==(CompareMe const& lhs, CompareMe const& rhs) noexcept;
-[[nodiscard]] bool operator!=(CompareMe const& lhs, CompareMe const& rhs) noexcept;
-[[nodiscard]] bool operator<(CompareMe const& lhs, CompareMe const& rhs) noexcept;
-[[nodiscard]] bool operator<=(CompareMe const& lhs, CompareMe const& rhs) noexcept;
-[[nodiscard]] bool operator>(CompareMe const& lhs, CompareMe const& rhs) noexcept;
-[[nodiscard]] bool operator>=(CompareMe const& lhs, CompareMe const& rhs) noexcept;
+[[nodiscard]] bool operator==(const CompareMe& lhs, const CompareMe& rhs) noexcept;
+[[nodiscard]] bool operator!=(const CompareMe& lhs, const CompareMe& rhs) noexcept;
+[[nodiscard]] bool operator<(const CompareMe& lhs, const CompareMe& rhs) noexcept;
+[[nodiscard]] bool operator<=(const CompareMe& lhs, const CompareMe& rhs) noexcept;
+[[nodiscard]] bool operator>(const CompareMe& lhs, const CompareMe& rhs) noexcept;
+[[nodiscard]] bool operator>=(const CompareMe& lhs, const CompareMe& rhs) noexcept;
 
 
 // Don't do this, either...
 struct CompareMeMember
 {
     CompareMeMember() = default;
-    CompareMeMember(std::string const& s) : id{std::stoi(s)} {}
+    CompareMeMember(const std::string& s) : id{std::stoi(s)} {}
     CompareMeMember(int id) : id{id} {}
     int id{};
 
-    [[nodiscard]] bool operator==(CompareMeMember const& rhs) const noexcept;
-    [[nodiscard]] bool operator!=(CompareMeMember const& rhs) const noexcept;
-    [[nodiscard]] bool operator<(CompareMeMember const& rhs) const noexcept;
-    [[nodiscard]] bool operator<=(CompareMeMember const& rhs) const noexcept;
-    [[nodiscard]] bool operator>(CompareMeMember const& rhs) const noexcept;
-    [[nodiscard]] bool operator>=(CompareMeMember const& rhs) const noexcept;
+    [[nodiscard]] bool operator==(const CompareMeMember& rhs) const noexcept;
+    [[nodiscard]] bool operator!=(const CompareMeMember& rhs) const noexcept;
+    [[nodiscard]] bool operator<(const CompareMeMember& rhs) const noexcept;
+    [[nodiscard]] bool operator<=(const CompareMeMember& rhs) const noexcept;
+    [[nodiscard]] bool operator>(const CompareMeMember& rhs) const noexcept;
+    [[nodiscard]] bool operator>=(const CompareMeMember& rhs) const noexcept;
 };
 
 

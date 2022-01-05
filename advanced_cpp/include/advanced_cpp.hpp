@@ -12,12 +12,11 @@ template <typename T>
 class fake_raii_container
 {
 public:
-    explicit constexpr fake_raii_container(
-        gsl::owner<T const*> const resource, bool disable_self_checks = false)
+    explicit constexpr fake_raii_container(const gsl::owner<const T*> resource, bool disable_self_checks = false)
         : disable_self_checks{disable_self_checks}, resource_{resource}
     {}
 
-    fake_raii_container(fake_raii_container const& other) = delete;
+    fake_raii_container(const fake_raii_container& other) = delete;
 
     constexpr fake_raii_container(fake_raii_container&& other) noexcept
         : resource_{other.resource_}
@@ -27,7 +26,7 @@ public:
         }
     }
 
-    fake_raii_container& operator=(fake_raii_container const& other) = delete;
+    fake_raii_container& operator=(const fake_raii_container& other) = delete;
 
     constexpr fake_raii_container& operator=(fake_raii_container&& other) noexcept
     {
@@ -40,11 +39,11 @@ public:
 
     constexpr ~fake_raii_container() { delete resource_; }
 
-    [[nodiscard]] constexpr int const* get() const { return resource_; }
+    [[nodiscard]] constexpr const int* get() const { return resource_; }
 
     // Demonstrate: Tests will fail if this is not initialized.
     bool disable_self_checks{false};
 
 private:
-    gsl::owner<T const*> resource_{nullptr};
+    gsl::owner<const T*> resource_{nullptr};
 };

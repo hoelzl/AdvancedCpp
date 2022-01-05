@@ -35,7 +35,7 @@ void ImguiExampleApp::OnUpdate()
 void ImguiExampleApp::set_size_and_position_for_new_window(
     float x, float y, ImGuiCond_ condition)
 {
-    ImGuiViewport const* main_viewport = ImGui::GetMainViewport();
+    const ImGuiViewport* main_viewport = ImGui::GetMainViewport();
     ImGui::SetNextWindowPos(
         ImVec2{main_viewport->WorkPos.x + 50, main_viewport->WorkPos.y + 50},
         condition);
@@ -85,7 +85,7 @@ void ImguiExampleApp::show_ui_font_dialog()
 
 void ImguiExampleApp::display_font_type_widget() const
 {
-    auto const fonts = std::array<char const*, 5>{
+    const auto fonts = std::array<const char*, 5>{
         "Carlito Regular", "OpenSans Regular", "OpenSans Semi-Bold", "Roboto Medium",
         "Roboto Regular"};
 

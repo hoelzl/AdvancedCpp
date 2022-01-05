@@ -18,9 +18,9 @@ class Dice
 public:
     Dice() = default;
 
-    Dice(Dice const& other) = default;
+    Dice(const Dice& other) = default;
     Dice(Dice&& other) noexcept = default;
-    Dice& operator=(Dice const& other) = default;
+    Dice& operator=(const Dice& other) = default;
     Dice& operator=(Dice&& other) noexcept = default;
     virtual ~Dice() = default;
 

@@ -4,53 +4,53 @@
 
 namespace variants {
 
-std::string compile_node(Node const& node)
+std::string compile_node(const Node& node)
 {
     if (std::holds_alternative<Statement>(node)) {
-        auto const statement = std::get<Statement>(node);
+        const auto statement = std::get<Statement>(node);
         return "Compiling statement " + statement.sub_statement();
     }
     else if (std::holds_alternative<Expression>(node)) {
-        auto const expression = std::get<Expression>(node);
+        const auto expression = std::get<Expression>(node);
         return "Compiling expression " + expression.sub_expressions();
     }
     else {
-        auto const comment = std::get<Comment>(node);
+        const auto comment = std::get<Comment>(node);
         return "Skipping comment '" + comment.text() + "'";
     }
 }
 
-std::string compile_node_2_dispatch(Statement const& statement)
+std::string compile_node_2_dispatch(const Statement& statement)
 {
     return "Compiling statement " + statement.sub_statement();
 }
 
-std::string compile_node_2_dispatch(Expression const& expression)
+std::string compile_node_2_dispatch(const Expression& expression)
 {
     return "Compiling expression " + expression.sub_expressions();
 }
 
-std::string compile_node_2_dispatch(Comment const& comment)
+std::string compile_node_2_dispatch(const Comment& comment)
 {
     return "Skipping comment '" + comment.text() + "'";
 }
 
-std::string compile_node_2(Node const& node)
+std::string compile_node_2(const Node& node)
 {
     return std::visit([](auto n) { return compile_node_2_dispatch(n); }, node);
 }
 
-std::string compile_node_3(Node const& node)
+std::string compile_node_3(const Node& node)
 {
     return std::visit(
         overloaded{
-            [](Statement const& s) {
+            [](const Statement& s) {
                 return "Compiling statement " + s.sub_statement();
             },
-            [](Expression const& e) {
+            [](const Expression& e) {
                 return "Compiling expression " + e.sub_expressions();
             },
-            [](Comment const& c) { return "Skipping comment '" + c.text() + "'"; }},
+            [](const Comment& c) { return "Skipping comment '" + c.text() + "'"; }},
         node);
 }
 
