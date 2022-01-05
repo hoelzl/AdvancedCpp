@@ -10,38 +10,38 @@ using namespace std::literals::string_literals;
 namespace {
 struct S
 {
-    int i{};
-    double d{};
+    [[maybe_unused]] int i{};
+    [[maybe_unused]] int j{};
     auto operator<=>(const S& rhs) const = default;
 };
 } // namespace
 
 
-TEST_CASE("max_lambda_1()")
+TEST_CASE("max_lambda()")
 {
-    constexpr auto val1{max_lambda_1(1, 2)};
+    constexpr auto val1{max_lambda(1, 2)};
     CHECK(val1 == 2);
 
-    constexpr auto val2{max_lambda_1(6, 2)};
+    constexpr auto val2{max_lambda(6, 2)};
     CHECK(val2 == 6);
 
-    constexpr auto val3{max_lambda_1(4.0, 3.5)};
+    constexpr auto val3{max_lambda(4.0, 3.5)};
     CHECK(val3 == 4.0);
 
     // This works but confuses Intellisense
     // constexpr auto val4{
-    //     max_lambda_1(std::string{"abc"}, std::string{"def"}) == std::string{"def"}};
+    //     max_lambda(std::string{"abc"}, std::string{"def"}) == std::string{"def"}};
     // CHECK(val4);
 
-    CHECK(max_lambda_1("abc"s, "def"s) == "def"s);
+    CHECK(max_lambda("abc"s, "def"s) == "def"s);
 
-    constexpr auto val5{max_lambda_1(S{3, 1.0}, S{1, 3.0})};
-    CHECK(val5 == S{3, 1.0});
+    constexpr auto val5{max_lambda(S{3, 1}, S{1, 3})};
+    CHECK(val5 == S{3, 1});
 
-    constexpr auto val6{max_lambda_1(1, 2.0)};
+    constexpr auto val6{max_lambda(1, 2.0)};
     CHECK(val6 == 2.0);
 
-    constexpr auto val7{max_lambda_1(1.0, 2)};
+    constexpr auto val7{max_lambda(1.0, 2)};
     CHECK(val7 == 2.0);
 }
 
@@ -64,8 +64,8 @@ TEST_CASE("max_fun()")
 
     CHECK(max_fun("abc"s, "def"s) == "def"s);
 
-    constexpr auto val5{max_fun(S{3, 1.0}, S{1, 3.0})};
-    CHECK(val5 == S{3, 1.0});
+    constexpr auto val5{max_fun(S{3, 1}, S{1, 3})};
+    CHECK(val5 == S{3, 1});
 
     constexpr auto val6{max_fun(1, 2.0)};
     CHECK(val6 == 2.0);
@@ -92,8 +92,8 @@ TEST_CASE("max_fun_templ()")
 
     CHECK(max_fun_templ("abc"s, "def"s) == "def"s);
 
-    constexpr auto val5{max_fun_templ(S{3, 1.0}, S{1, 3.0})};
-    CHECK(val5 == S{3, 1.0});
+    constexpr auto val5{max_fun_templ(S{3, 1}, S{1, 3})};
+    CHECK(val5 == S{3, 1});
 
     constexpr auto val6{max_fun_templ(1, 2.0)};
     CHECK(val6 == 2.0);
@@ -108,11 +108,11 @@ TEST_CASE("Different behaviors (part 1)")
     const std::vector<std::string> my_strings{"abc"s, "def"s, "foo"s, "bar"s};
 
     CHECK(
-        std::accumulate(std::cbegin(my_numbers), std::cend(my_numbers), 0u, max_lambda_1)
+        std::accumulate(std::cbegin(my_numbers), std::cend(my_numbers), 0u, max_lambda)
         == 25);
 
     CHECK(
-        std::accumulate(cbegin(my_strings), cend(my_strings), ""s, max_lambda_1)
+        std::accumulate(cbegin(my_strings), cend(my_strings), ""s, max_lambda)
         == "foo"s);
 
     // Does not compile!
@@ -138,10 +138,10 @@ TEST_CASE("Different behaviors (part 2)")
     CHECK(max_fun<int, int>(3, 7) == 7);
 
     // Specifying template arguments for lambdas is more complicated:
-    CHECK(max_lambda_1.operator()<int, int>(3, 7) == 7);
+    CHECK(max_lambda.operator()<int, int>(3, 7) == 7);
 
     // Another method of calling a lambda with the desired argument types:
-    CHECK([](int x, int y) { return max_lambda_1(x, y); }(3, 7) == 7);
+    CHECK([](int x, int y) { return max_lambda(x, y); }(3, 7) == 7);
 }
 
 TEST_CASE("Different behaviors (part 3)", "[.]")
@@ -150,7 +150,7 @@ TEST_CASE("Different behaviors (part 3)", "[.]")
 
     // Oops
     CHECK(
-        std::accumulate(cbegin(my_strings), cend(my_strings), "", max_lambda_1)
+        std::accumulate(cbegin(my_strings), cend(my_strings), "", max_lambda)
         == "foo"s);
 
     // Oops again, but maybe the error is more visible...
@@ -165,7 +165,7 @@ TEST_CASE("Different behaviors (part 4)")
     const std::vector<const char*> my_strings{"abc", "def", "foo", "bar"};
 
     CHECK(
-        std::accumulate(cbegin(my_strings), cend(my_strings), ""s, max_lambda_1)
+        std::accumulate(cbegin(my_strings), cend(my_strings), ""s, max_lambda)
         == "foo"s);
 
     CHECK(
@@ -179,7 +179,7 @@ TEST_CASE("Different behaviors (part 4)")
         std::accumulate(
             cbegin(my_strings), cend(my_strings), ""s,
             [](const std::string& lhs, const std::string& rhs) {
-                return max_lambda_1(lhs, rhs);
+                return max_lambda(lhs, rhs);
             })
         == "foo"s);
 
@@ -188,7 +188,7 @@ TEST_CASE("Different behaviors (part 4)")
         std::accumulate(
             cbegin(my_strings), cend(my_strings), ""s,
             [](const std::string& lhs, const std::string& rhs) {
-                return max_lambda_1.operator()<const std::string&, const std::string&>(
+                return max_lambda.operator()<const std::string&, const std::string&>(
                     lhs, rhs);
             })
         == "foo"s);

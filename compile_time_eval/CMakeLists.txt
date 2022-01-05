@@ -5,7 +5,7 @@ add_library("compile_time_eval_lib")
 
 target_sources("compile_time_eval_lib"
     PUBLIC
-    "include/compile_time_eval.hpp" "include/auto_parameters.hpp")
+    "include/compile_time_eval.hpp" "include/auto_parameters.hpp" "include/concepts.hpp")
 
 target_sources("compile_time_eval_lib"
     PRIVATE

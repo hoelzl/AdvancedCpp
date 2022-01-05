@@ -5,7 +5,7 @@
 namespace auto_params {
 
 // Since C++14:
-constexpr auto max_lambda_1 = [](auto x, auto y) {
+constexpr auto max_lambda = [](auto x, auto y) {
     return y < x ? x : y;
 };
 

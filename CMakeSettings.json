@@ -11,7 +11,8 @@
             "buildCommandArgs": "",
             "ctestCommandArgs": "",
             "enableMicrosoftCodeAnalysis": false,
-            "enableClangTidyCodeAnalysis": false
+            "enableClangTidyCodeAnalysis": false,
+            "addressSanitizerEnabled": false
         },
         {
             "name": "x64-Release",
