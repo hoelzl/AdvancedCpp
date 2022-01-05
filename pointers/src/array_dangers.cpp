@@ -17,9 +17,9 @@ auto constexpr show_explanation = true;
 
 void show_bad_array_access()
 {
-    Circle const circles[5]{{1.0, 2.0}, {3.0, 4.0}, {5.0, 6.0}, {7.0, 8.0}, {9.0, 0.0}};
-    Circle const* pc = circles;
-    Shape const* ps = circles;
+    const Circle circles[5]{{1.0, 2.0}, {3.0, 4.0}, {5.0, 6.0}, {7.0, 8.0}, {9.0, 0.0}};
+    const Circle* pc = circles;
+    const Shape* ps = circles;
 
     std::cout << "Drawing circles via circles[].\n\n";
     std::cout << "circles[0]: ";
@@ -96,7 +96,7 @@ void clear_buffer_span(std::span<char> buffer)
 void show_buffer(std::string_view prefix, std::span<char> buffer)
 {
     std::cout << prefix << " buffer[";
-    for (char const c : buffer) {
+    for (const char c : buffer) {
         if (c == '\0') {
             std::cout << "\\0";
         }

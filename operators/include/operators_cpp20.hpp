@@ -12,7 +12,7 @@ struct EqMe
 {
     int id{};
 
-    [[nodiscard]] bool operator==(EqMe const& rhs) const noexcept
+    [[nodiscard]] bool operator==(const EqMe& rhs) const noexcept
     {
         return (id % 100) == (rhs.id % 100);
     }
@@ -22,7 +22,7 @@ struct EqMe
         return (id % 100) == (rhs % 100);
     }
 
-    [[nodiscard]] bool operator==(std::string const& rhs) const
+    [[nodiscard]] bool operator==(const std::string& rhs) const
     {
         return *this == std::stoi(rhs);
     }
@@ -34,14 +34,14 @@ struct OpSpaceship
     int id2{};
 
     // Lexicographic memberwise comparison.
-    [[nodiscard]] auto operator<=>(OpSpaceship const&) const = default;
+    [[nodiscard]] auto operator<=>(const OpSpaceship&) const = default;
 };
 
 struct CompareMe
 {
     int id{};
 
-    [[nodiscard]] bool operator==(CompareMe const& rhs) const noexcept
+    [[nodiscard]] bool operator==(const CompareMe& rhs) const noexcept
     {
         return (id % 100) == (rhs.id % 100);
     }
@@ -51,7 +51,7 @@ struct CompareMe
         return (id % 100) == (rhs % 100);
     }
     
-    [[nodiscard]] auto operator<=>(CompareMe const& rhs) const noexcept
+    [[nodiscard]] auto operator<=>(const CompareMe& rhs) const noexcept
     {
         return (id % 100) <=> (rhs.id % 100);
     }

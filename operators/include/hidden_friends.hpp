@@ -12,22 +12,16 @@ namespace ops {
 struct CompareMeHiddenFriends
 {
     CompareMeHiddenFriends() = default;
-    CompareMeHiddenFriends(std::string const& s) : id{std::stoi(s)} {}
+    CompareMeHiddenFriends(const std::string& s) : id{std::stoi(s)} {}
     CompareMeHiddenFriends(int id) : id{id} {}
     int id{};
 
-    friend bool operator==(
-        CompareMeHiddenFriends const& lhs, CompareMeHiddenFriends const& rhs) noexcept;
-    friend bool operator!=(
-        CompareMeHiddenFriends const& lhs, CompareMeHiddenFriends const& rhs) noexcept;
-    friend bool operator<(
-        CompareMeHiddenFriends const& lhs, CompareMeHiddenFriends const& rhs) noexcept;
-    friend bool operator<=(
-        CompareMeHiddenFriends const& lhs, CompareMeHiddenFriends const& rhs) noexcept;
-    friend bool operator>(
-        CompareMeHiddenFriends const& lhs, CompareMeHiddenFriends const& rhs) noexcept;
-    friend bool operator>=(
-        CompareMeHiddenFriends const& lhs, CompareMeHiddenFriends const& rhs) noexcept;
+    friend bool operator==(const CompareMeHiddenFriends& lhs, const CompareMeHiddenFriends& rhs) noexcept;
+    friend bool operator!=(const CompareMeHiddenFriends& lhs, const CompareMeHiddenFriends& rhs) noexcept;
+    friend bool operator<(const CompareMeHiddenFriends& lhs, const CompareMeHiddenFriends& rhs) noexcept;
+    friend bool operator<=(const CompareMeHiddenFriends& lhs, const CompareMeHiddenFriends& rhs) noexcept;
+    friend bool operator>(const CompareMeHiddenFriends& lhs, const CompareMeHiddenFriends& rhs) noexcept;
+    friend bool operator>=(const CompareMeHiddenFriends& lhs, const CompareMeHiddenFriends& rhs) noexcept;
 };
 
 } // namespace ops

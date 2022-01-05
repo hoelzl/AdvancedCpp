@@ -8,6 +8,7 @@ project ("AdvancedCpp")
 set(CMAKE_CXX_STANDARD 20)
 
 add_subdirectory("advanced_cpp")
+add_subdirectory("compile_time_eval")
 add_subdirectory("constexpr")
 add_subdirectory("external")
 add_subdirectory("imgui_example")
