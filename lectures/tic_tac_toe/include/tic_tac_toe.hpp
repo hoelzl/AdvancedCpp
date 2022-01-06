@@ -2,6 +2,7 @@
 #ifndef TIC_TAC_TOE_HPP
 #define TIC_TAC_TOE_HPP
 #include <array>
+#include <ostream>
 #include <set>
 
 namespace ttt {
@@ -13,7 +14,32 @@ enum class FieldValue
     black,
 };
 
+std::ostream& operator<<(std::ostream& os, FieldValue value);
+
 using Position = std::pair<short, short>;
+
+class PlayerColor
+{
+public:
+    static PlayerColor from_string(std::string_view color);
+    static PlayerColor from_field_value(FieldValue value);
+
+    // ReSharper disable once CppNonExplicitConversionOperator
+    operator FieldValue() const;
+
+private:
+    enum class Color
+    {
+        black,
+        white
+    };
+
+    explicit PlayerColor(Color color) : color_{color} {}
+
+    Color color_;
+    static const PlayerColor black;
+    static const PlayerColor white;
+};
 
 bool is_position_valid(Position pos);
 

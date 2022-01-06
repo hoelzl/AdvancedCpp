@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <ranges>
+#include <sstream>
 
 #include "catch2/catch_test_macros.hpp"
 
@@ -27,7 +28,7 @@ TEST_CASE("Board()")
         CHECK(std::all_of(board.cbegin(), board.cend(), [](auto field) {
             return field == ttt::FieldValue::empty;
         }));
-        
+
         static_assert(std::random_access_iterator<ttt::Board::iterator>);
         static_assert(std::contiguous_iterator<ttt::Board::iterator>);
         static_assert(std::contiguous_iterator<ttt::Board::const_iterator>);
@@ -100,5 +101,46 @@ TEST_CASE("Board()")
                            ? non_empty_board.is_move_valid(pos)
                            : !non_empty_board.is_move_valid(pos);
             }));
+    }
+
+    SECTION("Field values can be written to an ostream.")
+    {
+        std::ostringstream os{};
+
+        SECTION("Empty field value can be written.")
+        {
+            os << ttt::FieldValue::empty;
+            CHECK(os.str() == "empty");
+        }
+
+        SECTION("White field value can be written.")
+        {
+            os << ttt::FieldValue::white;
+            CHECK(os.str() == "white");
+        }
+
+        SECTION("White field value can be written.")
+        {
+            os << ttt::FieldValue::black;
+            CHECK(os.str() == "black");
+        }
+    }
+}
+
+TEST_CASE("PlayerColor()")
+{
+    using enum ttt::FieldValue;
+    using ttt::PlayerColor;
+    SECTION("Can be created from strings and field values.")
+    {
+        CHECK(
+            PlayerColor::from_field_value(black) == PlayerColor::from_string("black"));
+        CHECK(
+            PlayerColor::from_field_value(white) == PlayerColor::from_string("white"));
+    }
+
+    SECTION("PC::from_string throws for invalid argument.")
+    {
+        CHECK_THROWS_AS(PlayerColor::from_string("empty"), std::invalid_argument);
     }
 }
