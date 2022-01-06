@@ -1,3 +1,5 @@
+build/
+clion-*/
 out/
 .vs/
 .vscode/

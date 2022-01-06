@@ -50,6 +50,7 @@
 // # `https://github.com/hoelzl/AdvancedCpp`
 // -
 
+// + [markdown] slideshow={"slide_type": "subslide"}
 // ## Recommended Software Environment
 //
 // - Visual Studio 2022 (Windows) or Clang &geq; 10, for very few examples Clang &geq; 14

@@ -12,6 +12,20 @@
             "ctestCommandArgs": "",
             "enableMicrosoftCodeAnalysis": false,
             "enableClangTidyCodeAnalysis": false,
+            "addressSanitizerEnabled": true
+        },
+        {
+            "name": "x64-Debug-Without-ASan",
+            "generator": "Ninja",
+            "configurationType": "Debug",
+            "inheritEnvironments": [ "msvc_x64_x64" ],
+            "buildRoot": "${projectDir}\\out\\build\\${name}",
+            "installRoot": "${projectDir}\\out\\install\\${name}",
+            "cmakeCommandArgs": "",
+            "buildCommandArgs": "",
+            "ctestCommandArgs": "",
+            "enableMicrosoftCodeAnalysis": false,
+            "enableClangTidyCodeAnalysis": false,
             "addressSanitizerEnabled": false
         },
         {
