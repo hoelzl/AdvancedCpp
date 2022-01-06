@@ -1,0 +1,10 @@
+name: cling
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python
+  - xeus-cling
+  - jupyter
+  - jupytext
+  - rise
