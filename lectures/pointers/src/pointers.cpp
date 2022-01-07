@@ -1,8 +1,10 @@
 // ReSharper disable CppClangTidyCppcoreguidelinesProBoundsArrayToPointerDecay
 // ReSharper disable CppClangTidyCppcoreguidelinesAvoidCArrays
-#include <iostream>
-#include "utils.hpp"
 #include "pointers.hpp"
+
+#include <iostream>
+
+#include "utils.hpp"
 
 // Note: Build this in release configuration to see some interesting effects.
 
@@ -26,6 +28,9 @@ void show_pointer_operations()
     std::cout << "Address of ia:          " << address_of(ia) << "\n";
     std::cout << "Address of end(ia):     " << address_of(pia_end) << "\n";
 
+    //int** ppia_end{&pia_end}; // Points to another pointer
+    //std::cout << "Address of ppia_end:    " << address_of(ppia_end) << "\n";
+
     int* p_null{nullptr}; // Valid, but may not be dereferenced.
 
     Eq eq{};
@@ -35,9 +40,6 @@ void show_pointer_operations()
     std::cout << "Address of eq.arr:      " << address_of(parr) << "\n";
     std::cout << "Address of end(eq.arr): " << address_of(parr_end) << "\n";
     std::cout << "Address of eq.val:      " << address_of(pval) << "\n";
-
-    // int** ppia_end{&pia_end};
-    // std::cout << "Address of pia:         " << address_of(ppia_end) << "\n";
 
 }
 

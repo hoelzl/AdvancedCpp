@@ -1,7 +1,9 @@
-﻿#include "advanced_cpp.hpp"
+#include "resources.hpp"
 
 #include <iostream>
 #include <numeric>
+
+namespace res {
 
 void write_greeting(const std::string_view name) {
     std::cout << "Hello " << name << ", from the advanced C++ course.\n";
@@ -18,3 +20,6 @@ int add_ints(const std::span<int> ints) {
     Ensures(result == result2);
     return result;
 }
+
+
+} // namespace res

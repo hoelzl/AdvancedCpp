@@ -1,8 +1,13 @@
-﻿// ReSharper disable CppClangTidyCppcoreguidelinesOwningMemory
+// ReSharper disable CppClangTidyCppcoreguidelinesOwningMemory
+
 #pragma once
+#ifndef RESOURCES_HPP
+#define RESOURCES_HPP
 
 #include <span>
 #include <gsl/gsl>
+
+namespace res {
 
 void write_greeting(std::string_view name);
 
@@ -42,8 +47,12 @@ public:
     [[nodiscard]] constexpr const int* get() const { return resource_; }
 
     // Demonstrate: Tests will fail if this is not initialized.
-    bool disable_self_checks{false};
+    bool disable_self_checks{false};  // NOLINT(cppcoreguidelines-non-private-member-variables-in-classes)
 
 private:
     gsl::owner<const T*> resource_{nullptr};
 };
+
+} // namespace res
+
+#endif // RESOURCES_HPP
