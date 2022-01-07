@@ -45,11 +45,10 @@ std::array<Position, 9> Board::compute_all_positions()
 
 std::ostream& operator<<(std::ostream& os, FieldValue value)
 {
-    using enum FieldValue;
     switch (value) {
-    case empty: os << "empty"; break;
-    case black: os << "black"; break;
-    case white: os << "white"; break;
+    case FieldValue::empty: os << "empty"; break;
+    case FieldValue::black: os << "black"; break;
+    case FieldValue::white: os << "white"; break;
     }
     return os;
 }
@@ -142,10 +141,17 @@ std::set<Board::Configuration>& Board::winning_configurations()
 
 int num_shared_members(const Board::Configuration& lhs, const Board::Configuration& rhs)
 {
-    return std::reduce(lhs.cbegin(), lhs.cend(), 0, [&rhs](int i, Position pos) {
-        return rhs.contains(pos) ? i + 1 : i;
-    });
-
+    //return std::reduce(lhs.cbegin(), lhs.cend(), 0, [&rhs](int i, Position pos) {
+    //    return rhs.contains(pos) ? i + 1 : i;
+    //});
+    auto result{0};
+    for (auto pos : lhs) {
+        if (rhs.contains(pos))
+        {
+            ++result;
+        }
+    }
+    return result;
 }
 
 bool Board::is_winning_configuration(const Configuration& conf)

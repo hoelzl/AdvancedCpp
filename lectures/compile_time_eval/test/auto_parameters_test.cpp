@@ -10,8 +10,8 @@ using namespace std::literals::string_literals;
 namespace {
 struct S
 {
-    [[maybe_unused]] int i{};
-    [[maybe_unused]] int j{};
+    int i{};
+    int j{};
     auto operator<=>(const S& rhs) const = default;
 };
 } // namespace

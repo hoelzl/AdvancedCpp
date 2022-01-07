@@ -6,10 +6,5 @@
 #include <Windows.h>
 #endif
 
-#pragma warning(push)
-#pragma warning(disable: 28251)
-
 IMFRAME_MAIN(
-    "ImGui Example", "Dear ImGui Example (via ImFrame)", imex::ImguiExampleApp);
-
-#pragma warning(pop)
+    "ImGui Example", "Dear ImGui Example (via ImFrame)", imex::ImguiExampleApp)

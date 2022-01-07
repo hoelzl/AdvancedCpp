@@ -129,13 +129,13 @@ TEST_CASE("Board()")
 
 TEST_CASE("PlayerColor()")
 {
-    using enum ttt::FieldValue;
+    using ttt::FieldValue;
     using ttt::PlayerColor;
     SECTION("Can be created from strings and field values.")
     {
-        CHECK(PlayerColor::from_field_value(black) == PlayerColor::black);
+        CHECK(PlayerColor::from_field_value(FieldValue::black) == PlayerColor::black);
         CHECK(PlayerColor::from_string("black") == PlayerColor::black);
-        CHECK(PlayerColor::from_field_value(white) == PlayerColor::white);
+        CHECK(PlayerColor::from_field_value(FieldValue::white) == PlayerColor::white);
         CHECK(PlayerColor::from_string("white") == PlayerColor::white);
     }
 
@@ -178,22 +178,22 @@ TEST_CASE("PlayerColor()")
 
 TEST_CASE("Board::move()")
 {
-    using enum ttt::FieldValue;
+    using ttt::FieldValue;
     using ttt::PlayerColor;
     ttt::Board board{};
 
     SECTION("Performs move on valid position.")
     {
-        board.move(PlayerColor::from_field_value(black), {1, 2});
-        CHECK(board.field_value({1, 2}) == black);
+        board.move(PlayerColor::from_field_value(FieldValue::black), {1, 2});
+        CHECK(board.field_value({1, 2}) == FieldValue::black);
     }
 
     SECTION("Raises error on invalid position")
     {
-        board.move(PlayerColor::from_field_value(black), {1, 2});
+        board.move(PlayerColor::from_field_value(FieldValue::black), {1, 2});
 
         CHECK_THROWS_AS(
-            board.move(PlayerColor::from_field_value(white), {1, 2}),
+            board.move(PlayerColor::from_field_value(FieldValue::white), {1, 2}),
             std::invalid_argument);
     }
 }
