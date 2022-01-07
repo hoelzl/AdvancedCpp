@@ -133,14 +133,158 @@ TEST_CASE("PlayerColor()")
     using ttt::PlayerColor;
     SECTION("Can be created from strings and field values.")
     {
-        CHECK(
-            PlayerColor::from_field_value(black) == PlayerColor::from_string("black"));
-        CHECK(
-            PlayerColor::from_field_value(white) == PlayerColor::from_string("white"));
+        CHECK(PlayerColor::from_field_value(black) == PlayerColor::black);
+        CHECK(PlayerColor::from_string("black") == PlayerColor::black);
+        CHECK(PlayerColor::from_field_value(white) == PlayerColor::white);
+        CHECK(PlayerColor::from_string("white") == PlayerColor::white);
     }
 
     SECTION("PC::from_string throws for invalid argument.")
     {
         CHECK_THROWS_AS(PlayerColor::from_string("empty"), std::invalid_argument);
+    }
+
+    SECTION("Can be implicitly converted to FieldValue")
+    {
+        CHECK(PlayerColor::black == ttt::FieldValue::black);
+        CHECK(PlayerColor::white == ttt::FieldValue::white);
+    }
+
+    // Surprise!?!
+    SECTION("Can be compared for equality.")
+    {
+        CHECK(PlayerColor::black == PlayerColor::black);
+        CHECK(PlayerColor::white == PlayerColor::white);
+        CHECK(PlayerColor::black != PlayerColor::white);
+    }
+
+    SECTION("Can be written to stream")
+    {
+        std::ostringstream os{};
+
+        SECTION("Black player can be written.")
+        {
+            os << PlayerColor::black;
+            CHECK(os.str() == "black");
+        }
+
+        SECTION("White player can be written.")
+        {
+            os << PlayerColor::white;
+            CHECK(os.str() == "white");
+        }
+    }
+}
+
+TEST_CASE("Board::move()")
+{
+    using enum ttt::FieldValue;
+    using ttt::PlayerColor;
+    ttt::Board board{};
+
+    SECTION("Performs move on valid position.")
+    {
+        board.move(PlayerColor::from_field_value(black), {1, 2});
+        CHECK(board.field_value({1, 2}) == black);
+    }
+
+    SECTION("Raises error on invalid position")
+    {
+        board.move(PlayerColor::from_field_value(black), {1, 2});
+
+        CHECK_THROWS_AS(
+            board.move(PlayerColor::from_field_value(white), {1, 2}),
+            std::invalid_argument);
+    }
+}
+
+TEST_CASE("Board::winning_configurations()")
+{
+    SECTION("Diagonals are contained in winning configurations.")
+    {
+        CHECK(ttt::Board::winning_configurations().contains(
+            ttt::Board::Configuration{{0, 0}, {1, 1}, {2, 2}}));
+        CHECK(ttt::Board::winning_configurations().contains(
+            ttt::Board::Configuration{{0, 2}, {1, 1}, {2, 0}}));
+    }
+
+    SECTION("Rows are contained in winning configurations.")
+    {
+        for (constexpr auto rows{std::views::iota(0, 3)}; const auto row : rows) {
+            ttt::Board::Configuration conf{{row, 0}, {row, 1}, {row, 2}};
+            CHECK(ttt::Board::winning_configurations().contains(conf));
+        }
+    }
+
+    SECTION("Columns are contained in winning configurations.")
+    {
+        for (constexpr auto columns{std::views::iota(0, 3)}; const auto col : columns) {
+            ttt::Board::Configuration conf{{0, col}, {1, col}, {2, col}};
+            CHECK(ttt::Board::winning_configurations().contains(conf));
+        }
+    }
+
+    SECTION("Random triples of positions are not contained in winning configurations.")
+    {
+        ttt::Board::Configuration conf{{0, 1}, {1, 1}, {2, 2}};
+        CHECK_FALSE(ttt::Board::winning_configurations().contains(conf));
+    }
+}
+
+TEST_CASE("Board::is_winning_configuration()")
+{
+    SECTION("Empty configurations are not winning.")
+    {
+        CHECK_FALSE(ttt::Board::is_winning_configuration(ttt::Board::Configuration{}));
+    }
+
+    SECTION("One-element configurations are not winning.")
+    {
+        CHECK_FALSE(
+            ttt::Board::is_winning_configuration(ttt::Board::Configuration{{0, 0}}));
+    }
+
+    SECTION("Diagonals are winning configurations.")
+    {
+        CHECK(ttt::Board::is_winning_configuration(
+            ttt::Board::Configuration{{0, 0}, {1, 1}, {2, 2}}));
+        CHECK(ttt::Board::is_winning_configuration(
+            ttt::Board::Configuration{{0, 2}, {1, 1}, {2, 0}}));
+    }
+
+    SECTION("Rows are winning configurations.")
+    {
+        for (constexpr auto rows{std::views::iota(0, 3)}; const auto row : rows) {
+            ttt::Board::Configuration conf{{row, 0}, {row, 1}, {row, 2}};
+            CHECK(ttt::Board::is_winning_configuration(conf));
+        }
+    }
+
+    SECTION("Columns are winning configurations.")
+    {
+        for (constexpr auto columns{std::views::iota(0, 3)}; const auto col : columns) {
+            ttt::Board::Configuration conf{{col, 0}, {col, 1}, {col, 2}};
+            CHECK(ttt::Board::is_winning_configuration(conf));
+        }
+    }
+    
+    SECTION("Random triples of positions are not winning configurations.")
+    {
+        ttt::Board::Configuration conf{{0, 1}, {1, 1}, {2, 2}};
+        CHECK_FALSE(ttt::Board::is_winning_configuration(conf));
+    }
+
+    SECTION("Large sets of positions can be winning configurations.")
+    {
+        ttt::Board::Configuration conf{{0, 1}, {1, 1}, {1, 2}, {2, 1}, {2, 2}};
+        CHECK(ttt::Board::is_winning_configuration(conf));
+    }
+
+    SECTION("All positions is a winning configuration.")
+    {
+        ttt::Board::Configuration all_pos{};
+        std::ranges::copy(
+            ttt::Board::all_positions(), std::inserter(all_pos, all_pos.end()));
+        CHECK(ttt::Board::is_winning_configuration(all_pos));
     }
 }

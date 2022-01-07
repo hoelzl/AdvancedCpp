@@ -13,11 +13,18 @@ int main()
         constexpr int stack_array[9]{}; // NOLINT(cppcoreguidelines-avoid-c-arrays)
         constexpr int x{}, y{}, z{};
         std::cout << &x << ", " << &y << ", " << &z << "\n";
-        std::cout << stack_array[9] << "\n";  // NOLINT(clang-diagnostic-array-bounds)
+        std::cout << stack_array[9] << "\n"; // NOLINT(clang-diagnostic-array-bounds)
     }
 
     if constexpr (run_asan_heap_example) {
         const int* heap_array = new int[9];
         std::cout << heap_array[9] << "\n";
+    }
+
+    ttt::play_automated_game(3);
+
+    ttt::play_automated_game();
+    for (auto seed{0u}; seed < 10u; ++seed) {
+        ttt::play_automated_game(seed);
     }
 }
