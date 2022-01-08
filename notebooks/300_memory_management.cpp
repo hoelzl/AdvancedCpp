@@ -15,4 +15,21 @@
 
 // # Memory Management and Resource Handling
 
+// ## References
+//
+// - A reference is an alias for an existing name
+// - References are not objects themselves
+//     - They denote the object with which they were initialized
+// - Using a reference is the same as using the original object
+//     - Taking the address returns the original object
+//     - Changing the reference changes the original object
+// - References are not just "syntactic sugar" for pointers
+//
+// ```c++
+// Widget w{};
+// Widget& rw{w};
+// ...
+// &w == &rw; // Always true
+// ```
+
 //

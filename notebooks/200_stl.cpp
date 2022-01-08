@@ -378,15 +378,84 @@ for (int i : a3)
 // + [markdown] slideshow={"slide_type": "slide"}
 // ## STL Algorithms
 //
-// The STL provides many generic algorithms that can be used with any type that satisfies the `range` concept.
-// -
+// The STL provides many generic algorithms that can be used with any type that satisfies the `range` concept. 
+//
+// Algorithms
+//
+// - take two iterators that form an iterator range
+// - perform no container operation, i.e., they don't add or remove elements
+// - may reorder or change the elements in the container
 
+// + [markdown] slideshow={"slide_type": "subslide"}
+// ### Examples for Algorithms
+//
+// #### Non Modifying
+//
+// - `all_of`: is a predicate true for all elements?
+// - `for_each`: apply function to range
+// - `count`, `count_if`: counts the number of elements satisfying specific criteria
+// - `mismatch`: finds the first difference between two ranges
+// - `find`, `find_if`: finds the first element satisfying specific criteria
+// - `adjacent_find`: find first two equivalent adjacent items
+// - `search`: search for a range of elements
+
+// + [markdown] slideshow={"slide_type": "subslide"}
+// #### Modifying Algorithms
+//
+// - `copy`, `copy_if`: copies a range
+// - `copy_backward`: copies in backward order
+// - `fill`: assigns a fixed value to all elements
+
+// + [markdown] slideshow={"slide_type": "subslide"}
 // ### Mini-Workshop: Sum of Integers
 //
 // Write a function `int sum_from_to(int min, int max)` that computes the sum of all numbers from `min` to `max` (inclusive). Use an `IntRangeV0` and an appropriate algorithm from the STL to perform the task.
 
 // + [markdown] slideshow={"slide_type": "slide"}
 // ## Lambdas
+//
+// We can overload `operator()` to create *functors*, i.e., objects that can be called:
+// -
+
+struct Functor {
+    int operator()(int i) { return i * i; }
+};
+Functor f{};
+f(3)
+
+typeid(f).name()
+
+// + [markdown] slideshow={"slide_type": "subslide"}
+// A *lambda* is a shorthand notation for a functor (of an anonymous type defined by the compiler).
+
+// + slideshow={"slide_type": "-"}
+auto lambda = [](int i){ return i * i; };
+lambda(3)
+// -
+
+typeid(lambda).name()
+
+// + [markdown] slideshow={"slide_type": "slide"}
+// ## Lambdas: Captures
+//
+// The square brackets are the *capture list*:
+// -
+
+int capture_1() {
+    int i = 10;
+    auto lambda = [i](){ return i; };
+    i = 20;
+    return lambda();
+}
+capture_1()
+
+int capture_2() {
+    int i = 10;
+    auto lambda = [&i](){ return i; };
+    i = 20;
+    return lambda();
+}
+capture_2()
 
 // + [markdown] slideshow={"slide_type": "slide"}
 // ## Iterator Categories
@@ -412,9 +481,6 @@ for (int i : a3)
 //
 // - Define a member function `Board::is_move_valid(Position pos)` that checks whether `pos` is empty
 // - Define a member function `Board::valid_moves()` that returns a set of all valid moves.
-
-// + [markdown] slideshow={"slide_type": "slide"}
-// ## Lambdas: Captures
 
 // + [markdown] slideshow={"slide_type": "slide"}
 // ## TTT: PlayerColor Class

@@ -132,6 +132,10 @@
 // ### Types, Objects, Values, Variables
 //
 // - A *type* restrict the operations for an entity and provides semantic meaning to its sequence of bits ([details](https://en.cppreference.com/w/cpp/language/type))
+//     - Fundamental/compound
+//         - fundamental: `void`, `int`, `double`, `bool`, ...
+//         - compound: reference, pointer, array, class, ...
+//     - Complete/incomplete; `void`, `foo[]`, forward declarations are incomplete
 // - A *value* is a set of bits interpreted according to a type
 // - An *object* is memory that holds a value of some type ([details](https://en.cppreference.com/w/cpp/language/object))
 // - A *variable* is a named object
@@ -153,23 +157,64 @@
 // - be the null pointer (i.e., not point to any object)
 //
 // All other pointers are invalid.
-// -
 
+// + [markdown] slideshow={"slide_type": "subslide"}
 // ### Some Caveats
 //
 // - Pointers have no influence on the lifetime of an object; there is no way to check whether the pointed-to object is still alive
 // - Pointers can be compared, but comparison with `<` is only defined for pointers to the same object
 // - `std::less` guarantees a strict total order for arbitrary pointers. (Note that `std::less` is a class that must be instantiated)
 
-// + slideshow={"slide_type": "subslide"}
+// + slideshow={"slide_type": "-"}
 #include <functional>
 int i{2}, j{1};
 // &i < &j // Probably works, but no guarantees
 std::less{}(&i, &j)
 
-// + slideshow={"slide_type": "subslide"}
+// + slideshow={"slide_type": "-"}
 int ia[5]{};
 ia < &ia[3] // OK
+
+// + [markdown] slideshow={"slide_type": "subslide"}
+// ### Syntax
+
+// + slideshow={"slide_type": "subslide"}
+int* foo;                     // pointer to int
+int** bar;                    // pointer to pointer to int
+const int* baz;               // pointer to const int
+int const* baz2;              // pointer to const int (same as above)
+int *const quux = nullptr;    // const pointer to int
+const int *const p = nullptr; // const pointer ot const int
+// -
+
+int i;
+int& ri{i};              // (lvalue) reference to int
+int*& rpi{foo};          // (lvalue) reference to pointer to int
+// int&* pri             // ERROR: pointer to reference to int
+int (*f)(double);        // pointer to a function taking a double, returning an int
+int* g(double);          // function taking a double returning a pointer to int
+
+// + slideshow={"slide_type": "subslide"}
+int ai[3];                // array of int
+int aai[3][4];            // "two-dimensional" array (array of array of int)
+int* api[4];              // array of pointer to int
+int (*pai)[];             // pointer to array of int (of unspecified size)
+int (&rai)[3]{ai};        // reference to array of int
+// int& ari[3];           // ERROR: Array of references to int
+
+// +
+struct Widget{
+    int foo(int j) { return j + 2; }
+};
+
+int (Widget::*pmw)(int);  // pointer to member function
+Widget w{};
+int (Widget::*pmw2)(int){&Widget::foo};
+(w.*pmw2)(1)
+// -
+
+Widget* pw{&w};
+(pw->*pmw2)(5)
 
 // + [markdown] slideshow={"slide_type": "subslide"}
 // ### Arrays and Pointers
