@@ -1,6 +1,6 @@
 add_subdirectory("compile_time_eval")
 add_subdirectory("constexpr")
-add_subdirectory("imgui_example")
+# add_subdirectory("imgui_example")
 add_subdirectory("operators")
 add_subdirectory("pointers")
 add_subdirectory("resources")
