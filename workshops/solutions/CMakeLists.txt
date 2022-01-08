@@ -5,11 +5,11 @@ add_library("solutions_lib")
 
 target_sources("solutions_lib"
     PUBLIC
-    "include/solutions.hpp")
+    "include/solutions.hpp" "include/ring_buffer.hpp")
 
 target_sources("solutions_lib"
     PRIVATE
-    "src/solutions.cpp")
+    "src/solutions.cpp" "src/ring_buffer.cpp")
 
 target_include_directories("solutions_lib"
     PUBLIC 
