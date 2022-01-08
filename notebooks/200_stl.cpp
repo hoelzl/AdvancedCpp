@@ -213,8 +213,14 @@ v1.empty()
 // **Beware!** If `range-expression` returns a reference it is dangling: "\[A\] temporary bound to a reference parameter in a function call exists until the end of the full expression containing that function call: if the function returns a reference, which outlives the full expression, it becomes a dangling reference." ([cppreference.com](https://en.cppreference.com/w/cpp/language/reference_initialization))
 //
 //
-// -
 
+// + [markdown] slideshow={"slide_type": "slide"}
+// ## TTT: Board
+//
+// - Allow users to iterate over `Board` instances
+// - Make the class `Board` usable by STL algorithms
+
+// + [markdown] slideshow={"slide_type": "slide"}
 // ## Mini Workshop: Inefficient `IntRange`
 //
 // Define a class `IntRangeV0` with the following partial signature:
@@ -225,7 +231,7 @@ v1.empty()
 // }
 // ```
 // such that
-// ```
+// ```c++
 // for (const int i : IntRangeV0{10, 20}) {
 //     std::cout << i << "\n";
 // }
@@ -239,9 +245,27 @@ v1.empty()
 // + [markdown] slideshow={"slide_type": "slide"}
 // ## Overview of Container Types
 //
+// Different container types have different trade-offs and functionality.
+//
+// Operations are typically only defined for container types for which they are efficiently implementable.
+
+// + [markdown] slideshow={"slide_type": "slide"}
+// ### Sequence Containers
+//
+// Operations such as
+//
+// - `front()`
+// - `back()`
+// - `operator[]`
+// - `resize()`
+// - `push_back()`, `pop_back()`
+//
+// are availble for most sequence containers (where they make sense).
+
+// + [markdown] slideshow={"slide_type": "subslide"}
 // ### Sequence Containers 
 //
-// - `array`: the one trick pony
+// - `array`: the one trick pony (but it's very good at that trick)
 //     - fixed size
 //     - fast random access
 //     - all memory can be stack-allocated
@@ -272,11 +296,24 @@ for (int i : a3)
 //     - holds elements in contiguous memory
 //     - fast random access
 //     - insertion/deletion efficient at front and back
+// -
+
+// ### Functionality of Vector and Deque
+//
+// - `c.push_back(elt)`
+// - `c.emplace_back(...)`
+// - `c.pop_back()`
+// - `c.insert(...)`, `c.emplace(...)`
+//
+// Deque also has
+// - `c.push_front(elt)`
+// - `c.emplace_front(...)
+// - `c.pop_front()`
 
 // + [markdown] slideshow={"slide_type": "slide"}
 // ### Sequence Containers
 //
-// - Lists: more one trick ponies
+// - Lists: more one trick ponies (although they're often not great)
 //     - store their elements in linked nodes
 //     - no random access
 //     - insertion/deletion in middle efficient
@@ -286,23 +323,45 @@ for (int i : a3)
 //
 // - `list`
 //     - can iterate in both directions
-// -
 
+// + [markdown] slideshow={"slide_type": "slide"}
+// ## Mini Workshop:  `RingBuffer`
 //
+// Define a class `RingBuffer` with member functions
 //
-
+// - `bool RingBuffer::empty()` that returns `true` if the buffer is empty, `false` otherwise
+// - `void RingBuffer::put(int)` that puts an element into the buffer
+// - `int RingBuffer::get()` that gets an element from a non-empty buffer
 //
+// `get()` should return the elements put into the buffer in "first in, first out" manner, but the buffer should store a maximum of `capacity` elements (configured at construction time) and drop the oldest elements when more than `capacity` elements are stored.
+//
+// For example, for a buffer `b` with `capacity` 2, the following should hold:
+//
+// ```c++
+// b.put(1);
+// b.put(2);
+// b.get(); // -> 1
+// b.put(3);
+// b.put(4); // 2 is dropped
+// b.get(); // -> 3
+// ```
+//
+// Test your implementation using Catch2.
+//
+// *Note:* You can use the project `workshops/starter_kit/` to implement your solution.
 
 // + [markdown] slideshow={"slide_type": "slide"}
 // ### Ordered Associative Containers
 //
-// - `set`
-// - `map`
-// - `multiset`
-// - `multimap`
+// - `set`: collection of unique elements
+// - `map`: dictionary mapping keys to values
+// - `multiset`: a set with non-unique members
+// - `multimap`: a dictionary with non-unique keys
 
 // + [markdown] slideshow={"slide_type": "slide"}
 // ### Unordered Associative Containers
+//
+// The unordered associative containers are similar to their ordered counterparts. They are often more efficient, but their members need to be hashable.
 //
 // - `unordered_set`
 // - `unordered_map`
@@ -315,12 +374,6 @@ for (int i : a3)
 // - `stack`
 // - `queue`
 // - `priority_queue`
-
-// + [markdown] slideshow={"slide_type": "slide"}
-// ## TTT: Board
-//
-// - Allow users to iterate over `Board` instances
-// - Make the class `Board` usable by STL algorithms
 
 // + [markdown] slideshow={"slide_type": "slide"}
 // ## STL Algorithms
