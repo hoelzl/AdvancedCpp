@@ -170,23 +170,6 @@ std::less{}(&i, &j)
 // + slideshow={"slide_type": "subslide"}
 int ia[5]{};
 ia < &ia[3] // OK
-// -
-
-// ### Guidelines
-//
-// - [SL.con.1: Prefer using STL array or vector instead of a C array](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rsl-arrays)
-// - [I.13: Do not pass an array as a single pointer](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#i13-do-not-pass-an-array-as-a-single-pointer)
-// - [F.22: Use `T*` or `owner<T*>` to designate a single object](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rf-ptr)
-// - [SL.str.4: Use char* to refer to a single character](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rstr-char*)
-// - [F.23: Use a `not_null<T>` to indicate that “null” is not a valid value](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rf-nullptr)
-// - [F.24: Use a `span<T>` or a `span_p<T>` to designate a half-open sequence](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rf-range)
-// - [F.25: Use a `zstring` or a `not_null<zstring>` to designate a C-style string](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rf-zstring)
-// - [F.42: Return a `T*` to indicate a position (only)](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rf-return-ptr)
-// - [F.43: Never (directly or indirectly) return a pointer or a reference to a local object](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rf-dangle)
-// - [R.3: A raw pointer (a T*) is non-owning](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rr-ptr)
-// - [ES.62: Don’t compare pointers into different arrays](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Res-arr2)
-// - [ES.65: Don’t dereference an invalid pointer](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Res-deref)
-// - [SL.str.11: Use `gsl::span<char>` rather than `std::string_view` when you need to mutate a string](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rstr-span)
 
 // + [markdown] slideshow={"slide_type": "subslide"}
 // ### Arrays and Pointers
@@ -342,16 +325,23 @@ i[ia]
 
 // ### Guidelines
 //
+// - [I.13: Do not pass an array as a single pointer](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#i13-do-not-pass-an-array-as-a-single-pointer)
+// - [F.22: Use `T*` or `owner<T*>` to designate a single object](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rf-ptr)
+// - [SL.str.4: Use `char*` to refer to a single character](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rstr-char*)
+// - [ES.62: Don’t compare pointers into different arrays](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Res-arr2)
+
+// ### Summary of Relevant Guidelines
+//
 // - [SL.con.1: Prefer using STL array or vector instead of a C array](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rsl-arrays)
 // - [I.13: Do not pass an array as a single pointer](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#i13-do-not-pass-an-array-as-a-single-pointer)
 // - [F.22: Use `T*` or `owner<T*>` to designate a single object](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rf-ptr)
-// - [SL.str.4: Use char* to refer to a single character](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rstr-char*)
+// - [SL.str.4: Use `char*` to refer to a single character](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rstr-char*)
 // - [F.23: Use a `not_null<T>` to indicate that “null” is not a valid value](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rf-nullptr)
 // - [F.24: Use a `span<T>` or a `span_p<T>` to designate a half-open sequence](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rf-range)
 // - [F.25: Use a `zstring` or a `not_null<zstring>` to designate a C-style string](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rf-zstring)
 // - [F.42: Return a `T*` to indicate a position (only)](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rf-return-ptr)
 // - [F.43: Never (directly or indirectly) return a pointer or a reference to a local object](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rf-dangle)
-// - [R.3: A raw pointer (a T*) is non-owning](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rr-ptr)
+// - [R.3: A raw pointer (a `T*`) is non-owning](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rr-ptr)
 // - [ES.62: Don’t compare pointers into different arrays](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Res-arr2)
 // - [ES.65: Don’t dereference an invalid pointer](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Res-deref)
 // - [SL.str.11: Use `gsl::span<char>` rather than `std::string_view` when you need to mutate a string](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rstr-span)

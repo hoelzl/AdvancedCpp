@@ -19,16 +19,17 @@
 // + [markdown] slideshow={"slide_type": "slide"}
 // ## Contents (Part 1)
 //
+// - STL: templates, algorithms, generic programming
 // - Functions, lambdas, compile-time programming
 // - Memory management, move semantics, smart pointers
 // - Construction, destruction, initialization, RAII
 // - Object oriented programming, classes, inheritance, polymorphism
-// - Handling errors: exceptions and alternatives
+//
 
 // + [markdown] slideshow={"slide_type": "subslide"}
 // ## Contents (Part 2)
 //
-// - STL: templates, algorithms, generic programming
+// - Handling errors: exceptions and alternatives
 // - Template metaprogramming: type traits, SFINAE, etc.
 // - Modern template metaprogramming: concepts
 // - Concurrency
@@ -48,7 +49,6 @@
 
 // + [markdown] slideshow={"slide_type": "slide"}
 // # `https://github.com/hoelzl/AdvancedCpp`
-// -
 
 // + [markdown] slideshow={"slide_type": "subslide"}
 // ## Recommended Software Environment

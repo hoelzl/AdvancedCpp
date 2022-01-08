@@ -13,36 +13,35 @@
 //     name: xcpp17
 // ---
 
+// + [markdown] slideshow={"slide_type": "slide"}
 // # The Standard Template Library
 
 // + [markdown] slideshow={"slide_type": "slide"}
-// ## TTT: Board
+// ## STL Containers
 //
-// - Allow users to iterate over `Board` instances
-// - Make the class `Board` usable by STL algorithms
+// - Sequence containers
+//     - Elements are identified by their indices
+// - Associative containers
+//     - Elements are identified by their keys
+//     - Ordered
+//     - Unordered
+// - Container adaptors
+// - (Iterators)
+// - (Algorithms)
+// -
 
-// + [markdown] slideshow={"slide_type": "slide"}
+// ## Operations on (almost) all Containers
 //
-// ## Ranges: Iterable Types
+// (See [cppreference.com](https://en.cppreference.com/w/cpp/container) for a more detailed overview.)
 //
-// - It is often useful to make types iterable, in particular more utility-focused types
-// - For this types need to provide only `begin()` and `end()` member functions
-// - With this many STL algorithms can be applied to the type and it can be used in range-based for loops
-// - Often `begin()` and `end()` simply delegate to a member of the type
-// - In C++20 this is formalized by the [`std::ranges::range` concept](https://en.cppreference.com/w/cpp/ranges/range).
-
-// + [markdown] slideshow={"slide_type": "subslide"}
-// ### The `range` Concept
-//
-// ```c++
-// template <typename T>
-// concept range = requires(T& t) {
-//   std::ranges::begin(t); // equality-preserving for forward iterators
-//   std::ranges::end  (t);
-// };
-// ```
-//
-// The function [`std::ranges::begin()`](https://en.cppreference.com/w/cpp/ranges/begin) returns `t.begin()` if this is possible, similarly for [`std::ranges::end()`](https://en.cppreference.com/w/cpp/ranges/end). The value returned by `std::ranges::end()` is sometimes called a *sentinel*.
+// - Type aliases:
+//     - `iterator`
+//     - `const_iterator`
+//     - `size_type`
+//     - `difference_type`
+//     - `value_type`
+//     - `reference`
+//     - `const_reference`
 
 // + [markdown] slideshow={"slide_type": "slide"}
 // ## Type Aliases
@@ -82,6 +81,110 @@
 // MyWidgets ws{};
 // for (w : ws) { /* ... */ }
 // ```
+// -
+
+// ## Operations on (almost) all Containers (cont.)
+//
+// - Construction
+//     - default, copy, move
+//     - from iterator range \[`beg`, `end`)
+//     - from initializer list `{x, y, z, ...}`
+// - Iterators
+//     - `c.begin()`, `c.end()`
+//     - `c.cbegin()`, `c.cend()`
+
+// + slideshow={"slide_type": "subslide"}
+#import <vector>
+// -
+
+std::vector<int> v1{};
+v1
+
+std::vector<int> v2{1, 2, 3, 4};
+v2
+
+std::vector<int> v3{++(v2.begin()), v2.end()};
+v3
+
+// ## Operations on (almost) all Containers (cont.)
+//
+// - Assignment
+//     - from same type
+//     - from initializer list
+// - Swap
+//     - `c1.swap(c2)`
+//     - `swap(c1, c2)` (equivalent)
+// - Relational operators
+//     - `==`, `!=`
+//     - `<`, `<=`, `>`, `>=`
+
+// + slideshow={"slide_type": "subslide"}
+v1 = v3;
+v1
+// -
+
+v3 = {2, 4, 5, 6, 12};
+v3
+
+v1.swap(v2);
+v1
+
+v2
+
+// + slideshow={"slide_type": "subslide"}
+v1 >= v2
+// -
+
+v1 < v2
+
+swap(v1, v2);
+v1 < v2
+
+// ## Operations on (almost) all Containers (cont.)
+//
+// - Size
+//     - `c.empty()`
+//     - `c.size()`
+//     - `c.max_size()`
+// - Adding/removing elements (except `array`)
+//     - `c.clear(...)`
+//     - `c.insert(...)`
+//     - `c.emplace(...)`
+//     - `c.erase(...)`
+
+// + slideshow={"slide_type": "subslide"}
+v1.empty()
+// -
+
+v1.size()
+
+v1.max_size()
+
+v1.clear();
+v1.empty()    
+
+// + [markdown] slideshow={"slide_type": "slide"}
+// ## Ranges: Iterable Types
+//
+// - It is often useful to make types iterable, in particular more utility-focused types
+// - For this types need to provide only `begin()` and `end()` member functions
+//     - (We need to clarify how iterators work, though)
+// - With this many STL algorithms can be applied to the type and it can be used in range-based for loops
+// - Often `begin()` and `end()` simply delegate to a member of the type
+// - In C++20 this is formalized by the [`std::ranges::range` concept](https://en.cppreference.com/w/cpp/ranges/range).
+
+// + [markdown] slideshow={"slide_type": "subslide"}
+// ### The `range` Concept
+//
+// ```c++
+// template <typename T>
+// concept range = requires(T& t) {
+//   std::ranges::begin(t); // equality-preserving for forward iterators
+//   std::ranges::end  (t);
+// };
+// ```
+//
+// The function [`std::ranges::begin()`](https://en.cppreference.com/w/cpp/ranges/begin) returns `t.begin()` if this is possible, similarly for [`std::ranges::end()`](https://en.cppreference.com/w/cpp/ranges/end). The value returned by `std::ranges::end()` is sometimes called a *sentinel*.
 
 // + [markdown] slideshow={"slide_type": "slide"}
 // ## Range-based For Loop
@@ -132,6 +235,92 @@
 // Test your implementation using Catch2.
 //
 // *Note:* You can use the project `workshops/starter_kit_100/` to implement your solution.
+
+// + [markdown] slideshow={"slide_type": "slide"}
+// ## Overview of Container Types
+//
+// ### Sequence Containers 
+//
+// - `array`: the one trick pony
+//     - fixed size
+//     - fast random access
+//     - all memory can be stack-allocated
+
+// + slideshow={"slide_type": "subslide"}
+#include <array>
+#include <iostream>
+// -
+
+std::array<int, 5> a1{1, 2, 3};
+for (int i : a1)
+    std::cout << i << ", ";
+
+std::array<int, 5> a2{a1};
+std::array<int, 5> a3;
+a3 = a1;
+for (int i : a3)
+    std::cout << i << ", ";
+
+// + [markdown] slideshow={"slide_type": "slide"}
+// ### Sequence Containers 
+//
+// - `vector`: the workhorse
+//     - holds elements in contiguous memory
+//     - fast random access
+//     - insertion/deletion efficient only at back
+// - `deque`: the dark horse
+//     - holds elements in contiguous memory
+//     - fast random access
+//     - insertion/deletion efficient at front and back
+
+// + [markdown] slideshow={"slide_type": "slide"}
+// ### Sequence Containers
+//
+// - Lists: more one trick ponies
+//     - store their elements in linked nodes
+//     - no random access
+//     - insertion/deletion in middle efficient
+//
+// - `forward_list`
+//     - can iterate in only one direction
+//
+// - `list`
+//     - can iterate in both directions
+// -
+
+//
+//
+
+//
+
+// + [markdown] slideshow={"slide_type": "slide"}
+// ### Ordered Associative Containers
+//
+// - `set`
+// - `map`
+// - `multiset`
+// - `multimap`
+
+// + [markdown] slideshow={"slide_type": "slide"}
+// ### Unordered Associative Containers
+//
+// - `unordered_set`
+// - `unordered_map`
+// - `unordered_multiset`
+// - `unordered_multimap`
+
+// + [markdown] slideshow={"slide_type": "slide"}
+// ### Container Adaptors
+//
+// - `stack`
+// - `queue`
+// - `priority_queue`
+
+// + [markdown] slideshow={"slide_type": "slide"}
+// ## TTT: Board
+//
+// - Allow users to iterate over `Board` instances
+// - Make the class `Board` usable by STL algorithms
 
 // + [markdown] slideshow={"slide_type": "slide"}
 // ## STL Algorithms
