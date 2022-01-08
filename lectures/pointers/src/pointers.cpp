@@ -31,7 +31,7 @@ void show_pointer_operations()
     //int** ppia_end{&pia_end}; // Points to another pointer
     //std::cout << "Address of ppia_end:    " << address_of(ppia_end) << "\n";
 
-    int* p_null{nullptr}; // Valid, but may not be dereferenced.
+    [[maybe_unused]] int* p_null{nullptr}; // Valid, but may not be dereferenced.
 
     Eq eq{};
     long* parr{eq.arr};

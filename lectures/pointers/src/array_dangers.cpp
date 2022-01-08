@@ -3,6 +3,7 @@
 // ReSharper disable CppClangTidyCppcoreguidelinesProBoundsPointerArithmetic
 #include "array_dangers.hpp"
 
+#include <gsl/gsl>
 #include <iostream>
 #include <span>
 
@@ -17,7 +18,7 @@ auto constexpr show_explanation = true;
 
 void bad_clear_buffer(char buffer[10])
 {
-    for (auto i{0}; i < 10; ++i) {
+    for (gsl::index i{0}; i < 10; ++i) {
         buffer[i] = '\0';
     }
 }
@@ -26,6 +27,13 @@ void problematic_clear_buffer(char (&buffer)[10])
 {
     for (auto& c : buffer) {
         c = '\0';
+    }
+}
+
+void dangerous_clear_buffer(char* buffer, int size)
+{
+    for (gsl::index i{0}; i < size; ++i) {
+        buffer[i] = '\0';
     }
 }
 
@@ -64,7 +72,8 @@ void show_buffer(std::string_view prefix, std::span<char> buffer)
     std::cout << "]\n";
 }
 
-void show_calls_to_bad_clear_buffer() {
+void show_calls_to_bad_clear_buffer()
+{
     char buffer[10]{"123456789"};
     show_buffer("Before call to bad_clear_buffer():        ", buffer);
     bad_clear_buffer(buffer);
@@ -83,7 +92,8 @@ void show_calls_to_bad_clear_buffer() {
     // (Answer: no, but it will hopefully crash at runtime.)
 }
 
-void show_calls_to_problematic_clear_buffer() {
+void show_calls_to_problematic_clear_buffer()
+{
     char buffer[10]{"123456789"};
     show_buffer("Before call to problematic_clear_buffer():", buffer);
     problematic_clear_buffer(buffer);
@@ -95,7 +105,23 @@ void show_calls_to_problematic_clear_buffer() {
     // problematic_clear_buffer(large_buffer);
 }
 
-void show_calls_to_stl_style_clear_buffer() {
+void show_calls_to_dangerous_clear_buffer()
+{
+    char buffer[10]{"123456789"};
+    show_buffer("Before call to dangerous_clear_buffer():  ", buffer);
+    dangerous_clear_buffer(buffer, 10);
+    show_buffer("After call to dangerous_clear_buffer():   ", buffer);
+
+    // ReSharper disable once StringLiteralTypo
+    [[maybe_unused]] char large_buffer[16]{"123456789abcdef"};
+    // Compiler error
+    show_buffer("Before call to dangerous_clear_buffer():  ", large_buffer);
+    dangerous_clear_buffer(large_buffer, 16);
+    show_buffer("After call to dangerous_clear_buffer():   ", large_buffer);
+}
+
+void show_calls_to_stl_style_clear_buffer()
+{
     char buffer[10]{"123456789"};
     show_buffer("Before call to stl_style_clear_buffer():  ", buffer);
     stl_style_clear_buffer(std::begin(buffer), std::end(buffer));
@@ -108,7 +134,8 @@ void show_calls_to_stl_style_clear_buffer() {
     show_buffer("After call to stl_style_clear_buffer():   ", large_buffer);
 }
 
-void show_calls_to_clear_buffer_span_fixed() {
+void show_calls_to_clear_buffer_span_fixed()
+{
     char buffer[10]{"123456789"};
     show_buffer("Before call to clear_buffer_span_fixed(): ", buffer);
     clear_buffer_span_fixed(buffer);
@@ -120,7 +147,8 @@ void show_calls_to_clear_buffer_span_fixed() {
     // clear_buffer_span(large_buffer);
 }
 
-void show_calls_to_clear_buffer_span() {
+void show_calls_to_clear_buffer_span()
+{
     char buffer[10]{"123456789"};
     show_buffer("Before call to clear_buffer_span():       ", buffer);
     clear_buffer_span(buffer);
@@ -138,6 +166,8 @@ void show_bad_array_signatures()
     show_calls_to_bad_clear_buffer();
     std::cout << std::string(72, '-') << "\n";
     show_calls_to_problematic_clear_buffer();
+    std::cout << std::string(72, '-') << "\n";
+    show_calls_to_dangerous_clear_buffer();
     std::cout << std::string(72, '-') << "\n";
     show_calls_to_stl_style_clear_buffer();
     std::cout << std::string(72, '-') << "\n";
@@ -186,6 +216,13 @@ void show_bad_array_access()
 
         std::cout << "Size of Circle:        " << sizeof(Circle) << "\n";
         std::cout << "Size of Shape:         " << sizeof(Shape) << "\n\n";
+    }
+}
+
+void draw_many_shapes(const Shape* shapes, int num_shapes)
+{
+    for (gsl::index i{0}; i < num_shapes; ++i) {
+        shapes[i].draw();
     }
 }
 
