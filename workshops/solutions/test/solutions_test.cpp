@@ -1,8 +1,8 @@
-#include "solutions_100.hpp"
+#include "solutions.hpp"
 
 #include "catch2/catch_test_macros.hpp"
 
-using namespace sol_100;
+using namespace sol;
 
 TEST_CASE("IntRangeV0")
 {

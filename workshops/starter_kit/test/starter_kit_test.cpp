@@ -1,4 +1,4 @@
-#include "starter_kit_100.hpp"
+#include "starter_kit.hpp"
 
 #include "catch2/catch_test_macros.hpp"
 

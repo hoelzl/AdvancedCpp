@@ -1,10 +1,10 @@
 #pragma once
-#ifndef SOLUTIONS_100_HPP
-#define SOLUTIONS_100_HPP
+#ifndef SOLUTIONS_HPP
+#define SOLUTIONS_HPP
 #include <stdexcept>
 #include <vector>
 
-namespace sol_100 {
+namespace sol {
 
 class IntRangeV0
 {
@@ -32,6 +32,6 @@ void run_int_range_v0_example();
 
 int sum_from_to(int min, int max);
 
-} // namespace sol_100
+} // namespace sol
 
-#endif // SOLUTIONS_100_HPP
+#endif // SOLUTIONS_HPP

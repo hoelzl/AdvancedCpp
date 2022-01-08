@@ -234,7 +234,7 @@ v1.empty()
 //
 // Test your implementation using Catch2.
 //
-// *Note:* You can use the project `workshops/starter_kit_100/` to implement your solution.
+// *Note:* You can use the project `workshops/starter_kit/` to implement your solution.
 
 // + [markdown] slideshow={"slide_type": "slide"}
 // ## Overview of Container Types
