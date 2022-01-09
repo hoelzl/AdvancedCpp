@@ -15,6 +15,10 @@
 
 // # Memory Management and Resource Handling
 
+// + [markdown] slideshow={"slide_type": "slide"}
+// ## Using Tools: Address Sanitizer
+// -
+
 // ## References
 //
 // - A reference is an alias for an existing name
@@ -32,4 +36,6 @@
 // &w == &rw; // Always true
 // ```
 
-//
+// ## Using Tools: Address Sanitizer
+
+

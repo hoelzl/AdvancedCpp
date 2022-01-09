@@ -225,8 +225,8 @@ v1.empty()
 //
 // Define a class `IntRangeV0` with the following partial signature:
 // ```c++
-// class IntRange {
-//     IntRange(int min, int max);
+// class IntRangeV0 {
+//     IntRangeV0(int min, int max);
 //     /* ... */
 // }
 // ```
@@ -304,11 +304,15 @@ for (int i : a3)
 // - `c.emplace_back(...)`
 // - `c.pop_back()`
 // - `c.insert(...)`, `c.emplace(...)`
+// - ...
 //
 // Deque also has
 // - `c.push_front(elt)`
 // - `c.emplace_front(...)
 // - `c.pop_front()`
+// - ...
+//
+// See [the containers library overview](https://en.cppreference.com/w/cpp/container) for a summary and the [vector](https://en.cppreference.com/w/cpp/container/vector) and [deque](https://en.cppreference.com/w/cpp/container/deque) pages for details.
 
 // + [markdown] slideshow={"slide_type": "slide"}
 // ### Sequence Containers
@@ -349,31 +353,6 @@ for (int i : a3)
 // Test your implementation using Catch2.
 //
 // *Note:* You can use the project `workshops/starter_kit/` to implement your solution.
-
-// + [markdown] slideshow={"slide_type": "slide"}
-// ### Ordered Associative Containers
-//
-// - `set`: collection of unique elements
-// - `map`: dictionary mapping keys to values
-// - `multiset`: a set with non-unique members
-// - `multimap`: a dictionary with non-unique keys
-
-// + [markdown] slideshow={"slide_type": "slide"}
-// ### Unordered Associative Containers
-//
-// The unordered associative containers are similar to their ordered counterparts. They are often more efficient, but their members need to be hashable.
-//
-// - `unordered_set`
-// - `unordered_map`
-// - `unordered_multiset`
-// - `unordered_multimap`
-
-// + [markdown] slideshow={"slide_type": "slide"}
-// ### Container Adaptors
-//
-// - `stack`
-// - `queue`
-// - `priority_queue`
 
 // + [markdown] slideshow={"slide_type": "slide"}
 // ## Lambdas
@@ -617,7 +596,60 @@ auto make_bad_adder(int n) {
 call_fun(make_bad_adder(2), 3)
 
 // + [markdown] slideshow={"slide_type": "slide"}
-// ## Iterator Categories
+// ## Iterators
+//
+// - Provide indirect access to objects (typically objects in containers)
+// - May be valid or invalid
+//     - Like pointers: valid iterators denote element or position one past the end
+//     - Some container operations *invalidate* some or all iterators for that container!
+// - Iterators support the following operations:
+//     - `++it` and `it++`
+//     - Either reading or writing through `*it`: `x = *it` or `*it = x`
+// - Many iterators support more operations; which ones is determined by their *iterator category*.
+//
+// (See [cppreference.com](https://en.cppreference.com/w/cpp/iterator) for more details.)
+// -
+
+// ## Iterator categories
+//
+// Since C++20 the following concepts define categories of iterators:
+//
+// - `input_or_output_iterator`: `*it`, `++it`, `it++`
+// - `output_iterator`: value can be written to `*it`
+// - `input_iterator`: value can be read from `*it`
+// - `forward_iterator`: `input_iterator` that is `incrementable` (i.e., supports multi-pass algorithms) and where any two iterators from the same range can be compared
+// - `bidirectional_iterator`: `forward_iterator` that can also be moved backward
+// - `random_access_iterator`: `bidirectional_iterator` with support for constant-time movement (via `+`, `-`, etc.)
+// - `contiguous_iterator`: `random_access_iterator` that guarantees that the denoted elements are stored contiguously in memory
+//
+// Requirements on `==` are defined by the `sentinel_for` concept.
+
+// ## Example: Implementation of `RepeatedVectorWrapper`:
+//
+// We define a class `RepeatedVectorWrapper` that iterates multiple times over the same vector:
+
+// ## Mini Workshop:  Improved `IntRange`
+//
+// Improve upon the previous implementation of `IntRange`:
+//
+// Define a class `IntRange` with the following partial signature:
+//
+// ```c++
+// class IntRange {
+//     IntRange(int min, int max);
+//     /* ... */
+// }
+// ```
+// such that
+// ```c++
+// for (const int i : IntRangeV0{10, 20}) {
+//     std::cout << i << "\n";
+// }
+// ```
+// prints the numbers 10 to 20 on `std::cout`. In contrast to the previous solution, don't store a vector with all numbers, but keep the state in custom iterators.
+//
+// Test your implementation using Catch2.
+//
 
 // + [markdown] slideshow={"slide_type": "slide"}
 // ## STL Algorithms
@@ -642,6 +674,15 @@ call_fun(make_bad_adder(2), 3)
 // - `find`, `find_if`: finds the first element satisfying specific criteria
 // - `adjacent_find`: find first two equivalent adjacent items
 // - `search`: search for a range of elements
+
+// + slideshow={"slide_type": "subslide"}
+#include <algorithm>
+#include <vector>
+std::vector<int> v{10, 11, 12, 13, 14};
+std::all_of(v.begin(), v.end(), [](int i){ return i > 5; })
+// -
+
+std::all_of(v.begin(), v.end(), [](int i){return i > 10; })
 
 // + [markdown] slideshow={"slide_type": "subslide"}
 // #### Modifying Algorithms
@@ -669,7 +710,7 @@ call_fun(make_bad_adder(2), 3)
 // + [markdown] slideshow={"slide_type": "subslide"}
 // ### Mini-Workshop: Sum of Integers
 //
-// Write a function `int sum_from_to(int min, int max)` that computes the sum of all numbers from `min` to `max` (inclusive). Use an `IntRangeV0` and an appropriate algorithm from the STL to perform the task.
+// Write a function `int sum_from_to(int min, int max)` that computes the sum of all numbers from `min` to `max` (inclusive). Use an `IntRange` and an appropriate algorithm from the STL to perform the task.
 
 // + [markdown] slideshow={"slide_type": "slide"}
 // ## TTT: Extend the Board
@@ -679,19 +720,53 @@ call_fun(make_bad_adder(2), 3)
 // - Write tests that test the new functionality
 
 // + [markdown] slideshow={"slide_type": "slide"}
-// ## Using Tools: Address Sanitizer
-
-// + [markdown] slideshow={"slide_type": "slide"}
-// ## Static Variables
+// ### Ordered Associative Containers
+//
+// - `set`: ordered collection of unique elements
+// - `map`: dictionary mapping keys to values
+// - `multiset`: a set with non-unique members
+// - `multimap`: a dictionary with non-unique keys
 // -
 
+// ### Mini-Workshop: Unique Integers
 //
+// Write a function `void remove_duplicates(std::vector<int>& v)` that removes all duplicates in `v`.
+//
+// For example if `v` is `{1, 3, 2, 5, 2, 2, 1}` the result should be `{1, 2, 3, 5}` (with the numbers possibly in a different order).
+//
+// Write a function `std::set<int> without_duplicates(const std::vector<int>& v)` that returns the unique integers in `v` as a set (without modifying `v`).
+//
+// Use STL algorithms to implement these functions.
 
 // + [markdown] slideshow={"slide_type": "slide"}
 // ## TTT: Valid Moves
 //
 // - Define a member function `Board::is_move_valid(Position pos)` that checks whether `pos` is empty
 // - Define a member function `Board::valid_moves()` that returns a set of all valid moves.
+
+// + [markdown] slideshow={"slide_type": "slide"}
+// ### Unordered Associative Containers
+//
+// The unordered associative containers are similar to their ordered counterparts. They are often more efficient, but their members need to be hashable.
+//
+// - `unordered_set`
+// - `unordered_map`
+// - `unordered_multiset`
+// - `unordered_multimap`
+
+// + [markdown] slideshow={"slide_type": "slide"}
+// ### Container Adaptors
+//
+// These classes are wrappers that provide a different interface but use another container for their implementation
+//
+// - `stack`: A collection that returns elements in LIFO manner
+// - `queue`: A collection that returns elements in FIFO manner
+// - `priority_queue`: A collection that returns elements in priority order
+
+// + [markdown] slideshow={"slide_type": "slide"}
+// ## Static Variables
+//
+// Function-local static variables are initialized the first time control flow passes through them. This is true even in the presence of multiple threads.
 
 // + [markdown] slideshow={"slide_type": "slide"}
 // ## TTT: PlayerColor Class
@@ -703,21 +778,95 @@ call_fun(make_bad_adder(2), 3)
 // - What happens if you try to write a player color to an output stream?
 
 // + [markdown] slideshow={"slide_type": "slide"}
-// ## User-defined Operators
-
-// + [markdown] slideshow={"slide_type": "slide"}
 // ## Argument Dependent Lookup
+//
+// Argument-dependent lookup (ADL) means that unqualified names *in function calls* may also refer to names in namespaces other than the current one. This makes it possible to use operators not defined in the current namespace. It has important consequences for overload resolution.
+//
+// ```c++
+// #include <iostream>
+// int main()
+// {
+//     std::cout << "Foo!\n";  // No operator<< in global namespace. std::cout is in
+//                             // namespace std, therefore std::operator<<(...) is found.
+//     
+//     operator<<(std::cout, "Test\n"); // Same, using function call notation
+//  
+//     std::cout << endl;      // ERROR: 'endl' is not declared in this namespace.
+//                             // Not a function call to `endl`, so ADL does not apply.
+//  
+//     endl(std::cout);        // OK: function call to endl, argument in std.
+//  
+//     (endl)(std::cout);      // ERROR: '(endl)' is not a function call expression.
+// }
+// ```
+
+// + [markdown] slideshow={"slide_type": "subslide"}
+// ### ADL Details (Very Approximately)
+//
+// - For function call expressions (only) the following namespaces are considered for the lookup set
+//     - for arguments of class type: the class and all base classes, the enclosing namespaces of these classes
+//     - for class template specializations: template parameters
+//     - for enumeration types the innermost enclosing namespace
+//     - for pointers, the base type is examined,
+//     - ...
+//
+// See [cppreference.com](https://en.cppreference.com/w/cpp/language/adl) for details.
+
+// + [markdown] slideshow={"slide_type": "subslide"}
+// ### Consequences of ADL
+//
+// - Operators and unqualified functions can be called in namespaces in which they are not a member
+// - Non-member functions and non-member operators of classes defined in the same namespace as a class are part of its public interface
+// - ADL can find a friend function that is defined entirely in a class, even if it has no declaration outside the class. This is the "hidden friend" pattern that is sometimes used for operators.
+// - ADL is the reason why `swap()` is often used in the form
+// ```c++
+// using std::swap;
+// swap(obj1, obj2);
+// ```
+// (Calling `std::swap()` would not find user-defined overloads in the namespaces of `obj1` and `obj2`, simply calling `swap()` would potentially not find `std::swap()`.
 
 // + [markdown] slideshow={"slide_type": "slide"}
-// ## Overload Resolution
+// ## User-defined Operators
+//
+// See the hidden friend pattern from the previous slide.
+//
+// See `lectures/operators`.
 
 // + [markdown] slideshow={"slide_type": "slide"}
-// ## Exceptions and Error Handling
+// ## Function Call Processing and Overload Resolution
+//
+// Overload resolution is performed for function calls (that are not performed through pointers):
+//
+// - Name lookup and building of an overload set (all possible function definitions for that name)
+// - Adjustment of the overload set (e.g., template argument deduction and substitution $\to$ SFINAE)
+// - Candidates that don't match are discarded: *viable function candidates*
+// - Overload resolution is performed
+//     - If a single *best candidate* is found it is selected
+//     - If multiple candidates are equally good the call is *ambiguous*
+// - The selected candidate is tested for applicability (it might, e.g., be inaccessible)
+// -
+
+// ### Overload Resolution (strongly simplified)
+//
+// Each argument is ranked for each candidate and classified as follows:
+// 1. Perfect match
+// 2. Match with minor adjustments (decay, changing `int*` into `const int*`)
+// 3. Promotion of small integral types to larger ones
+// 4. Standard conversions (e.g., `int` to `double`)
+// 5. User-defined conversions (including those from the standard library, such as `char*` to `std::string`
+// 6. Match with varargs argumen (`...`)
+//
+// To be the best candidate, a function must be *no worse* than all other candidates for *all arguments* and *strictly better* than each other candidate for *at least one argument*.
 
 // + [markdown] slideshow={"slide_type": "slide"}
 // ## TTT: Perform a move
 //
 // - Implement a method `Board::move(PlayerColor, Position)`
+//
+// -
+
+// ## Exceptions and Error Handling
+//
 //
 
 // + [markdown] slideshow={"slide_type": "slide"}
