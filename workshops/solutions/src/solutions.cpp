@@ -12,6 +12,16 @@ void run_int_range_v0_example()
     }
 }
 
+std::function<int(int, int)> get_op_impl_1(Op op)
+{
+    switch (op) {
+    case Op::add: return [](int m, int n) { return m + n; };
+    case Op::mul: return [](int m, int n) { return m * n; };
+    }
+    throw std::runtime_error("Unimplemented operation found.");
+}
+
+
 int sum_from_to(int min, int max)
 {
     auto ir{IntRangeV0{min, max}};

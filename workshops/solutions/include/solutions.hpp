@@ -3,6 +3,7 @@
 #define SOLUTIONS_HPP
 #include <stdexcept>
 #include <vector>
+#include <functional>
 
 namespace sol {
 
@@ -29,6 +30,21 @@ public:
 };
 
 void run_int_range_v0_example();
+
+enum class Op { add, mul };
+
+std::function<int(int, int)> get_op_impl_1(Op op);
+
+inline auto get_op_impl_2(Op op)
+{
+    return [op](int m, int n) {
+        switch (op) {
+        case Op::add: return m + n;
+        case Op::mul: return m * n;
+        }
+        throw std::runtime_error("Unimplemented operation found.");
+    };
+}
 
 int sum_from_to(int min, int max);
 
