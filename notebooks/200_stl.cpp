@@ -376,6 +376,250 @@ for (int i : a3)
 // - `priority_queue`
 
 // + [markdown] slideshow={"slide_type": "slide"}
+// ## Lambdas
+//
+// We can overload `operator()` to create *functors*, i.e., objects that can be called:
+// -
+
+struct Functor {
+    int operator()(int i) { return i * i; }
+};
+Functor f{};
+f(3)
+
+#include <type_traits>
+std::is_class_v<decltype(f)>
+
+int square(int i) { return i * i; }
+std::is_class_v<decltype(square)>
+
+std::is_object_v<decltype(square)>
+
+std::is_object_v<decltype(f)>
+
+typeid(f).name()
+
+// + [markdown] slideshow={"slide_type": "subslide"}
+// A *lambda expression* is a shorthand notation for a functor instance. The values of lambda expressions are called *closures* or (informally) *lambdas*.
+//
+// A lambda has an (anonymous) type defined by the compiler, called its *closure type*.
+
+// + slideshow={"slide_type": "-"}
+auto lambda = [](int i){ return i * i; };
+lambda(3)
+// -
+
+#include <type_traits>
+std::is_class_v<decltype(lambda)>
+
+typeid(lambda).name()
+
+lambda.operator()(12)
+
+// + [markdown] slideshow={"slide_type": "subslide"}
+// ### Non-top-level Lambdas
+//
+// In contrast to functions, lambdas can be defined inside other functions:
+// -
+
+int my_function() {
+    auto lambda =[]() { return 1; };
+    return lambda() + 1;
+}
+my_function() 
+
+// + slideshow={"slide_type": "subslide"}
+#include <functional>
+#include <string>
+std::function<std::string()> pick_function(int i) {
+    if (i > 100) {
+        return [] { return "You picked a large number."; };
+    }
+    else {
+        return [] { return "You picked a small number."; };
+    }
+}
+auto my_fun{pick_function(10)};
+my_fun()
+// -
+
+pick_function(1000)()
+
+// + [markdown] slideshow={"slide_type": "slide"}
+// ### Generic Lambdas
+//
+// Lambdas may have parameters declared with type specifier `auto`. The types of these parameters is deduced according to the rules for template argument deduction.
+//
+// Such a lambda is called a *generic lambda*.
+// -
+
+// Cling dies if I try to do anything with generic lambdas on the top-level
+template <typename T>
+T call_generic_lambda(T arg1) {
+    auto f = [](auto arg2) { return arg2 + arg2; };
+    return f(arg1);
+}
+
+call_generic_lambda(123)
+
+#include <string>
+call_generic_lambda(std::string{"foo"})
+
+// + [markdown] slideshow={"slide_type": "subslide"}
+// A generic lambda results in a closure type with generic call operator, *not* a generic closure type:
+//
+// ```c++
+// [](auto arg) { return arg + arg; }
+// ```
+// is equivalent to
+
+// + slideshow={"slide_type": "-"}
+struct MyClosure {
+    template <typename T>
+    T operator()(T arg) {
+        return arg + arg;
+    }
+}
+// -
+
+MyClosure{}(123)
+
+MyClosure{}(std::string{"foo"})
+
+// + slideshow={"slide_type": "subslide"}
+#include <utility>
+template <typename T1, typename T2>
+std::pair<T1, T2> call_generic_lambdas(T1 arg1, T2 arg2) {
+    auto f = [](auto arg) { return arg + arg; };
+    return std::pair<T1, T2>(f(arg1), f(arg2));
+}
+// -
+
+call_generic_lambdas(123, std::string{"foo"}).first
+
+call_generic_lambdas(123, std::string{"foo"}).second
+
+// + [markdown] slideshow={"slide_type": "slide"}
+// ## Mini Workshop:  `get_op_impl`
+//
+// Given the following enumeration:
+// ```c++
+// enum class Op { add, mul };
+// ```
+//
+// write a function `get_op_impl(Op op)` that returns a callable with signature `int(int, int)` that can compute the following result:
+//
+// - $m + n$ if `op` is `add`
+// - $m * n$ if `op` is `mul`
+
+// + [markdown] slideshow={"slide_type": "subslide"}
+// (Load `ce_get_op_impl.cpp` into [Compiler Explorer](https://godbolt.org/) or go to [this link](https://godbolt.org/z/rjzKhTYPY) to get the Compiler Explorer page for discussing this solution).
+// -
+
+// ## Type Erasure
+//
+// `std::function` is an example for *type erasure*, a way to treat objects with different types uniformly, as long as they provide a (partially) similar interface.
+//
+// (It can lead to results similar to "duck typing" in dynamic languages.)
+//
+// See `examples/stl/type_erasure.hpp`.
+
+// + [markdown] slideshow={"slide_type": "slide"}
+// ## Lambdas: Captures
+//
+// If lambdas are defined inside other function, we often want to access the local variable of the function inside the body of the lambda. This can be done by specifying which variables should be accessible inside the square brackets.
+//
+// (The square brackets are the *capture list*):
+// -
+
+int capture_1() {
+    int i = 10;
+    auto lambda = [i]{ return i; };
+    i = 20;
+    return lambda();
+}
+capture_1()
+
+int capture_manually() {
+    int i = 10;
+    struct { int ci; int operator()() { return ci; }} lambda{i};
+    i = 20;
+    return lambda();
+}
+capture_manually()
+
+// + [markdown] slideshow={"slide_type": "subslide"}
+// We can capture by value (as above) or by reference, we can also capture all local values by value or reference:
+// -
+
+int capture_2() {
+    int i = 10;
+    auto lambda = [&i]{ return i; };
+    i = 20;
+    return lambda();
+}
+capture_2()
+
+// + slideshow={"slide_type": "subslide"}
+int capture_3() {
+    int i = 10, j = 20;
+    auto lambda = [=]{ return i + j; };
+    i = 100;
+    j = 200;
+    return lambda();
+}
+capture_3()
+// -
+
+int capture_4() {
+    int i = 10, j = 20;
+    auto lambda = [&]{ return i + j; };
+    i = 100;
+    j = 200;
+    return lambda();
+}
+capture_4()
+
+// + [markdown] slideshow={"slide_type": "subslide"}
+// We can combine these features to "create functions during runtime":
+// -
+
+auto make_adder(int n) {
+    return [n](int m) { return m + n; };
+}
+
+// Need to wrap this in a function since Cling does not handle top-level captures.
+int test_make_adder() {
+    auto adder{make_adder(5)};
+    return adder(3);
+}
+test_make_adder()
+
+// + slideshow={"slide_type": "subslide"}
+template <typename T>
+int call_fun(T fun, int arg) {
+    return fun(arg);
+}
+// -
+
+call_fun([](int n) { return n + 1; }, 3)
+
+call_fun(make_adder(2), 3)
+
+// + [markdown] slideshow={"slide_type": "subslide"}
+// #### Danger! Reference Captures may Dangle!
+// -
+
+auto make_bad_adder(int n) {
+    return [&n](int m) { return m + n; };
+}
+//  Uh, oh.
+call_fun(make_bad_adder(2), 3)
+
+// + [markdown] slideshow={"slide_type": "slide"}
+// ## Iterator Categories
+
+// + [markdown] slideshow={"slide_type": "slide"}
 // ## STL Algorithms
 //
 // The STL provides many generic algorithms that can be used with any type that satisfies the `range` concept. 
@@ -405,60 +649,27 @@ for (int i : a3)
 // - `copy`, `copy_if`: copies a range
 // - `copy_backward`: copies in backward order
 // - `fill`: assigns a fixed value to all elements
+// - `transform`: applies a function to a range, stores the result in a destination range
+// - `generate`: repeatedly calls a function and stores the results in a range
+// - `remove`, `remove_if`: "removes" elements satisfying specific criteria
+// - `remove_copy`, `remove_copy_if`: copies elements not satisfying specific criteria
+// - `replace[_copy][_if]`: replaces elements
+// - `swap_ranges`: swaps two ranges
+// - `shuffle` (deprecated), `random_shuffle`: shuffles a range
+// - `sample`: selects random elements from a range
+// - `unique`, `unique_copy`: "removes" consecutive copies of elements
+// -
+
+// #### Non-Range Algorithms
+//
+// - `swap`: swaps the values of two objects
+// - `max`, `min`, `minmax`: extrema of multiple values
+// - `clamp`: clamps a value between boundaries
 
 // + [markdown] slideshow={"slide_type": "subslide"}
 // ### Mini-Workshop: Sum of Integers
 //
 // Write a function `int sum_from_to(int min, int max)` that computes the sum of all numbers from `min` to `max` (inclusive). Use an `IntRangeV0` and an appropriate algorithm from the STL to perform the task.
-
-// + [markdown] slideshow={"slide_type": "slide"}
-// ## Lambdas
-//
-// We can overload `operator()` to create *functors*, i.e., objects that can be called:
-// -
-
-struct Functor {
-    int operator()(int i) { return i * i; }
-};
-Functor f{};
-f(3)
-
-typeid(f).name()
-
-// + [markdown] slideshow={"slide_type": "subslide"}
-// A *lambda* is a shorthand notation for a functor (of an anonymous type defined by the compiler).
-
-// + slideshow={"slide_type": "-"}
-auto lambda = [](int i){ return i * i; };
-lambda(3)
-// -
-
-typeid(lambda).name()
-
-// + [markdown] slideshow={"slide_type": "slide"}
-// ## Lambdas: Captures
-//
-// The square brackets are the *capture list*:
-// -
-
-int capture_1() {
-    int i = 10;
-    auto lambda = [i](){ return i; };
-    i = 20;
-    return lambda();
-}
-capture_1()
-
-int capture_2() {
-    int i = 10;
-    auto lambda = [&i](){ return i; };
-    i = 20;
-    return lambda();
-}
-capture_2()
-
-// + [markdown] slideshow={"slide_type": "slide"}
-// ## Iterator Categories
 
 // + [markdown] slideshow={"slide_type": "slide"}
 // ## TTT: Extend the Board

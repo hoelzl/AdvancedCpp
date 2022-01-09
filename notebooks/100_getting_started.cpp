@@ -112,7 +112,7 @@
 //     - Therefore, number of elements stays part of the type
 //     - Invariant for polymorphic types
 //     
-// (*) In cases where you need a fixed-size storage
+// (*) In cases where you need a fixed-size storage. If you need variable size storage `std::vector` is almost always superior to both.
 
 // + [markdown] slideshow={"slide_type": "slide"}
 // ## The [C++ Core Guidelines](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines)
@@ -240,13 +240,18 @@ plus1(ia)
 auto pi2{ia}; // pi2 is an `int*` not an `int[]`
 
 // + slideshow={"slide_type": "subslide"}
+#include <type_traits>
 std::is_same_v<decltype(pi2), int[]>
 // -
 
 std::is_same_v<decltype(pi2), int*>
 
+std::is_same_v<std::decay_t<int[]>, int*>
+
 // + slideshow={"slide_type": "-"}
 #include <type_traits>
+int ia[]{1, 2, 3, 4, 5};
+auto pi2{ia};
 std::is_same_v<decltype(pi2), decltype(ia)>
 // -
 
