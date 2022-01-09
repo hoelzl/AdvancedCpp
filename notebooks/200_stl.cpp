@@ -867,7 +867,7 @@ std::all_of(v.begin(), v.end(), [](int i){return i > 10; })
 
 // ## Exceptions and Error Handling
 //
-//
+// See `lectures/error_handling`. In particular `error-handling.md` in that folder contains a rather extensive discussion of various error-handling strategies.
 
 // + [markdown] slideshow={"slide_type": "slide"}
 // ## TTT: Winning Configurations
@@ -885,8 +885,3 @@ std::all_of(v.begin(), v.end(), [](int i){return i > 10; })
 // - `to_char(FieldValue)` that returns `' '`, `'x'`, and `'o'` for an empty, black or white field, respectively
 // - `to_string(Board board, int prefix_len = 0)` that returns a representation of the board with `prefix_len` spaces indentation.
 //
-// -
-
-
-
-

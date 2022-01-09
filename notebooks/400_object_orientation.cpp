@@ -15,9 +15,7 @@
 
 // # Object Orientated Programming
 
-// + [markdown] slideshow={"slide_type": "slide"}
-// ## Exceptions and Error Handling
-//
-// -
+// See `lectures/memory_and_polymorphism`, projects `pam_simple` (short revision) and `pam_polymorphism`
+
 
 

@@ -13,15 +13,14 @@
 //     name: xcpp17
 // ---
 
+// + [markdown] slideshow={"slide_type": "slide"}
 // # Memory Management and Resource Handling
 
 // + [markdown] slideshow={"slide_type": "slide"}
-// ## Using Tools: Address Sanitizer
-// -
-
 // ## References
 //
 // - A reference is an alias for an existing name
+// - There exists lvalue (`&`) and rvalue (`&&`) references
 // - References are not objects themselves
 //     - They denote the object with which they were initialized
 // - Using a reference is the same as using the original object
@@ -35,6 +34,21 @@
 // ...
 // &w == &rw; // Always true
 // ```
+
+// + slideshow={"slide_type": "subslide"}
+#import <type_traits>
+std::is_object_v<int&>
+// -
+
+std::is_object_v<int&&>
+
+std::is_object_v<int*>
+
+// + [markdown] slideshow={"slide_type": "slide"}
+// ## Construction, Destruction, Copy, and Move
+//
+// See `lectures/memory_and_polymorphism`, in particular projects `pam_simple`, `pam_memory`, and `pam_copy_move`.
+// -
 
 // ## Using Tools: Address Sanitizer
 
