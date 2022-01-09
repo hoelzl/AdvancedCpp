@@ -1,5 +1,6 @@
 add_subdirectory("compile_time_eval")
 add_subdirectory("constexpr")
+add_subdirectory("error_handling")
 # add_subdirectory("imgui_example")
 add_subdirectory("memory_and_polymorphism")
 add_subdirectory("operators")
