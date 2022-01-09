@@ -20,8 +20,8 @@ public:
 
     Dice(const Dice& other) = default;
     Dice(Dice&& other) noexcept = default;
-    Dice& operator=(const Dice& other) = default;
-    Dice& operator=(Dice&& other) noexcept = default;
+    Dice& operator=(const Dice& other) = delete;
+    Dice& operator=(Dice&& other) noexcept = delete;
     virtual ~Dice() = default;
 
     [[nodiscard]] virtual int roll() = 0;
