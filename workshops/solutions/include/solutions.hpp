@@ -46,6 +46,10 @@ inline auto get_op_impl_2(Op op)
     };
 }
 
+using BinaryIntFunPtr = int (*)(int, int);
+
+BinaryIntFunPtr get_op_impl_3(Op op);
+
 int sum_from_to(int min, int max);
 
 } // namespace sol

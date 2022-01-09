@@ -42,6 +42,12 @@ TEST_CASE("get_op_impl_2()")
     CHECK(get_op_impl_2(Op::mul)(2, 3) == 6);
 }
 
+TEST_CASE("get_op_impl_3()")
+{
+    CHECK(get_op_impl_3(Op::add)(2, 3) == 5);
+    CHECK(get_op_impl_3(Op::mul)(2, 3) == 6);
+}
+
 TEST_CASE("sum_from_to()")
 {
     SECTION("Non-empty ranges")

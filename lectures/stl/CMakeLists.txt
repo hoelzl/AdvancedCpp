@@ -5,11 +5,11 @@ add_library("stl_lib")
 
 target_sources("stl_lib"
     PUBLIC
-    "include/stl.hpp" "include/type_erasure.hpp")
+    "include/stl.hpp" "include/type_erasure.hpp" "include/repeated_vector_wrapper.hpp")
 
 target_sources("stl_lib"
     PRIVATE
-    "src/stl.cpp")
+    "src/stl.cpp" "src/repeated_vector_wrapper.cpp")
 
 target_include_directories("stl_lib"
     PUBLIC 
