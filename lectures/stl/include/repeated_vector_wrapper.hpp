@@ -43,7 +43,7 @@ public:
 
         RepeatedVectorIterator operator++(int)
         {
-            auto old = *this;
+            auto old{*this};
             operator++();
             return old;
         }

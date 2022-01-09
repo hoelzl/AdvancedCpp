@@ -4,32 +4,9 @@
 #include <stdexcept>
 #include <vector>
 #include <functional>
+#include <set>
 
 namespace sol {
-
-class IntRangeV0
-{
-private:
-    std::vector<int> numbers_{};
-
-public:
-    using iterator = decltype(numbers_)::iterator;
-
-    IntRangeV0(int min, int max)
-    {
-        if (min > max) {
-            throw std::invalid_argument("min must be <= max.");
-        }
-        for (int i{min}; i <= max; ++i) {
-            numbers_.push_back(i);
-        }
-    }
-
-    iterator begin() { return numbers_.begin(); }
-    iterator end() { return numbers_.end(); }
-};
-
-void run_int_range_v0_example();
 
 enum class Op { add, mul };
 
@@ -51,6 +28,10 @@ using BinaryIntFunPtr = int (*)(int, int);
 BinaryIntFunPtr get_op_impl_3(Op op);
 
 int sum_from_to(int min, int max);
+
+void remove_duplicates(std::vector<int>& v);
+
+std::set<int> without_duplicates(const std::vector<int>& v);
 
 } // namespace sol
 

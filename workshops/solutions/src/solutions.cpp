@@ -1,16 +1,12 @@
 #include "solutions.hpp"
 
-#include <iostream>
+#include <algorithm>
+#include <iterator>
 #include <numeric>
 
-namespace sol {
+#include "int_range.hpp"
 
-void run_int_range_v0_example()
-{
-    for (const int i : IntRangeV0{10, 20}) {
-        std::cout << i << "\n";
-    }
-}
+namespace sol {
 
 std::function<int(int, int)> get_op_impl_1(Op op)
 {
@@ -35,8 +31,22 @@ BinaryIntFunPtr get_op_impl_3(Op op)
 
 int sum_from_to(int min, int max)
 {
-    auto ir{IntRangeV0{min, max}};
+    auto ir{stl::IntRangeV0{min, max}};
     return std::accumulate(ir.begin(), ir.end(), 0);
+}
+
+void remove_duplicates(std::vector<int>& v)
+{
+    std::ranges::sort(v);
+    auto unique_range{std::ranges::unique(v)};
+    v.erase(unique_range.begin(), unique_range.end());
+}
+
+std::set<int> without_duplicates(const std::vector<int>& v)
+{
+    std::set<int> result{};
+    std::ranges::copy(v, std::inserter(result, result.begin()));
+    return result;
 }
 
 } // namespace sol

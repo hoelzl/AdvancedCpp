@@ -4,32 +4,6 @@
 
 using namespace sol;
 
-TEST_CASE("IntRangeV0")
-{
-    SECTION("min < max")
-    {
-        std::vector<int> result{};
-        for (int i : IntRangeV0{10, 14}) {
-            result.push_back(i);
-        }
-        CHECK(result == std::vector<int>{10, 11, 12, 13, 14});
-    }
-
-    SECTION("min == max")
-    {
-        std::vector<int> result{};
-        for (int i : IntRangeV0{5, 5}) {
-            result.push_back(i);
-        }
-        CHECK(result == std::vector<int>{5});
-    }
-
-    SECTION("min > max")
-    {
-        CHECK_THROWS(IntRangeV0{5, 4});
-    }
-}
-
 TEST_CASE("get_op_impl_1()")
 {
     CHECK(get_op_impl_1(Op::add)(2, 3) == 5);
@@ -57,4 +31,18 @@ TEST_CASE("sum_from_to()")
     }
 
     SECTION("Empty range") { CHECK_THROWS(sum_from_to(1, 0) == 0); }
+}
+
+TEST_CASE("remove_duplicates()")
+{
+    std::vector<int> v{1, 3, 2, 5, 2, 2, 1};
+    remove_duplicates(v);
+    CHECK(v == std::vector{1, 2, 3, 5});
+}
+
+TEST_CASE("without_duplicates()")
+{
+    const std::vector<int> v{1, 3, 2, 5, 2, 2, 1};
+    std::set<int> result = without_duplicates(v);
+    CHECK(result == std::set{1, 2, 3, 5});
 }
