@@ -39,7 +39,7 @@ std::unique_ptr<double[]> create_array(int size)
         try {
             result[i] = round(compute_sqrt(i - delta) * compute_sqrt(i - delta));
         }
-        catch (std::out_of_range& x) {
+        catch (std::out_of_range&) {
             result[i] = round(compute_sqrt(delta - i) * compute_sqrt(delta - i));
         }
     }
