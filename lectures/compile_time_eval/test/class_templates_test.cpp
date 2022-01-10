@@ -211,6 +211,60 @@ TEST_CASE("StackV2 (deduction guidelines)")
 }
 
 
+TEST_CASE("StackV3<int>")
+{
+    StackV3<int> stack{};
+
+    SECTION("Stack operations.")
+    {
+        CHECK(stack.empty());
+        CHECK_THROWS_AS(stack.pop(), std::logic_error);
+        CHECK_THROWS_AS(stack.top(), std::logic_error);
+        CHECK_NOTHROW(stack.push(123));
+        CHECK_FALSE(stack.empty());
+        CHECK(stack.top() == 123);
+        CHECK_NOTHROW(stack.pop());
+        CHECK(stack.empty());
+    }
+}
+
+
+TEST_CASE("StackV3<int, std::deque<int>>")
+{
+    StackV3<int, std::deque> stack{};
+
+    SECTION("Stack operations.")
+    {
+        CHECK(stack.empty());
+        CHECK_THROWS_AS(stack.pop(), std::logic_error);
+        CHECK_THROWS_AS(stack.top(), std::logic_error);
+        CHECK_NOTHROW(stack.push(123));
+        CHECK_FALSE(stack.empty());
+        CHECK(stack.top() == 123);
+        CHECK_NOTHROW(stack.pop());
+        CHECK(stack.empty());
+    }
+}
+
+
+TEST_CASE("StackV3 (deduced)")
+{
+    StackV3 stack{1};
+
+    SECTION("Stack operations.")
+    {
+        CHECK_FALSE(stack.empty());
+        CHECK(stack.top() == 1);
+        CHECK_NOTHROW(stack.pop());
+        CHECK_NOTHROW(stack.push(123));
+        CHECK_FALSE(stack.empty());
+        CHECK(stack.top() == 123);
+        CHECK_NOTHROW(stack.pop());
+        CHECK(stack.empty());
+    }
+}
+
+
 TEST_CASE("Widget V1")
 {
     std::ostringstream os{};

@@ -265,7 +265,59 @@ bool StackV2<T, Elems>::empty() const
     return elems_.empty();
 }
 
-StackV2(const char*) -> StackV2<std::string, std::vector<std::string>>;
+StackV2(const char*)->StackV2<std::string, std::vector<std::string>>;
+
+
+///////////////////////////////////////////////////////////////
+
+// Template template version of the stack, to avoid specifying the element type
+// twice
+
+template <typename T, template <typename> typename Elems = std::vector>
+class StackV3
+{
+public:
+    StackV3() = default;
+    explicit StackV3(const T& elem) : elems_{{elem}} {}
+
+    void push(const T& elem);
+    void pop();
+    [[nodiscard]] const T& top() const;
+    [[nodiscard]] bool empty() const;
+
+private:
+    Elems<T> elems_{};
+};
+
+template <typename T, template <typename> typename Elems>
+void StackV3<T, Elems>::push(const T& elem)
+{
+    elems_.push_back(elem);
+}
+
+template <typename T, template <typename> typename Elems>
+void StackV3<T, Elems>::pop()
+{
+    if (elems_.empty()) {
+        throw std::logic_error{"Cannot get pop an empty stack."};
+    }
+    elems_.pop_back();
+}
+
+template <typename T, template <typename> typename Elems>
+const T& StackV3<T, Elems>::top() const
+{
+    if (elems_.empty()) {
+        throw std::logic_error{"Cannot get top of an empty stack."};
+    }
+    return elems_.back();
+}
+
+template <typename T, template <typename> typename Elems>
+bool StackV3<T, Elems>::empty() const
+{
+    return elems_.empty();
+}
 
 
 ///////////////////////////////////////////////////////////////
