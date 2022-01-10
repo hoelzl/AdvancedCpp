@@ -1,3 +1,5 @@
+// ReSharper disable CppClangTidyCppcoreguidelinesProBoundsPointerArithmetic
+// ReSharper disable CppClangTidyCppcoreguidelinesAvoidCArrays
 #pragma once
 
 #include <array>
@@ -9,13 +11,12 @@
 
 #define USE_TEMPLATES 1
 
-struct MyBase {
-    explicit MyBase(int x) : x{x}
-    {
-    }
+struct MyBase
+{
+    explicit MyBase(int x) : x{x} {}
 
     int x;
-    
+
     MyBase& inc()
     {
         x += 1;
@@ -23,14 +24,13 @@ struct MyBase {
     }
 };
 
-struct MyDerived : public MyBase {
-    MyDerived(int x, int y) : MyBase{x}, y{y}
-    {
-    }
-    [[maybe_unused]] int y;
+struct MyDerived : public MyBase
+{
+    MyDerived(int x, int y) : MyBase{x}, y{y} {}
+    int y;
 };
 
-void print_array(const MyBase arr[], std::size_t len)
+inline void print_array(const MyBase arr[], std::size_t len)
 {
     std::cout << "MyBase[]: " << typeid(arr).name() << std::endl;
     for (std::size_t i = 0; i < len; ++i) {
@@ -38,7 +38,7 @@ void print_array(const MyBase arr[], std::size_t len)
     }
 }
 
-void print_array_contents_via_pointer(const MyBase* arr, std::size_t len)
+inline void print_array_contents_via_pointer(const MyBase* arr, std::size_t len)
 {
     std::cout << "MyBasePtr: " << typeid(arr).name() << std::endl;
     for (std::size_t i = 0; i < len; ++i) {
@@ -46,14 +46,14 @@ void print_array_contents_via_pointer(const MyBase* arr, std::size_t len)
     }
 }
 
-void print_contents_of_base_array()
+inline void print_contents_of_base_array()
 {
     const MyBase arr[]{MyBase{1}, MyBase{2}, MyBase{3}};
     print_array(arr, 3);
     print_array_contents_via_pointer(arr, 3);
 }
 
-void print_contents_of_derived_array()
+inline void print_contents_of_derived_array()
 {
     const MyDerived arr[]{MyDerived{1, 10}, MyDerived{2, 20}, MyDerived{3, 30}};
     print_array(arr, 3);
@@ -61,7 +61,7 @@ void print_contents_of_derived_array()
 }
 
 #if !USE_TEMPLATES
-void print_std_array(std::array<MyBase, 3> arr)
+inline void print_std_array(std::array<MyBase, 3> arr)
 {
     std::cout << "array<MyBase>: " << typeid(arr).name() << std::endl;
     for (const MyBase& elt : arr) {
@@ -70,7 +70,7 @@ void print_std_array(std::array<MyBase, 3> arr)
 }
 
 #else
-template<typename T>
+template <typename T>
 void print_std_array(std::array<T, 3> arr)
 {
     std::cout << "array<T>: " << typeid(arr).name() << std::endl;
@@ -80,16 +80,16 @@ void print_std_array(std::array<T, 3> arr)
 }
 #endif
 
-void print_contents_of_base_std_array()
+inline void print_contents_of_base_std_array()
 {
-    std::array<MyBase, 3> arr{MyBase{1}, MyBase{2}, MyBase{3}};
+    const std::array<MyBase, 3> arr{MyBase{1}, MyBase{2}, MyBase{3}};
     print_std_array(arr);
 }
 
-void print_contents_of_derived_std_array()
+inline void print_contents_of_derived_std_array()
 {
-    std::array<MyDerived, 3> arr{MyDerived{1, 10}, MyDerived{2, 20},
-                                 MyDerived{3, 30}};
+    const std::array<MyDerived, 3> arr{
+        MyDerived{1, 10}, MyDerived{2, 20}, MyDerived{3, 30}};
 #if USE_TEMPLATES
     print_std_array(arr);
 #endif
@@ -99,8 +99,7 @@ using MyBasePtr = std::unique_ptr<MyBase>;
 using MyDerivedPtr = std::unique_ptr<MyDerived>;
 
 #if !USE_TEMPLATES
-void print_std_array_of_pointer(const char* prefix,
-                                const std::array<MyBasePtr, 3>& arr)
+void print_std_array_of_pointer(const char* prefix, const std::array<MyBasePtr, 3>& arr)
 {
     std::cout << "Array<MyBasePtr> (" << prefix << "): " << typeid(arr).name()
               << std::endl;
@@ -110,44 +109,43 @@ void print_std_array_of_pointer(const char* prefix,
 }
 
 #else
-template<typename T, std::size_t n>
+template <typename T, std::size_t n>
 void print_std_array_of_pointer(const char* prefix, const std::array<T, n>& arr)
 {
-    std::cout << "Array<T*> (" << prefix << "): " << typeid(arr).name()
-              << std::endl;
+    std::cout << "Array<T*> (" << prefix << "): " << typeid(arr).name() << std::endl;
     for (const T& elt : arr) {
         std::cout << elt->x << std::endl;
     }
 }
 #endif
 
-void print_contents_of_base_std_array_of_pointer()
+inline void print_contents_of_base_std_array_of_pointer()
 {
-    std::array<MyBasePtr, 3> arr{std::make_unique<MyBase>(1),
-                                 std::make_unique<MyBase>(2),
-                                 std::make_unique<MyBase>(3)};
+    const std::array<MyBasePtr, 3> arr{
+        std::make_unique<MyBase>(1), std::make_unique<MyBase>(2),
+        std::make_unique<MyBase>(3)};
     print_std_array_of_pointer("base", arr);
 }
 
-void print_contents_of_derived_std_array_of_pointer()
+inline void print_contents_of_derived_std_array_of_pointer()
 {
-    std::array<MyDerivedPtr, 3> arr{std::make_unique<MyDerived>(1, 10),
-                                    std::make_unique<MyDerived>(2, 20),
-                                    std::make_unique<MyDerived>(3, 30)};
+    const std::array<MyDerivedPtr, 3> arr{
+        std::make_unique<MyDerived>(1, 10), std::make_unique<MyDerived>(2, 20),
+        std::make_unique<MyDerived>(3, 30)};
 #if USE_TEMPLATES
     print_std_array_of_pointer("derived", arr);
 #endif
 }
 
-void print_contents_of_mixed_std_array_of_pointer()
+inline void print_contents_of_mixed_std_array_of_pointer()
 {
-    std::array<MyBasePtr, 3> arr{std::make_unique<MyBase>(1),
-                                 std::make_unique<MyDerived>(2, 20),
-                                 std::make_unique<MyBase>(3)};
+    const std::array<MyBasePtr, 3> arr{
+        std::make_unique<MyBase>(1), std::make_unique<MyDerived>(2, 20),
+        std::make_unique<MyBase>(3)};
     print_std_array_of_pointer("mixed", arr);
 }
 
-void print_span_of_pointer(const char* prefix, const std::span<MyBasePtr>& span)
+inline void print_span_of_pointer(const char* prefix, const std::span<MyBasePtr>& span)
 {
     std::cout << "Span<MyBasePtr> (" << prefix << "): " << typeid(span).name()
               << std::endl;
@@ -157,15 +155,15 @@ void print_span_of_pointer(const char* prefix, const std::span<MyBasePtr>& span)
 }
 
 
-void print_contents_of_mixed_span()
+inline void print_contents_of_mixed_span()
 {
-    std::array<MyBasePtr, 3> arr1{std::make_unique<MyBase>(1),
-                                  std::make_unique<MyDerived>(2, 20),
-                                  std::make_unique<MyBase>(3)};
+    std::array<MyBasePtr, 3> arr1{
+        std::make_unique<MyBase>(1), std::make_unique<MyDerived>(2, 20),
+        std::make_unique<MyBase>(3)};
     MyBasePtr arr2[]{
-            std::make_unique<MyBase>(1), std::make_unique<MyDerived>(2, 20),
-            std::make_unique<MyBase>(3), std::make_unique<MyDerived>(4, 40),
-            std::make_unique<MyDerived>(5, 50)};
+        std::make_unique<MyBase>(1), std::make_unique<MyDerived>(2, 20),
+        std::make_unique<MyBase>(3), std::make_unique<MyDerived>(4, 40),
+        std::make_unique<MyDerived>(5, 50)};
     std::vector<MyBasePtr> vec{};
 
     for (MyBasePtr& elt : arr2) {
@@ -177,13 +175,12 @@ void print_contents_of_mixed_span()
 
     print_span_of_pointer("mixed", std::span<MyBasePtr>{arr1});
     print_span_of_pointer("arr2", std::span<MyBasePtr>{arr2});
-    print_span_of_pointer("vec",
-                          std::span<MyBasePtr>{vec.data(), vec.size()});
+    print_span_of_pointer("vec", std::span<MyBasePtr>{vec.data(), vec.size()});
     print_span_of_pointer("arr2", std::span<MyBasePtr>{arr2});
 }
 
 
-void print_polymorphic_array_examples()
+inline void print_polymorphic_array_examples()
 {
     print_contents_of_base_array();
     print_contents_of_derived_array();

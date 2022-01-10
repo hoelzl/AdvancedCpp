@@ -102,7 +102,7 @@ public:
         }
     }
 
-    [[nodiscard]] const IntWrapper& top() const
+    [[nodiscard]] IntWrapper top() const
     {
         if (elems_.empty()) {
             return {0};
@@ -265,7 +265,7 @@ bool StackV2<T, Elems>::empty() const
     return elems_.empty();
 }
 
-StackV2(const char (&)[])->StackV2<std::string, std::vector<std::string>>;
+StackV2(const char*) -> StackV2<std::string, std::vector<std::string>>;
 
 
 ///////////////////////////////////////////////////////////////

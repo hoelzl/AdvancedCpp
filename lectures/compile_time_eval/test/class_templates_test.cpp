@@ -1,7 +1,8 @@
 #include "class_templates.hpp"
 
-#include <deque>
 #include <catch2/catch_test_macros.hpp>
+#include <deque>
+#include <sstream>
 #include <string>
 
 using namespace templates;

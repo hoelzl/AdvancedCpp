@@ -1,3 +1,4 @@
+// ReSharper disable CppUseRangeAlgorithm
 #include "nontype_templates.hpp"
 
 #include <catch2/catch_test_macros.hpp>
@@ -19,7 +20,8 @@ TEST_CASE("Algorithm with template")
     std::vector<int> result{};
     std::vector<int> expected{6, 7, 8, 9, 10};
 
-    std::ranges::transform(numbers, std::back_inserter(result), add<5>);
+    // std::ranges::transform(numbers, std::back_inserter(result), add<5>);
+    std::transform(numbers.begin(), numbers.end(), std::back_inserter(result), add<5>);
 
     CHECK(result == expected);
 }
