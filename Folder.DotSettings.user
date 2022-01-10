@@ -11,6 +11,7 @@
 	
 	
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=Hicpp/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/UserDictionary/Words/=NONTYPE/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=ppia/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=pval/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=templ/@EntryIndexedValue">True</s:Boolean></wpf:ResourceDictionary>

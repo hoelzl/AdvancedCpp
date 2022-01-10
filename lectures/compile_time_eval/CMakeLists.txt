@@ -9,7 +9,7 @@ target_sources("compile_time_eval_lib"
     "include/auto_parameters.hpp"
     "include/concepts.hpp"
     "include/function_templates.hpp"
-    "include/class_templates.hpp")
+    "include/class_templates.hpp" "include/nontype_templates.hpp")
 
 target_sources("compile_time_eval_lib"
     PRIVATE
