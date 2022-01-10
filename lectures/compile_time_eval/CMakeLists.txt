@@ -5,11 +5,15 @@ add_library("compile_time_eval_lib")
 
 target_sources("compile_time_eval_lib"
     PUBLIC
-    "include/compile_time_eval.hpp" "include/auto_parameters.hpp" "include/concepts.hpp")
+    "include/compile_time_eval.hpp"
+    "include/auto_parameters.hpp"
+    "include/concepts.hpp"
+    "include/function_templates.hpp"
+    "include/class_templates.hpp")
 
 target_sources("compile_time_eval_lib"
     PRIVATE
-    "src/compile_time_eval.cpp")
+    "src/compile_time_eval.cpp" "src/class_templates.cpp")
 
 target_include_directories("compile_time_eval_lib"
     PUBLIC 
