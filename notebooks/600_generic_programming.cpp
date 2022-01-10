@@ -37,6 +37,12 @@
 
 // ## Function Templates
 //
-// See `lectures/compile_time_eval`.
+// See `lectures/compile_time_eval/function_templates.hpp`.
 
+// ## Class Templates
 //
+// See `lectures/compile_time_eval/class_templates.hpp`.
+
+// ## Nontype Template Parameters
+//
+// See `lectures/compile_time_eval/nontype_templates.hpp`
