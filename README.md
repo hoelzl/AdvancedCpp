@@ -20,14 +20,14 @@ standard.
 On Windows, install Visual Studio 2022 with the "Desktop development with C++"
 workload and you're good to go.
 
-On Linux, install the packages for CMake and clang/gcc. For example on Ubuntu
+On Linux, install the packages for CMake and clang/gcc. For example on Debian
 stable (bullseye):
 
 - Enable [bullseye-backports](https://packages.debian.org/bullseye-backports/)
 - Install gcc-10 and cmake, and potentially the gtk+ development headers
 
 ```
-sudo apt install gcc-10 g++-10 cmake libgtk-3-dev libgtk-3-0 -t bullseye-backports
+sudo apt install gcc-10 g++-10 cmake -t bullseye-backports
 ```
 
 
