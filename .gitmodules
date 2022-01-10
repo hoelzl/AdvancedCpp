@@ -1,6 +1,6 @@
 [submodule "external/gsl"]
 	path = external/gsl
-	url = git@github.com:microsoft/GSL.git
+	url = https://github.com/microsoft/GSL.git
 [submodule "external/catch2"]
 	path = external/catch2
 	url = https://github.com/catchorg/Catch2.git
