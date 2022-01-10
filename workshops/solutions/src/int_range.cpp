@@ -2,6 +2,7 @@
 
 #include <iostream>
 
+namespace stl {
 
 void run_int_range_v0_example()
 {
@@ -9,3 +10,5 @@ void run_int_range_v0_example()
         std::cout << i << "\n";
     }
 }
+} // namespace stl
+ 

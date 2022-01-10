@@ -1,6 +1,7 @@
 #include "solutions.hpp"
+#include "int_range.hpp"
 
 int main()
 {
-    sol::run_int_range_v0_example();
+    stl::run_int_range_v0_example();
 }
