@@ -42,13 +42,9 @@ TEST_CASE("Failing tests", "[.][failing]")
 
 TEST_CASE("pessimistic_estimate()")
 {
-    SECTION("Is not optimistic") {
-        CHECK_FALSE(pessimistic_estimate());
-    }
+    SECTION("Is not optimistic") { CHECK_FALSE(pessimistic_estimate()); }
 
-    SECTION("Does not throw, either") {
-        CHECK_NOTHROW(pessimistic_estimate());
-    }
+    SECTION("Does not throw, either") { CHECK_NOTHROW(pessimistic_estimate()); }
 }
 
 TEST_CASE("throw_an_exception()")
