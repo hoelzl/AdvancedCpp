@@ -50,3 +50,6 @@ std::set<int> without_duplicates(const std::vector<int>& v)
 }
 
 } // namespace sol
+std::ostream& outer::middle::operator<<(std::ostream& os, Person person) {
+    return os << person.name;
+}
