@@ -742,6 +742,12 @@ std::all_of(v.begin(), v.end(), [](int i){return i > 10; })
 // - Write tests that test the new functionality
 
 // + [markdown] slideshow={"slide_type": "slide"}
+// ## TTT: Valid Moves
+//
+// - Define a member function `Board::is_move_valid(Position pos)` that checks whether `pos` is empty
+// - Define a member function `Board::valid_moves()` that returns a set of all valid moves.
+
+// + [markdown] slideshow={"slide_type": "slide"}
 // ### Ordered Associative Containers
 //
 // - `set`: ordered collection of unique elements
@@ -759,12 +765,6 @@ std::all_of(v.begin(), v.end(), [](int i){return i > 10; })
 // Write a function `std::set<int> without_duplicates(const std::vector<int>& v)` that returns the unique integers in `v` as a set (without modifying `v`).
 //
 // Use STL algorithms to implement these functions.
-
-// + [markdown] slideshow={"slide_type": "slide"}
-// ## TTT: Valid Moves
-//
-// - Define a member function `Board::is_move_valid(Position pos)` that checks whether `pos` is empty
-// - Define a member function `Board::valid_moves()` that returns a set of all valid moves.
 
 // + [markdown] slideshow={"slide_type": "slide"}
 // ### Unordered Associative Containers
