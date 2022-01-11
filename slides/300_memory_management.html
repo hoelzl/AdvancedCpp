@@ -14572,6 +14572,107 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h2 id="Move-Construction/Assignment">Move Construction/Assignment<a class="anchor-link" href="#Move-Construction/Assignment">&#182;</a></h2><ul>
+<li>Many types in C++ are <em>resource handles</em>: they have a small stack-allocated header and manage potentially large amounts of heap space.<ul>
+<li>Example: STL collections, strings, ...</li>
+</ul>
+</li>
+<li>Copying the header is cheap, copying the resources is often very expensive</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p><img src="img/handles.png" alt="Missing Image?"></p>
+
+</div>
+</div>
+</div>
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<ul>
+<li>Value semantics (for fuction calls and variable assignments) requires us to copy everything<ul>
+<li>Otherwise modifications would be visible in other objects</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p><img src="img/copy_01.drawio.png" alt="Missing Image?"></p>
+
+</div>
+</div>
+</div>
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p><img src="img/copy_02.drawio.png" alt="Missing Image?"></p>
+
+</div>
+</div>
+</div>
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p><img src="img/copy_03.drawio.png" alt="Missing Image?"></p>
+
+</div>
+</div>
+</div>
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<ul>
+<li>The cost of copying objects is why we often pass by reference/pointer<ul>
+<li>But that brings problems with lifetime management</li>
+<li>And it makes compiler optimizations more difficult</li>
+</ul>
+</li>
+<li>However: if we knew that an object was no longer needed after being copied, we could just create a new header and steal the (expensive) resources from the old object</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p><img src="img/move_01.drawio.png" alt="Missing Image?"></p>
+
+</div>
+</div>
+</div>
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<p><img src="img/move_02.drawio.png" alt="Missing Image?"></p>
+
+</div>
+</div>
+</div>
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<ul>
+<li>"Stealing resources" is what move constructors and assignment operators do</li>
+<li>The only trick is to identify when we can do this</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="jp-Cell-inputWrapper">
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h2 id="References">References<a class="anchor-link" href="#References">&#182;</a></h2><ul>
 <li>A reference is an alias for an existing name</li>
 <li>We say a reference <em>binds to</em> a variable if it is initialized with that variable</li>
@@ -14644,30 +14745,6 @@ body[data-format='mobile'] .jp-OutputArea-child .jp-OutputArea-output {
 </div>
 </div>
 
-</div>
-<div class="jp-Cell-inputWrapper">
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h2 id="Move-Construction/Assignment">Move Construction/Assignment<a class="anchor-link" href="#Move-Construction/Assignment">&#182;</a></h2><ul>
-<li>Many types in C++ are <em>resource handles</em>: they have a small stack-allocated header and manage potentially large amounts of heap space.<ul>
-<li>Example: STL collections, strings, ...</li>
-</ul>
-</li>
-<li>Copying the header is cheap, copying the resources is often very expensive</li>
-<li>Value semantics (for fuction calls and variable assignments) requires us to copy everything<ul>
-<li>Otherwise modifications would be visible in other objects</li>
-<li>That is why we often pass by reference/pointer</li>
-<li>But that brings problems with lifetime management</li>
-<li>And it makes compiler optimizations more difficult</li>
-</ul>
-</li>
-<li>However: if we knew that an object was no longer needed after being copied, we could just create a new header and steal the (expensive) resources from the old object</li>
-<li>This is what move constructors and assignment operators do</li>
-<li>The only trick is to identify when we can do this</li>
-</ul>
-
-</div>
-</div>
 </div>
 <div class="jp-Cell-inputWrapper">
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
