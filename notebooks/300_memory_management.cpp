@@ -22,19 +22,21 @@
 // - Many types in C++ are *resource handles*: they have a small stack-allocated header and manage potentially large amounts of heap space.
 //     - Example: STL collections, strings, ...
 // - Copying the header is cheap, copying the resources is often very expensive
-// -
 
-// ![Missing Image?](img/handles.drawio.png)
+// + [markdown] slideshow={"slide_type": "subslide"}
+// ![Missing Image?](img/handles.png)
 
 // + [markdown] slideshow={"slide_type": "slide"}
 // - Value semantics (for fuction calls and variable assignments) requires us to copy everything
 //     - Otherwise modifications would be visible in other objects
-// -
 
+// + [markdown] slideshow={"slide_type": "subslide"}
 // ![Missing Image?](img/copy_01.drawio.png)
 
+// + [markdown] slideshow={"slide_type": "subslide"}
 // ![Missing Image?](img/copy_02.drawio.png)
 
+// + [markdown] slideshow={"slide_type": "subslide"}
 // ![Missing Image?](img/copy_03.drawio.png)
 
 // + [markdown] slideshow={"slide_type": "slide"}
@@ -42,10 +44,11 @@
 //     - But that brings problems with lifetime management
 //     - And it makes compiler optimizations more difficult
 // - However: if we knew that an object was no longer needed after being copied, we could just create a new header and steal the (expensive) resources from the old object
-// -
 
+// + [markdown] slideshow={"slide_type": "subslide"}
 // ![Missing Image?](img/move_01.drawio.png)
 
+// + [markdown] slideshow={"slide_type": "subslide"}
 // ![Missing Image?](img/move_02.drawio.png)
 
 // + [markdown] slideshow={"slide_type": "slide"}
