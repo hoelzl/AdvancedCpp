@@ -29,4 +29,13 @@ target_link_libraries("starter_kit"
     "GSL"
 	"starter_kit_lib")
 
+add_executable ("tic_tac_toe_v2")
+
+target_sources("tic_tac_toe_v2" PRIVATE
+    "src/tic_tac_toe_main.cpp")
+
+target_link_libraries("tic_tac_toe_v2"
+    "GSL"
+	"starter_kit_lib")
+
 add_subdirectory(test)
