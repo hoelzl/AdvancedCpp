@@ -1,6 +1,7 @@
+// ReSharper disable CppClangTidyCppcoreguidelinesProTypeReinterpretCast
 #pragma once
 
-#include "animal.h"
+#include "animal.hpp"
 #include <string>
 
 using namespace std::string_literals;
@@ -13,26 +14,26 @@ public:
     {
         std::cout << "Creating cat instance " << std::hex
                   << reinterpret_cast<std::uintptr_t>(this)
-                  << " via default constructor." << std::endl;
+                  << " via DEFAULT constructor." << std::endl;
     }
     Cat(const Cat& cat) : Animal(cat)
     {
         std::cout << "Creating cat instance " << std::hex
                   << reinterpret_cast<std::uintptr_t>(this)
-                  << " via copy constructor." << std::endl;
+                  << " via COPY constructor." << std::endl;
     }
 
     Cat(Cat&& cat) noexcept : Animal(std::move(cat))
     {
         std::cout << "Creating cat instance " << std::hex
                   << reinterpret_cast<std::uintptr_t>(this)
-                  << " via move constructor." << std::endl;
+                  << " via MOVE constructor." << std::endl;
     }
 
     Cat& operator=(const Cat& cat)
     {
         Animal::operator=(cat);
-        std::cout << "Copy assigning cat instance " << std::hex
+        std::cout << "COPY assigning cat instance " << std::hex
                   << reinterpret_cast<std::uintptr_t>(this) << "." << std::endl;
         return *this;
     }
@@ -40,14 +41,14 @@ public:
     Cat& operator=(Cat&& cat) noexcept
     {
         Animal::operator=(std::move(cat));
-        std::cout << "Move assigning cat instance " << std::hex
+        std::cout << "MOVE assigning cat instance " << std::hex
                   << reinterpret_cast<std::uintptr_t>(this) << "." << std::endl;
         return *this;
     }
 
     ~Cat()
     {
-        std::cout << "Destroying cat instance " << std::hex
+        std::cout << "DESTROYING cat instance " << std::hex
                   << reinterpret_cast<std::uintptr_t>(this) << "." << std::endl;
     }
 #endif
@@ -55,7 +56,7 @@ public:
 protected:
     [[nodiscard]] std::string describe_impl() const override
     {
-        return "A cat. The most elegant and majestic of animals."s;
+        return "A cat. Go away now."s;
     }
 
     [[nodiscard]] std::string make_sound_impl() const override
@@ -65,8 +66,6 @@ protected:
 
     [[nodiscard]] std::string provide_detailed_description_impl() const override
     {
-        return "The glorious species of cats.\n"s +
-               "No description can do this animal justice.\n"s +
-               "So don't even try.\n"s;
+        return "A cat. It's hungry. It does not make a sound.\n"s;
     }
 };

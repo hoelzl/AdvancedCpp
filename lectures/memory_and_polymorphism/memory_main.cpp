@@ -1,9 +1,9 @@
 #define PRINT_MEMORY_LAYOUT 0
 
 #if PRINT_MEMORY_LAYOUT
-#include "print_memory_layout.h"
+#include "print_memory_layout.hpp"
 #endif
-#include "polymorphic_array.h"
+#include "polymorphic_array.hpp"
 
 int main() {
 #if PRINT_MEMORY_LAYOUT

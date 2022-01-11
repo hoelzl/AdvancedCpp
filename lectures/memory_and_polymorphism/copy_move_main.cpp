@@ -1,38 +1,45 @@
 // Created by Dr. Matthias Hölzl on 17/05/2021.
 // Copyright (c) 2021 Dr. Matthias Hölzl. See file LICENSE.md.
 
+// ReSharper disable CppClangTidyBugproneExceptionEscape
+// ReSharper disable CppUseAuto
+// ReSharper disable CppClangTidyClangDiagnosticUnusedMacros
+// ReSharper disable CppClangTidyCppcoreguidelinesMacroUsage
+
 #define SHOW_ANIMAL_INSTANCE_LIFE_CYCLE 1
-#include "cat.h"
-#include "dog.h"
+#define OMIT_VIRTUAL_DESTRUCTOR 1
+
+#include "cat.hpp"
+#include "dog.hpp"
 #include <iostream>
 
 int main()
 {
-    std::cout << "Dog fluffy{} =================================" << '\n';
-    Dog fluffy{};
-    std::cout << "Dog dolly{Dog{}} =============================" << '\n';
+    std::cout << "\nDog fluffy{} ==========================================\n";
+    const Dog fluffy{};
+    std::cout << "\nDog dolly{Dog{}} ======================================\n";
     Dog dolly{Dog{}};
-    std::cout << "Dog pepper{fluffy} ===========================" << '\n';
+    std::cout << "\nDog pepper{fluffy} ====================================\n";
     Dog pepper{fluffy}; // NOLINT(performance-unnecessary-copy-initialization)
-    std::cout << "Dog pebbles{std::move(pepper)} ===============" << '\n';
+    std::cout << "\nDog pebbles{std::move(pepper)} ========================\n";
     Dog pebbles{std::move(pepper)};
 
-    std::cout << "dolly = fluffy ===============================" << '\n';
+    std::cout << "\ndolly = fluffy ========================================\n";
     dolly = fluffy;
-    std::cout << "dolly = std::move(pebbles) ===================" << '\n';
+    std::cout << "\ndolly = std::move(pebbles) ============================\n";
     dolly = std::move(pebbles);
 
-    std::cout << "Cat loki{} ===================================" << '\n';
+    std::cout << "\nCat loki{} ============================================\n";
     Cat loki{};
-    std::cout << "Cat dexter{loki} =============================" << '\n';
+    std::cout << "\nCat dexter{loki} ======================================\n";
     Cat dexter{loki}; // NOLINT(performance-unnecessary-copy-initialization)
-    std::cout << "Cat thor{std::move(dexter)} ==================" << '\n';
+    std::cout << "\nCat thor{std::move(dexter)} ===========================\n";
     Cat thor{std::move(dexter)};
 
-    std::cout << "dexter = loki ================================" << '\n';
+    std::cout << "\ndexter = loki =========================================\n";
     dexter = loki;
-    std::cout << "thor = std::move(loki) =======================" << '\n';
+    std::cout << "\nthor = std::move(loki) ================================\n";
     thor = std::move(loki);
-
+    std::cout << "\n";
     return 0;
 }

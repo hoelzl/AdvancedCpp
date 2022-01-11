@@ -1,9 +1,10 @@
+// ReSharper disable CppClangTidyCppcoreguidelinesProTypeReinterpretCast
 #pragma once
 #include <cstdint>
 #include <iostream>
 #include <string>
 
-using namespace std::string_literals;
+using namespace std::string_literals;  // NOLINT(clang-diagnostic-header-hygiene)
 
 class Animal
 {
@@ -13,33 +14,33 @@ public:
     {
         std::cout << "Creating animal instance " << std::hex
                   << reinterpret_cast<std::uintptr_t>(this)
-                  << " via default constructor." << std::endl;
+                  << " via DEFAULT constructor." << std::endl;
     }
 
     Animal(const Animal& animal)
     {
         std::cout << "Creating animal instance " << std::hex
-                  << reinterpret_cast<std::uintptr_t>(this)
-                  << " via copy constructor." << std::endl;
+                  << reinterpret_cast<std::uintptr_t>(this) << " via COPY constructor."
+                  << std::endl;
     }
 
     Animal(Animal&& animal) noexcept
     {
         std::cout << "Creating animal instance " << std::hex
-                  << reinterpret_cast<std::uintptr_t>(this)
-                  << " via move constructor." << std::endl;
+                  << reinterpret_cast<std::uintptr_t>(this) << " via MOVE constructor."
+                  << std::endl;
     }
 
     Animal& operator=(const Animal& animal)
     {
-        std::cout << "Copy assigning animal instance " << std::hex
+        std::cout << "COPY assigning animal instance " << std::hex
                   << reinterpret_cast<std::uintptr_t>(this) << "." << std::endl;
         return *this;
     }
 
     Animal& operator=(Animal&& animal) noexcept
     {
-        std::cout << "Move assigning animal instance " << std::hex
+        std::cout << "MOVE assigning animal instance " << std::hex
                   << reinterpret_cast<std::uintptr_t>(this) << "." << std::endl;
         return *this;
     }
@@ -49,7 +50,7 @@ public:
 #if SHOW_ANIMAL_INSTANCE_LIFE_CYCLE
     ~Animal()
     {
-        std::cout << "Destroying animal instance " << std::hex
+        std::cout << "DESTROYING animal instance " << std::hex
                   << reinterpret_cast<std::uintptr_t>(this) << "." << std::endl;
     }
 #else
@@ -59,7 +60,7 @@ public:
 #if SHOW_ANIMAL_INSTANCE_LIFE_CYCLE
     virtual ~Animal()
     {
-        std::cout << "Destroying animal instance " << std::hex
+        std::cout << "DESTROYING animal instance " << std::hex
                   << reinterpret_cast<std::uintptr_t>(this) << "." << std::endl;
     }
 #else
@@ -69,15 +70,9 @@ public:
 
     // Use Non-virtual interface pattern
     // (special case of template method).
-    [[nodiscard]] std::string describe() const
-    {
-        return describe_impl();
-    }
+    [[nodiscard]] std::string describe() const { return describe_impl(); }
 
-    [[nodiscard]] std::string make_sound() const
-    {
-        return make_sound_impl();
-    }
+    [[nodiscard]] std::string make_sound() const { return make_sound_impl(); }
 
     [[nodiscard]] std::string provide_detailed_description() const
     {
@@ -90,9 +85,6 @@ protected:
 
     [[nodiscard]] virtual std::string provide_detailed_description_impl() const
     {
-        std::string description{};
-        description.append({});
-        return "Detailed description:\n"s + describe_impl() + "\n"s +
-               "The sound it makes is "s + make_sound_impl() + "\n"s;
+        return "Animal: "s + describe_impl() + " It goes "s + make_sound_impl() + "\n"s;
     }
 };

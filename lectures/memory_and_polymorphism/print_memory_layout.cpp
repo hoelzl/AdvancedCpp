@@ -1,4 +1,4 @@
-#include "print_memory_layout.h"
+#include "print_memory_layout.hpp"
 
 void print_content_addresses(const std::string& name, const std::vector<int>& v)
 {

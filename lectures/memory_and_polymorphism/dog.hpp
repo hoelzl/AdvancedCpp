@@ -1,9 +1,10 @@
+// ReSharper disable CppClangTidyCppcoreguidelinesProTypeReinterpretCast
 #pragma once
 
-#include "animal.h"
+#include "animal.hpp"
 #include <string>
 
-using namespace std::string_literals;
+using namespace std::string_literals;  // NOLINT(clang-diagnostic-header-hygiene)
 
 class Dog : public Animal
 {
@@ -13,27 +14,27 @@ public:
     {
         std::cout << "Creating dog instance " << std::hex
                   << reinterpret_cast<std::uintptr_t>(this)
-                  << " via default constructor." << std::endl;
+                  << " via DEFAULT constructor." << std::endl;
     }
 
     Dog(const Dog& dog)
     {
         std::cout << "Creating dog instance " << std::hex
                   << reinterpret_cast<std::uintptr_t>(this)
-                  << " via copy constructor." << std::endl;
+                  << " via COPY constructor." << std::endl;
     }
 
     Dog(Dog&& dog) noexcept
     {
         std::cout << "Creating dog instance " << std::hex
                   << reinterpret_cast<std::uintptr_t>(this)
-                  << " via move constructor." << std::endl;
+                  << " via MOVE constructor." << std::endl;
     }
 
     Dog& operator=(const Dog& dog)
     {
         Animal::operator=(dog);
-        std::cout << "Copy assigning dog instance " << std::hex
+        std::cout << "COPY assigning dog instance " << std::hex
                   << reinterpret_cast<std::uintptr_t>(this) << "." << std::endl;
         return *this;
     }
@@ -41,14 +42,14 @@ public:
     Dog& operator=(Dog&& dog) noexcept
     {
         Animal::operator=(dog);
-        std::cout << "Move assigning dog instance " << std::hex
+        std::cout << "MOVE assigning dog instance " << std::hex
                   << reinterpret_cast<std::uintptr_t>(this) << "." << std::endl;
         return *this;
     }
 
     ~Dog()
     {
-        std::cout << "Destroying dog instance " << std::hex
+        std::cout << "DESTROYING dog instance " << std::hex
                   << reinterpret_cast<std::uintptr_t>(this) << "." << std::endl;
     }
 #endif
