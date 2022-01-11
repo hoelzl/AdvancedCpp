@@ -7,6 +7,27 @@
 using namespace templates;
 using namespace std::literals::string_literals;
 
+TEST_CASE("max_v1() with explicit instantiation")
+{
+    SECTION("Works for ints.")
+    {
+        // Here max_v1() is explicitly instantiated for int; same as
+        // 
+        // int max_v1(int lhs, int rhs)
+        // {
+        //     return rhs < lhs ? lhs : rhs;
+        // }
+        CHECK(max_v1<int>(3, 7) == 7);
+        CHECK(max_v1<int>(8, 2) == 8);
+    }
+
+    SECTION("Works for strings.") {
+        // Here max_v1() is explicitly instantiated for string
+        CHECK(max_v1<std::string>("abc"s, "xyz"s) == "xyz"s);
+        CHECK(max_v1<std::string>("foo"s, "barbq"s) == "foo"s);
+    }
+}
+
 TEST_CASE("max_v1()")
 {
     SECTION("Works for ints.")
@@ -99,6 +120,11 @@ TEST_CASE("max_v3()")
         CHECK(max_v3("abc"s, "xyz"s) == "xyz"s);
         CHECK(max_v3("foo"s, "barbq"s) == "foo"s);
     }
+
+    SECTION("Works for mixes of strings and const char*") {
+        CHECK(max_v3("abc"s, "xyz") == "xyz"s);
+        CHECK(max_v3("foo", "barbq"s) == "foo"s);
+    }
 }
 
 TEST_CASE("max_v4_bad()")
@@ -157,6 +183,7 @@ TEST_CASE("max_v4()")
 TEST_CASE("std::decay_t()")
 {
     CHECK(std::is_same_v<std::decay_t<int>, int>);
+    CHECK(std::is_same_v<std::decay_t<const int>, int>);
     CHECK(std::is_same_v<std::decay_t<int&>, int>);
     CHECK(std::is_same_v<std::decay_t<int&&>, int>);
     CHECK(std::is_same_v<std::decay_t<const int&>, int>);

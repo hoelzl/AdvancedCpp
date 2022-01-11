@@ -47,8 +47,8 @@ T max_v2(const T& lhs, const T& rhs)
     return rhs < lhs ? lhs : rhs;
 }
 
-// Exercise: Write a template function sum(lhs, rhs) that computes lhs + rhs for
-// all types for which it is possible.
+// Mini-Workshop: Write a template function sum(lhs, rhs) that computes lhs +
+// rhs for all types for which it is possible.
 //
 // Test the function with ints, doubles, strings and a user-defined class
 // TestClass that overloads operator+. Can you instantiate sum() with arguments
@@ -93,8 +93,8 @@ std::common_type_t<T1, T2> max_v5(T1 lhs, T2 rhs)
     return rhs < lhs ? lhs : rhs;
 }
 
-// Exercise: Redefine your function sum() to take two type parameters.
-// Can you now call it with mixed arguments?
+// Mini-Workshop: Redefine your function sum() to take two type parameters. Can
+// you now call it with mixed arguments without specifying the types?
 
 // Template parameters can take default values, just like function parameters.
 // Default arguments can refer to parameters that appear to their left. With

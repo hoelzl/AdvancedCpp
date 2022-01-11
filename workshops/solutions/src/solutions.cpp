@@ -45,11 +45,14 @@ void remove_duplicates(std::vector<int>& v)
 std::set<int> without_duplicates(const std::vector<int>& v)
 {
     std::set<int> result{};
-    std::ranges::copy(v, std::inserter(result, result.begin()));
+    // std::ranges::copy(v, std::inserter(result, result.begin()));
+    // ReSharper disable once CppUseRangeAlgorithm
+    std::copy(v.cbegin(), v.cend(), std::inserter(result, result.begin()));
     return result;
 }
 
 } // namespace sol
-std::ostream& outer::middle::operator<<(std::ostream& os, Person person) {
+std::ostream& outer::middle::operator<<(std::ostream& os, Person person)
+{
     return os << person.name;
 }
