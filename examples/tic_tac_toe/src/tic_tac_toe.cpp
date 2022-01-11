@@ -11,18 +11,20 @@
 #include <utility>
 #include <vector>
 
-#define USE_FOR_LOOP_IMPLEMENTATION 0 // NOLINT(cppcoreguidelines-macro-usage)
+#include "gsl/util"
+
+#define USE_CAP_IMPLEMENTATION_VERSION 0 // NOLINT(cppcoreguidelines-macro-usage)
 
 using namespace std::literals::string_literals;
 namespace rng = std::ranges;
 
 namespace ttt {
 
-#if USE_FOR_LOOP_IMPLEMENTATION
+#if USE_CAP_IMPLEMENTATION_VERSION == 1
 
-std::array<Position, 9> Board::compute_all_positions()
+Board::PositionsType Board::compute_all_positions()
 {
-    std::array<Position, 9> result{};
+    PositionsType result{};
     for (short x = 0; x < 3; ++x) {
         for (short y = 0; y < 3; ++y) {
             result.at(compute_linear_index({x, y})) = {x, y};
@@ -31,13 +33,23 @@ std::array<Position, 9> Board::compute_all_positions()
     return result;
 }
 
-#else
+#elseif USE_CAP_IMPLEMENTATION_VERSION == 2
 
-std::array<Position, 9> Board::compute_all_positions()
+Board::PositionsType Board::compute_all_positions()
 {
-    std::array<Position, 9> result{};
+    PositionsType result{};
     auto indices{std::views::iota(0, 9)};
     rng::for_each(indices, [&result](auto idx) { result[idx] = {idx / 3, idx % 3}; });
+    return result;
+}
+#else
+
+Board::PositionsType Board::compute_all_positions()
+{
+    PositionsType result{};
+    for (short index{0}; index < 9; ++index) {
+        result[index] = {index / 3, index % 3};
+    }
     return result;
 }
 
@@ -104,9 +116,9 @@ bool is_position_valid(Position pos)
     return 0 <= pos.first && pos.first < 3 && 0 <= pos.second && pos.second < 3;
 }
 
-const std::array<Position, 9>& Board::all_positions()
+const Board::PositionsType& Board::all_positions()
 {
-    static const std::array<Position, 9> result{compute_all_positions()};
+    static const PositionsType result{compute_all_positions()};
     return result;
 }
 
@@ -141,13 +153,12 @@ std::set<Board::Configuration>& Board::winning_configurations()
 
 int num_shared_members(const Board::Configuration& lhs, const Board::Configuration& rhs)
 {
-    //return std::reduce(lhs.cbegin(), lhs.cend(), 0, [&rhs](int i, Position pos) {
+    // return std::reduce(lhs.cbegin(), lhs.cend(), 0, [&rhs](int i, Position pos) {
     //    return rhs.contains(pos) ? i + 1 : i;
     //});
     auto result{0};
     for (auto pos : lhs) {
-        if (rhs.contains(pos))
-        {
+        if (rhs.contains(pos)) {
             ++result;
         }
     }

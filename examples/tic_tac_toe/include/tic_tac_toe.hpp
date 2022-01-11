@@ -51,6 +51,8 @@ class Board
 {
 public:
     using FieldsType = std::array<FieldValue, 9>;
+    using PositionsType = std::array<Position, 9>;
+
     using size_type = FieldsType::size_type;
     // using size_type = decltype(std::ssize(FieldsType{}));
     using iterator = FieldsType::iterator;
@@ -64,7 +66,7 @@ public:
     [[nodiscard]] const_iterator cbegin() const { return fields_.cbegin(); }
     [[nodiscard]] const_iterator cend() const { return fields_.cend(); }
 
-    [[nodiscard]] static const std::array<Position, 9>& all_positions();
+    [[nodiscard]] static const PositionsType& all_positions();
     [[nodiscard]] Configuration configuration(PlayerColor pc) const;
 
     [[nodiscard]] static std::set<Configuration>& winning_configurations();
@@ -82,7 +84,7 @@ private:
     FieldsType fields_{};
 
     [[nodiscard]] static size_type compute_linear_index(Position pos);
-    [[nodiscard]] static std::array<Position, 9> compute_all_positions();
+    [[nodiscard]] static PositionsType compute_all_positions();
 };
 
 std::string to_string(const Board& board, int prefix_len = 0);
