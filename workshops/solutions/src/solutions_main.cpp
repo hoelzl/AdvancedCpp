@@ -6,6 +6,6 @@
 int main()
 {
     // stl::run_int_range_v0_example();
-    ::outer::middle::Person p{"John"};
-    std::cout << p << "\n";
+    const ::outer::middle::Person person{"John"};
+    std::cout << person << "\n";
 }
