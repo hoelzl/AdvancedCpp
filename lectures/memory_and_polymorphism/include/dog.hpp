@@ -1,12 +1,13 @@
 // ReSharper disable CppClangTidyCppcoreguidelinesProTypeReinterpretCast
 #pragma once
 
-#include "animal.hpp"
 #include <string>
 
-using namespace std::string_literals;  // NOLINT(clang-diagnostic-header-hygiene)
+#include "animal.hpp"
 
-class Dog : public Animal
+using namespace std::string_literals; // NOLINT(clang-diagnostic-header-hygiene)
+
+class Dog final : public Animal
 {
 #if SHOW_ANIMAL_INSTANCE_LIFE_CYCLE
 public:
@@ -20,15 +21,15 @@ public:
     Dog(const Dog& dog)
     {
         std::cout << "Creating dog instance " << std::hex
-                  << reinterpret_cast<std::uintptr_t>(this)
-                  << " via COPY constructor." << std::endl;
+                  << reinterpret_cast<std::uintptr_t>(this) << " via COPY constructor."
+                  << std::endl;
     }
 
     Dog(Dog&& dog) noexcept
     {
         std::cout << "Creating dog instance " << std::hex
-                  << reinterpret_cast<std::uintptr_t>(this)
-                  << " via MOVE constructor." << std::endl;
+                  << reinterpret_cast<std::uintptr_t>(this) << " via MOVE constructor."
+                  << std::endl;
     }
 
     Dog& operator=(const Dog& dog)
@@ -60,8 +61,5 @@ protected:
         return "A dog. What is there to say?"s;
     }
 
-    [[nodiscard]] std::string make_sound_impl() const override
-    {
-        return "[Woof]!"s;
-    }
+    [[nodiscard]] std::string make_sound_impl() const override { return "[Woof]!"s; }
 };

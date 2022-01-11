@@ -1,12 +1,13 @@
 // ReSharper disable CppClangTidyCppcoreguidelinesProTypeReinterpretCast
 #pragma once
 
-#include "animal.hpp"
 #include <string>
+
+#include "animal.hpp"
 
 using namespace std::string_literals;
 
-class Cat : public Animal
+class Cat final : public Animal
 {
 #if SHOW_ANIMAL_INSTANCE_LIFE_CYCLE
 public:
@@ -16,18 +17,19 @@ public:
                   << reinterpret_cast<std::uintptr_t>(this)
                   << " via DEFAULT constructor." << std::endl;
     }
+
     Cat(const Cat& cat) : Animal(cat)
     {
         std::cout << "Creating cat instance " << std::hex
-                  << reinterpret_cast<std::uintptr_t>(this)
-                  << " via COPY constructor." << std::endl;
+                  << reinterpret_cast<std::uintptr_t>(this) << " via COPY constructor."
+                  << std::endl;
     }
 
     Cat(Cat&& cat) noexcept : Animal(std::move(cat))
     {
         std::cout << "Creating cat instance " << std::hex
-                  << reinterpret_cast<std::uintptr_t>(this)
-                  << " via MOVE constructor." << std::endl;
+                  << reinterpret_cast<std::uintptr_t>(this) << " via MOVE constructor."
+                  << std::endl;
     }
 
     Cat& operator=(const Cat& cat)
@@ -59,10 +61,7 @@ protected:
         return "A cat. Go away now."s;
     }
 
-    [[nodiscard]] std::string make_sound_impl() const override
-    {
-        return "[Meow]!"s;
-    }
+    [[nodiscard]] std::string make_sound_impl() const override { return "[Meow]!"s; }
 
     [[nodiscard]] std::string provide_detailed_description_impl() const override
     {

@@ -9,13 +9,13 @@ void print_content_addresses(const std::string& name, const std::vector<int>& v)
 
 void print_memory_layout()
 {
-    int i { 17 };
-    int ai[3] = { 1, 2, 3 };
+    int i{17};
+    int ai[3] = {1, 2, 3};
     int* pi = new int;
     *pi = 21;
-    std::vector<int> vi { 1, 2, 3, 4, 5, 6 };
-    int ii { 0 };
-    std::vector<int> wi { vi };
+    std::vector<int> vi{1, 2, 3, 4, 5, 6};
+    int ii{0};
+    std::vector<int> wi{vi};
 
     print_address("i:   ", &i);
     print_address("ai:  ", &ai);
@@ -33,7 +33,7 @@ void print_memory_layout()
     std::cout << std::endl;
     print_content_addresses("wi", wi);
 
-    std::vector<int> ui { std::move(wi) };
+    std::vector<int> ui{std::move(wi)};
 
     std::cout << std::endl;
     print_address("wi:  ", &wi);

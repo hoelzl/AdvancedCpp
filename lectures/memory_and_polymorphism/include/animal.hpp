@@ -4,7 +4,7 @@
 #include <iostream>
 #include <string>
 
-using namespace std::string_literals;  // NOLINT(clang-diagnostic-header-hygiene)
+using namespace std::string_literals; // NOLINT(clang-diagnostic-header-hygiene)
 
 class Animal
 {
