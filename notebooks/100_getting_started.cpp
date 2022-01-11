@@ -192,7 +192,7 @@ int& ri{i};              // (lvalue) reference to int
 int*& rpi{foo};          // (lvalue) reference to pointer to int
 // int&* pri             // ERROR: pointer to reference to int
 int (*f)(double);        // pointer to a function taking a double, returning an int
-int* g(double);          // function taking a double returning a pointer to int
+int *g(double);          // function taking a double returning a pointer to int
 
 // + slideshow={"slide_type": "subslide"}
 int ai[3];                // array of int
@@ -241,7 +241,7 @@ auto pi2{ia}; // pi2 is an `int*` not an `int[]`
 
 // + slideshow={"slide_type": "subslide"}
 #include <type_traits>
-std::is_same_v<decltype(pi2), int[]>
+std::is_same<decltype(pi2), int[]>::value
 // -
 
 std::is_same_v<decltype(pi2), int*>

@@ -17,6 +17,42 @@
 // # Memory Management and Resource Handling
 
 // + [markdown] slideshow={"slide_type": "slide"}
+// ## Move Construction/Assignment
+//
+// - Many types in C++ are *resource handles*: they have a small stack-allocated header and manage potentially large amounts of heap space.
+//     - Example: STL collections, strings, ...
+// - Copying the header is cheap, copying the resources is often very expensive
+// -
+
+// ![Missing Image?](img/handles.drawio.png)
+
+// + [markdown] slideshow={"slide_type": "slide"}
+// - Value semantics (for fuction calls and variable assignments) requires us to copy everything
+//     - Otherwise modifications would be visible in other objects
+// -
+
+// ![Missing Image?](img/copy_01.drawio.png)
+
+// ![Missing Image?](img/copy_02.drawio.png)
+
+// ![Missing Image?](img/copy_03.drawio.png)
+
+// + [markdown] slideshow={"slide_type": "slide"}
+// - The cost of copying objects is why we often pass by reference/pointer
+//     - But that brings problems with lifetime management
+//     - And it makes compiler optimizations more difficult
+// - However: if we knew that an object was no longer needed after being copied, we could just create a new header and steal the (expensive) resources from the old object
+// -
+
+// ![Missing Image?](img/move_01.drawio.png)
+
+// ![Missing Image?](img/move_02.drawio.png)
+
+// + [markdown] slideshow={"slide_type": "slide"}
+// - "Stealing resources" is what move constructors and assignment operators do
+// - The only trick is to identify when we can do this
+
+// + [markdown] slideshow={"slide_type": "slide"}
 // ## References
 //
 // - A reference is an alias for an existing name
@@ -44,21 +80,6 @@ std::is_object_v<int&>
 std::is_object_v<int&&>
 
 std::is_object_v<int*>
-
-// + [markdown] slideshow={"slide_type": "slide"}
-// ## Move Construction/Assignment
-//
-// - Many types in C++ are *resource handles*: they have a small stack-allocated header and manage potentially large amounts of heap space.
-//     - Example: STL collections, strings, ...
-// - Copying the header is cheap, copying the resources is often very expensive
-// - Value semantics (for fuction calls and variable assignments) requires us to copy everything
-//     - Otherwise modifications would be visible in other objects
-//     - That is why we often pass by reference/pointer
-//     - But that brings problems with lifetime management
-//     - And it makes compiler optimizations more difficult
-// - However: if we knew that an object was no longer needed after being copied, we could just create a new header and steal the (expensive) resources from the old object
-// - This is what move constructors and assignment operators do
-// - The only trick is to identify when we can do this
 
 // + [markdown] slideshow={"slide_type": "slide"}
 // ## Value Categories (Rvalues and Lvalues)

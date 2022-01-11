@@ -28,8 +28,8 @@
 // - Container adaptors
 // - (Iterators)
 // - (Algorithms)
-// -
 
+// + [markdown] slideshow={"slide_type": "subslide"}
 // ## Operations on (almost) all Containers
 //
 // (See [cppreference.com](https://en.cppreference.com/w/cpp/container) for a more detailed overview.)
@@ -81,8 +81,8 @@
 // MyWidgets ws{};
 // for (w : ws) { /* ... */ }
 // ```
-// -
 
+// + [markdown] slideshow={"slide_type": "slide"}
 // ## Operations on (almost) all Containers (cont.)
 //
 // - Construction
@@ -105,63 +105,6 @@ v2
 
 std::vector<int> v3{++(v2.begin()), v2.end()};
 v3
-
-// ## Operations on (almost) all Containers (cont.)
-//
-// - Assignment
-//     - from same type
-//     - from initializer list
-// - Swap
-//     - `c1.swap(c2)`
-//     - `swap(c1, c2)` (equivalent)
-// - Relational operators
-//     - `==`, `!=`
-//     - `<`, `<=`, `>`, `>=`
-
-// + slideshow={"slide_type": "subslide"}
-v1 = v3;
-v1
-// -
-
-v3 = {2, 4, 5, 6, 12};
-v3
-
-v1.swap(v2);
-v1
-
-v2
-
-// + slideshow={"slide_type": "subslide"}
-v1 >= v2
-// -
-
-v1 < v2
-
-swap(v1, v2);
-v1 < v2
-
-// ## Operations on (almost) all Containers (cont.)
-//
-// - Size
-//     - `c.empty()`
-//     - `c.size()`
-//     - `c.max_size()`
-// - Adding/removing elements (except `array`)
-//     - `c.clear(...)`
-//     - `c.insert(...)`
-//     - `c.emplace(...)`
-//     - `c.erase(...)`
-
-// + slideshow={"slide_type": "subslide"}
-v1.empty()
-// -
-
-v1.size()
-
-v1.max_size()
-
-v1.clear();
-v1.empty()    
 
 // + [markdown] slideshow={"slide_type": "slide"}
 // ## Ranges: Iterable Types
@@ -236,11 +179,80 @@ v1.empty()
 //     std::cout << i << "\n";
 // }
 // ```
-// prints the numbers 10 to 20 on `std::cout`. To achieve this, store all numbers between `min` and `max` in a vector insided the `IntRange` instance.
+// prints the numbers 10 to 20 on `std::cout`. To achieve this, store all numbers between `min` and `max` in a vector insided the `IntRange` instance. *Hint:* `std::vector` supports a `push_back()` operation that adds an element to its end:
+// ```c++
+// std::vector<int> v{1, 2, 3}; // v contains 1, 2, 3
+// v.push_back(4);              // v now contains 1, 2, 3, 4
+// ```
 //
 // Test your implementation using Catch2.
 //
 // *Note:* You can use the project `workshops/starter_kit/` to implement your solution.
+
+// + slideshow={"slide_type": "subslide"}
+#include <vector>
+std::vector<int> v{1, 2, 3}; // v contains 1, 2, 3
+v.push_back(4);              // v now contains 1, 2, 3, 4
+v
+
+// + [markdown] slideshow={"slide_type": "subslide"}
+// ## Operations on (almost) all Containers (cont.)
+//
+// - Assignment
+//     - from same type
+//     - from initializer list
+// - Swap
+//     - `c1.swap(c2)`
+//     - `swap(c1, c2)` (equivalent)
+// - Relational operators
+//     - `==`, `!=`
+//     - `<`, `<=`, `>`, `>=`
+
+// + slideshow={"slide_type": "subslide"}
+v1 = v3;
+v1
+// -
+
+v3 = {2, 4, 5, 6, 12};
+v3
+
+v1.swap(v2);
+v1
+
+v2
+
+// + slideshow={"slide_type": "subslide"}
+v1 >= v2
+// -
+
+v1 < v2
+
+swap(v1, v2);
+v1 < v2
+
+// + [markdown] slideshow={"slide_type": "subslide"}
+// ## Operations on (almost) all Containers (cont.)
+//
+// - Size
+//     - `c.empty()`
+//     - `c.size()`
+//     - `c.max_size()`
+// - Adding/removing elements (except `array`)
+//     - `c.clear(...)`
+//     - `c.insert(...)`
+//     - `c.emplace(...)`
+//     - `c.erase(...)`
+
+// + slideshow={"slide_type": "subslide"}
+v1.empty()
+// -
+
+v1.size()
+
+v1.max_size()
+
+v1.clear();
+v1.empty()    
 
 // + [markdown] slideshow={"slide_type": "slide"}
 // ## Overview of Container Types
@@ -296,8 +308,8 @@ for (int i : a3)
 //     - holds elements in contiguous memory
 //     - fast random access
 //     - insertion/deletion efficient at front and back
-// -
 
+// + [markdown] slideshow={"slide_type": "subslide"}
 // ### Functionality of Vector and Deque
 //
 // - `c.push_back(elt)`
@@ -308,7 +320,7 @@ for (int i : a3)
 //
 // Deque also has
 // - `c.push_front(elt)`
-// - `c.emplace_front(...)
+// - `c.emplace_front(...)`
 // - `c.pop_front()`
 // - ...
 //
@@ -362,6 +374,7 @@ for (int i : a3)
 
 struct Functor {
     int operator()(int i) { return i * i; }
+    int call(int i) { return i * i; }
 };
 Functor f{};
 f(3)
@@ -402,7 +415,7 @@ lambda.operator()(12)
 // -
 
 int my_function() {
-    auto lambda =[]() { return 1; };
+    auto lambda = []() { return 1; };
     return lambda() + 1;
 }
 my_function() 
@@ -412,15 +425,18 @@ my_function()
 #include <string>
 std::function<std::string()> pick_function(int i) {
     if (i > 100) {
-        return [] { return "You picked a large number."; };
+        return []{ return "You picked a large number."; };
     }
     else {
-        return [] { return "You picked a small number."; };
+        return []{ return "You picked a small number."; };
     }
 }
 auto my_fun{pick_function(10)};
 my_fun()
 // -
+
+using namespace std::string_literals;
+std::string foo{"My text"s};
 
 pick_function(1000)()
 
@@ -464,6 +480,10 @@ struct MyClosure {
 MyClosure{}(123)
 
 MyClosure{}(std::string{"foo"})
+
+MyClosure my_closure{};
+my_closure(123);
+my_closure(std::string("foo"))
 
 // + slideshow={"slide_type": "subslide"}
 #include <utility>
@@ -542,7 +562,7 @@ capture_2()
 // + slideshow={"slide_type": "subslide"}
 int capture_3() {
     int i = 10, j = 20;
-    auto lambda = [=]{ return i + j; };
+    auto lambda = [i, j]{ return i + j; };
     i = 100;
     j = 200;
     return lambda();
@@ -552,7 +572,7 @@ capture_3()
 
 int capture_4() {
     int i = 10, j = 20;
-    auto lambda = [&]{ return i + j; };
+    auto lambda = [&i, j]{ return i + j; };
     i = 100;
     j = 200;
     return lambda();
@@ -608,8 +628,8 @@ call_fun(make_bad_adder(2), 3)
 // - Many iterators support more operations; which ones is determined by their *iterator category*.
 //
 // (See [cppreference.com](https://en.cppreference.com/w/cpp/iterator) for more details.)
-// -
 
+// + [markdown] slideshow={"slide_type": "subslide"}
 // ## Iterator categories
 //
 // Since C++20 the following concepts define categories of iterators:
@@ -624,10 +644,12 @@ call_fun(make_bad_adder(2), 3)
 //
 // Requirements on `==` are defined by the `sentinel_for` concept.
 
+// + [markdown] slideshow={"slide_type": "subslide"}
 // ## Example: Implementation of `RepeatedVectorWrapper`:
 //
 // We define a class `RepeatedVectorWrapper` that iterates multiple times over the same vector:
 
+// + [markdown] slideshow={"slide_type": "subslide"}
 // ## Mini Workshop:  Improved `IntRange`
 //
 // Improve upon the previous implementation of `IntRange`:
@@ -699,8 +721,8 @@ std::all_of(v.begin(), v.end(), [](int i){return i > 10; })
 // - `shuffle` (deprecated), `random_shuffle`: shuffles a range
 // - `sample`: selects random elements from a range
 // - `unique`, `unique_copy`: "removes" consecutive copies of elements
-// -
 
+// + [markdown] slideshow={"slide_type": "subslide"}
 // #### Non-Range Algorithms
 //
 // - `swap`: swaps the values of two objects
@@ -726,8 +748,8 @@ std::all_of(v.begin(), v.end(), [](int i){return i > 10; })
 // - `map`: dictionary mapping keys to values
 // - `multiset`: a set with non-unique members
 // - `multimap`: a dictionary with non-unique keys
-// -
 
+// + [markdown] slideshow={"slide_type": "subslide"}
 // ### Mini-Workshop: Unique Integers
 //
 // Write a function `void remove_duplicates(std::vector<int>& v)` that removes all duplicates in `v`.
@@ -831,6 +853,23 @@ std::all_of(v.begin(), v.end(), [](int i){return i > 10; })
 // See the hidden friend pattern from the previous slide.
 //
 // See `lectures/operators`.
+// -
+
+// ## Mini-Workshop
+//
+// Define nested namespaces `::outer::middle::inner` and a struct
+//
+// ```c++
+// ::outer::middle::Person {
+//     std::string name_;
+// }
+// ```
+//
+// Implement `operator<<` for `Person`.
+//
+// Write a `main` function that creates a `Person` and outputs it to `std::cout`.
+//
+// Check whether the implemnetation of `operator<<` is found if you place it in the global scope or in any of the tree namespaces.
 
 // + [markdown] slideshow={"slide_type": "slide"}
 // ## Function Call Processing and Overload Resolution
@@ -844,8 +883,8 @@ std::all_of(v.begin(), v.end(), [](int i){return i > 10; })
 //     - If a single *best candidate* is found it is selected
 //     - If multiple candidates are equally good the call is *ambiguous*
 // - The selected candidate is tested for applicability (it might, e.g., be inaccessible)
-// -
 
+// + [markdown] slideshow={"slide_type": "subslide"}
 // ### Overload Resolution (strongly simplified)
 //
 // Each argument is ranked for each candidate and classified as follows:
@@ -863,8 +902,8 @@ std::all_of(v.begin(), v.end(), [](int i){return i > 10; })
 //
 // - Implement a method `Board::move(PlayerColor, Position)`
 //
-// -
 
+// + [markdown] slideshow={"slide_type": "subslide"}
 // ## Exceptions and Error Handling
 //
 // See `lectures/error_handling`. In particular `error-handling.md` in that folder contains a rather extensive discussion of various error-handling strategies.
