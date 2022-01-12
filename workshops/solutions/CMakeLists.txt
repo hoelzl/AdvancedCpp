@@ -5,7 +5,7 @@ add_library("solutions_lib")
 
 target_sources("solutions_lib"
     PUBLIC
-    "include/solutions.hpp" "include/ring_buffer.hpp" "include/int_range.hpp" "include/templates.hpp")
+    "include/solutions.hpp" "include/ring_buffer.hpp" "include/int_range.hpp" "include/templates.hpp" "include/pair.hpp")
 
 target_sources("solutions_lib"
     PRIVATE
