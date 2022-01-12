@@ -13,5 +13,8 @@ int main()
 	//conc::work_on_struct_with_mutex();
 	//conc::work_on_multiple_structs_with_mutex();
 	//conc::use_static_initializer();
-	conc::run_producer_consumer_example();
+	//conc::run_producer_consumer_example();
+	//conc::compute_with_futures(10);
+	//conc::compute_with_futures_with_different_timings(20);
+	//conc::compute_with_data(20);
 }

@@ -56,6 +56,9 @@ void work_on_multiple_structs_with_mutex();
 void use_static_initializer();
 
 void run_producer_consumer_example();
+void compute_with_futures(int num_futures);
+void compute_with_futures_with_different_timings(int num_futures);
+void compute_with_data(int num_futures);
 
 } // namespace conc
 

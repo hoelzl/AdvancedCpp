@@ -1,7 +1,9 @@
 // ReSharper disable CppClangTidyCppcoreguidelinesAvoidNonConstGlobalVariables
 // ReSharper disable CppTooWideScope
+// ReSharper disable CppUseRangeAlgorithm
 #include "concurrency.hpp"
 
+#include <future>
 #include <iostream>
 #include <mutex>
 #include <queue>
@@ -350,8 +352,10 @@ void use_static_initializer()
 
 
 ///////////////////////////////////////////////////////////////////////
-/// use_static_initializer()
+/// Condition Variables
 ///
+/// Condition variables are the most general (but also low-level) mechanism for
+/// synchronizing threads.
 
 int num_items_to_process{20};
 bool more_items_to_process() { return num_items_to_process >= 0; }
@@ -373,8 +377,12 @@ void item_producer()
 {
     while (more_items_to_process()) {
         const Item item{get_next_item()};
+        // Simulate doing some work...
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
         {
+            // End the scope of the lock before calling notify_one(), so that
+            // the waiting thread doesn't immediately block after waking up
+            // because we still hold the lock.
             std::scoped_lock lock{mutex};
             item_queue.push(item);
         }
@@ -386,7 +394,17 @@ void item_consumer()
 {
     while (true) {
         std::unique_lock lock{mutex};
+        // wait()
+        // - checks checks the return value of the lambda
+        // - if it returns true, wait returns.
+        // - if it returns false, it unlocks the mutex and blocks the thread
+        // - when somebody calls notify_one() on the cv, the blocked thread
+        //   wakes up, reacquires the mutex and checks the condition again. If
+        //   it returns false, it unlocks the mutex, blocks the thread,  rinse
+        //   and repeat. If it returns true wait returns.
         item_cond.wait(lock, [] { return !item_queue.empty(); });
+        // If we arrive here, we hold the lock and the condition in the lambda
+        // is true.
         Item item{item_queue.front()};
         item_queue.pop();
         lock.unlock();
@@ -403,6 +421,95 @@ void run_producer_consumer_example()
     std::vector<ThreadGuard> my_threads{};
     my_threads.push_back(ThreadGuard{std::thread{item_consumer}});
     my_threads.push_back(ThreadGuard{std::thread{item_producer}});
+}
+
+// Typically you would abstract this pattern into something like a thread-safe
+// queue.
+
+
+///////////////////////////////////////////////////////////////////////
+/// Futures
+///
+/// Futures allow you to schedule a task for execution and then retrieve the
+/// result some time in the future. Similar to std::unique_ptr<> and
+/// std::shared_ptr<>, there are unique futures and shared futures. If multiple
+/// instances of shared futures refer to the same event they all will produce
+/// the same result and become ready at the same time.
+
+// Futures have template parameters for the data they return; if no data is
+// needed, void can be used.
+
+// To create a future you use the std::async function:
+
+int perform_long_running_computation()
+{
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+    return static_cast<int>(
+        std::chrono::system_clock::now().time_since_epoch().count() % 1000LL);
+}
+
+
+void compute_with_futures(int num_futures)
+{
+    std::vector<std::future<int>> futures{};
+    for (int i{0}; i < num_futures; ++i) {
+        futures.push_back(
+            std::async(std::launch::async, perform_long_running_computation));
+    }
+    std::cout << "Started computations. Waiting for results.\n";
+    // This is not necessary, get() will wait as well;
+    std::cout << "Waiting for futures...";
+    futures.front().wait();
+    std::cout << "done.\n";
+    std::for_each(futures.begin(), futures.end(), [](std::future<int>& future) {
+        std::cout << "Future returned value " << future.get() << ".\n";
+    });
+}
+
+int perform_computation_with_duration(int duration)
+{
+    std::this_thread::sleep_for(std::chrono::milliseconds(duration));
+    return static_cast<int>(
+        std::chrono::system_clock::now().time_since_epoch().count() % 1000LL);
+}
+
+
+void compute_with_futures_with_different_timings(int num_futures)
+{
+    std::vector<std::future<int>> futures{};
+    for (int i{0}; i < num_futures; ++i) {
+        futures.push_back(std::async(
+            std::launch::async, perform_computation_with_duration,
+            500 + std::clamp(200 * i, 0, 1500)));
+    }
+    std::cout << "Started computations. Waiting for results.\n";
+    std::for_each(futures.begin(), futures.end(), [](std::future<int>& future) {
+        std::cout << "Future returned value " << future.get() << ".\n";
+    });
+}
+
+struct Data
+{
+    [[nodiscard]] int compute() const
+    {
+        std::this_thread::sleep_for(std::chrono::milliseconds(duration));
+        return static_cast<int>(
+            std::chrono::system_clock::now().time_since_epoch().count() % 1000LL);
+    }
+    int duration{1000};
+};
+
+void compute_with_data(int num_futures)
+{
+    std::vector<std::future<int>> futures{};
+    Data data{};
+    for (int i{0}; i < num_futures; ++i) {
+        futures.push_back(std::async(std::launch::async, &Data::compute, data));
+    }
+    std::cout << "Started computations. Waiting for results.\n";
+    std::for_each(futures.begin(), futures.end(), [](std::future<int>& future) {
+        std::cout << "Future returned value " << future.get() << ".\n";
+    });
 }
 
 } // namespace conc
