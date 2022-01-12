@@ -1,4 +1,5 @@
 add_subdirectory("compile_time_eval")
+add_subdirectory("concurrency")
 add_subdirectory("constexpr")
 add_subdirectory("error_handling")
 # add_subdirectory("imgui_example")
