@@ -38,7 +38,7 @@ std::unique_ptr<double[]> allocate_double_array(int size) noexcept
     try {
         return std::make_unique<double[]>(static_cast<size_t>(size));
     }
-    catch (std::bad_alloc&) {
+    catch (const std::bad_alloc&) {
         // This is unlikely to work and very difficult to test!
         out_of_memory_error();
         return std::unique_ptr<double[]>{};

@@ -17,8 +17,9 @@ int main()
     try {
         SimpleRaiiContainer<Dog> dog_container{};
         std::cout << dog_container.get()->describe() << "\n";
+        // throw std::runtime_error("Error!");
     }
-    catch (...) {
+    catch (const std::runtime_error&) {
         std::printf("An exception was thrown.\n");
     }
     try {
@@ -33,7 +34,7 @@ int main()
         yet_another_cat_container = std::move(another_cat_container);
         std::cout << yet_another_cat_container.get()->describe() << "\n";
     }
-    catch (...) {
+    catch (const std::runtime_error&) {
         std::printf("An exception was thrown.\n");
     }
 }

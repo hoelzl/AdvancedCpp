@@ -19,11 +19,24 @@ std::mutex cout_mutex; // NOLINT(cppcoreguidelines-avoid-non-const-global-variab
 /// print_project_info_concurrently()
 ///
 
-void print_project_name()
+void print_project_name(bool throw_exception)
 {
-    std::this_thread::sleep_for(std::chrono::milliseconds(12));
-    std::lock_guard guard{cout_mutex};
-    std::cout << "  name:      concurrency\n";
+    try {
+        // Don't wait if we want to throw, to increase the chance that we run before the
+        // other thread in this case
+        if (!throw_exception) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(12));
+        }
+        std::lock_guard guard{cout_mutex};
+        std::cout << "  name:      concurrency\n";
+        if (throw_exception) {
+            throw std::runtime_error("Error");
+        }
+    }
+    catch (const std::runtime_error&) {
+        std::lock_guard guard{cout_mutex};
+        std::cout << "Caught error!\n";
+    }
 }
 void print_project_namespace()
 {
@@ -32,10 +45,60 @@ void print_project_namespace()
     std::cout << "  namespace: conc\n";
 }
 
-void print_project_info_concurrently()
+void print_project_info_concurrently(bool throw_exception)
 {
     std::cout << "Subproject Info\n\n";
-    std::thread name_printer{print_project_name};
+    std::thread name_printer{print_project_name, throw_exception};
+    std::thread namespace_printer{print_project_namespace};
+
+    // If you forget to join, the thread destructor will call std::terminate!
+    name_printer.join();
+    namespace_printer.join();
+}
+
+///////////////////////////////////////////////////////////////////////
+/// print_project_info_concurrently_no_lock_guard()
+///
+
+// If you are working with a non-standard conforming C++ implementation that
+// does not offer std::lock_guard you can use std::unique_ptr instead:
+//
+constexpr auto mutex_unlocker = [](std::mutex* m) { m->unlock(); };
+
+void print_project_name_no_lock_guard(bool throw_exception)
+{
+    try {
+        // Don't wait if we want to throw, to increase the chance that we run before the
+        // other thread in this case
+        if (!throw_exception) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(12));
+        }
+        std::unique_ptr<std::mutex, decltype(mutex_unlocker)> lock{&cout_mutex};
+        std::cout << "  name:      concurrency\n";
+        if (throw_exception) {
+            throw std::runtime_error("Error");
+        }
+    }
+    catch (const std::runtime_error&) {
+        std::lock_guard guard{cout_mutex};
+        std::cout << "Caught error!\n";
+    }
+}
+
+// To simplify the syntax:
+using my_lock_guard = std::unique_ptr<std::mutex, decltype(mutex_unlocker)>;
+
+void print_project_namespace_no_lock_guard()
+{
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    my_lock_guard guard{&cout_mutex};
+    std::cout << "  namespace: conc\n";
+}
+
+void print_project_info_concurrently_no_lock_guard(bool throw_exception)
+{
+    std::cout << "Subproject Info\n\n";
+    std::thread name_printer{print_project_name, throw_exception};
     std::thread namespace_printer{print_project_namespace};
 
     // If you forget to join, the thread destructor will call std::terminate!
@@ -113,7 +176,9 @@ void return_thread_from_function()
 {
     std::thread my_thread{create_a_thread()};
     std::cout << "Got thread!\n";
+    // std::thread also_my_thread{my_thread};
     // std::thread also_my_thread{std::move(my_thread)};
+    // my_thread = std::move(my_thread);
     // std::this_thread::sleep_for(std::chrono::milliseconds(100));
     if (my_thread.joinable()) {
         std::cout << "Joining thread.\n";
@@ -202,7 +267,7 @@ void throw_while_launching(int num_threads, int expression_thrown_at)
 void launch_and_join_many_threads()
 {
     try {
-        throw_while_launching(10, 20);
+        throw_while_launching(10, 4);
     }
     catch (const std::runtime_error& err) {
         std::cout << "Caught error: " << err.what() << "\n";
@@ -216,7 +281,8 @@ void launch_and_join_many_threads()
 void adapt_thread_number_to_hardware()
 {
     throw_while_launching(
-        std::clamp<int>(std::thread::hardware_concurrency(), 2, 32), -1);
+        std::clamp<int>(static_cast<int>(std::thread::hardware_concurrency()), 2, 32),
+        -1);
 }
 
 
@@ -372,7 +438,9 @@ Item get_next_item() { return Item{num_items_to_process--}; }
 
 std::mutex mutex;
 std::queue<Item> item_queue;
+
 std::condition_variable item_cond;
+
 void item_producer()
 {
     while (more_items_to_process()) {

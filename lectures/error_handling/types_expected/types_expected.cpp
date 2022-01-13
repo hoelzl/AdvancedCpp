@@ -29,7 +29,7 @@ allocate_double_array(int size) noexcept
     try {
         return std::make_unique<double[]>(size);
     }
-    catch (std::bad_alloc& e) {
+    catch (const std::bad_alloc& e) {
         // This is unlikely to work and very difficult to test!
         return tl::make_unexpected("Memory allocation failed for double[]."s);
     }

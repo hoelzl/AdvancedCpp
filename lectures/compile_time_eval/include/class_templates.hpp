@@ -1,9 +1,11 @@
 // ReSharper disable CppClangTidyCppcoreguidelinesAvoidNonConstGlobalVariables
 // ReSharper disable CppClangTidyCppcoreguidelinesAvoidCArrays
+// ReSharper disable CppMemberFunctionMayBeStatic
 #pragma once
 #ifndef CLASS_TEMPLATES_HPP
 #define CLASS_TEMPLATES_HPP
 
+#include <array>
 #include <stdexcept>
 #include <vector>
 
@@ -175,8 +177,8 @@ bool Stack<T*>::empty() const
 }
 
 ///////////////////////////////////////////////////////////////
+/// Specializing multiple type parameters:
 
-// Specializing multiple type parameters:
 template <typename T1, typename T2>
 struct MyClass
 {
@@ -202,6 +204,36 @@ struct MyClass<T1*, T2*>
 };
 
 ///////////////////////////////////////////////////////////////
+/// Specializing a class vs. specializing an individual member:
+
+template <typename T>
+struct SomeClass
+{
+    std::string my_fun() { return std::string{"my_fun<T>()"}; }
+    std::string your_fun() { return std::string{"your_fun<T>()"}; }
+    std::string their_fun() { return std::string{"their_fun<T>()"}; }
+    std::array<T, 1> data{};
+};
+
+// Class specialization:
+template <>
+struct SomeClass<int>
+{
+    std::string my_fun() { return std::string{"my_fun<int>()"}; }
+    std::string your_fun() { return std::string{"your_fun<int>()"}; }
+    std::array<int, 3> data{};
+};
+
+// Member function specialization:
+template <>
+// ReSharper disable once CppNonInlineFunctionDefinitionInHeaderFile
+std::string SomeClass<double>::my_fun()
+{
+    return std::string{"my_fun<double>()"};
+}
+
+
+///////////////////////////////////////////////////////////////
 /// Mini Workshop:
 ///
 /// Write a generic class Pair<> that can store two arbitrary values, which can
@@ -210,14 +242,31 @@ struct MyClass<T1*, T2*>
 /// unsigned int that contains the value shifted to the left by 2 positions (and
 /// shift the value back when retrieving it). Which changes do you need to make
 /// to the interface? How many overloads do you need?
-///////////////////////////////////////////////////////////////
+
 
 ///////////////////////////////////////////////////////////////
+/// SFINAE = Substitution Failure Is Not An Error
+///
+/// We can write templates that can only be instantiated for certain types. One
+/// of the most widely used tools to do this is the std::enable_if<> trait.
 
-// We can provide default arguments for template parameters. This allows us to,
-// e.g., define a Stack that can take different "storage backends". We also
-// allow automated deduction of class template parameters for this stack (CTAD,
-// class template argument deduction).
+
+// Example: This template can only be instantiated for pointer types:
+
+template <typename T, typename = std::enable_if_t<std::is_pointer_v<T>, int>>
+std::string pointers_only(T t)
+{
+    return std::string{"Hi!"};
+}
+
+
+///////////////////////////////////////////////////////////////
+/// Default Arguments:
+///
+/// We can provide default arguments for template parameters. This allows us to,
+/// e.g., define a Stack that can take different "storage backends". We also
+/// allow automated deduction of class template parameters for this stack (CTAD,
+/// class template argument deduction).
 
 template <typename T, typename Elems = std::vector<T>>
 class StackV2
@@ -265,6 +314,7 @@ bool StackV2<T, Elems>::empty() const
     return elems_.empty();
 }
 
+// Deduction guide
 StackV2(const char*)->StackV2<std::string, std::vector<std::string>>;
 
 
@@ -321,9 +371,10 @@ bool StackV3<T, Elems>::empty() const
 
 
 ///////////////////////////////////////////////////////////////
-
-// How do we declare operators that need access to the class internals?
-// (a) Declare the template implicitly:
+/// Operators and Friends of templates
+///
+/// How do we declare operators that need access to the class internals?
+/// (a) Declare the template implicitly:
 
 template <typename T>
 struct WidgetV1
@@ -341,24 +392,11 @@ std::ostream& operator<<(std::ostream& os, const WidgetV1<T>& w)
     return os;
 }
 
-// (b) Forward declare, but then you need to forward declare the widget before
-// that:
+// (b) Declare or define before the widget, but then you need to forward declare
+// the widget before that:
 
 template <typename T>
 struct WidgetV2;
-
-template <typename T>
-std::ostream& operator<<(std::ostream& os, const WidgetV2<T>& w);
-
-
-template <typename T>
-struct WidgetV2
-{
-    T my_t{};
-
-    friend std::ostream& operator<<<T>(std::ostream& os, const WidgetV1<T>& w);
-};
-
 
 template <typename T>
 std::ostream& operator<<(std::ostream& os, const WidgetV2<T>& w)
@@ -367,6 +405,13 @@ std::ostream& operator<<(std::ostream& os, const WidgetV2<T>& w)
     return os;
 }
 
+template <typename T>
+struct WidgetV2
+{
+    T my_t{};
+
+    friend std::ostream& operator<<<T>(std::ostream& os, const WidgetV2& w);
+};
 
 } // namespace templates
 

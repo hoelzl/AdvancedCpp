@@ -14,16 +14,16 @@ void write_greeting(std::string_view name);
 int add_ints(std::span<int> ints);
 
 template <typename T>
-class fake_raii_container
+class FakeRaiiContainer
 {
 public:
-    explicit constexpr fake_raii_container(const gsl::owner<const T*> resource, bool disable_self_checks = false)
+    explicit constexpr FakeRaiiContainer(const gsl::owner<const T*> resource, bool disable_self_checks = false)
         : disable_self_checks{disable_self_checks}, resource_{resource}
     {}
 
-    fake_raii_container(const fake_raii_container& other) = delete;
+    FakeRaiiContainer(const FakeRaiiContainer& other) = delete;
 
-    constexpr fake_raii_container(fake_raii_container&& other) noexcept
+    constexpr FakeRaiiContainer(FakeRaiiContainer&& other) noexcept
         : resource_{other.resource_}
     {
         if (disable_self_checks || this != &other) {
@@ -31,9 +31,9 @@ public:
         }
     }
 
-    fake_raii_container& operator=(const fake_raii_container& other) = delete;
+    FakeRaiiContainer& operator=(const FakeRaiiContainer& other) = delete;
 
-    constexpr fake_raii_container& operator=(fake_raii_container&& other) noexcept
+    constexpr FakeRaiiContainer& operator=(FakeRaiiContainer&& other) noexcept
     {
         if (disable_self_checks || this != &other) {
             resource_ = other.resource_;
@@ -42,7 +42,7 @@ public:
         return *this;
     }
 
-    constexpr ~fake_raii_container() { delete resource_; }
+    constexpr ~FakeRaiiContainer() { delete resource_; }
 
     [[nodiscard]] constexpr const int* get() const { return resource_; }
 

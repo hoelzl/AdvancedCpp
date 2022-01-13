@@ -1,3 +1,4 @@
+// ReSharper disable CppClangTidyCppcoreguidelinesInitVariables
 #include "class_templates.hpp"
 
 #include <catch2/catch_test_macros.hpp>
@@ -138,6 +139,34 @@ TEST_CASE("Multiple Specializations")
     // CHECK(MyClass<int, int>::info() == "???");
 }
 
+TEST_CASE("Specialization: SomeClass<std::string>")
+{
+    SomeClass<std::string> sc;
+    CHECK(sc.my_fun() == "my_fun<T>()"s);
+    CHECK(sc.your_fun() == "your_fun<T>()"s);
+    CHECK(sc.their_fun() == "their_fun<T>()"s);
+    CHECK(std::is_same_v<decltype(sc.data), std::array<std::string, 1>>);
+}
+
+TEST_CASE("Specialization: SomeClass<int>")
+{
+    SomeClass<int> sc;
+    CHECK(sc.my_fun() == "my_fun<int>()"s);
+    CHECK(sc.your_fun() == "your_fun<int>()"s);
+    // Error: SomeClass<int>::their_fun() does not exist.
+    // CHECK(sc.their_fun() == "their_fun<T>()"s);
+    CHECK(std::is_same_v<decltype(sc.data), std::array<int, 3>>);
+}
+
+TEST_CASE("Specialization: SomeClass<double>")
+{
+    SomeClass<double> sc;
+    CHECK(sc.my_fun() == "my_fun<double>()"s);
+    CHECK(sc.your_fun() == "your_fun<T>()"s);
+    CHECK(sc.their_fun() == "their_fun<T>()"s);
+    CHECK(std::is_same_v<decltype(sc.data), std::array<double, 1>>);
+}
+
 TEST_CASE("StackV2<int>")
 {
     StackV2<int> stack{};
@@ -210,6 +239,12 @@ TEST_CASE("StackV2 (deduction guidelines)")
     }
 }
 
+TEST_CASE("SFINAE: Pointers Only")
+{
+    int i{};
+    // CHECK(pointers_only(i) == "Hi!"s);
+    CHECK(pointers_only(&i) == "Hi!"s);
+}
 
 TEST_CASE("StackV3<int>")
 {

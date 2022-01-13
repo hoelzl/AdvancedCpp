@@ -2,7 +2,8 @@
 
 int main()
 {
-	//conc::print_project_info_concurrently();
+	conc::print_project_info_concurrently(false);
+	//conc::print_project_info_concurrently_no_lock_guard(false);
 	//conc::wait_for_detached_threads(5);
 	//conc::return_thread_from_function();
 	//conc::test_thread_guard();

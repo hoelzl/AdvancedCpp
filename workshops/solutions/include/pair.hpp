@@ -1,6 +1,7 @@
 #pragma once
 #ifndef PAIR_HPP
 #define PAIR_HPP
+#include <utility>
 
 namespace template_pair {
 
@@ -8,7 +9,7 @@ template <typename T1, typename T2>
 class Pair
 {
 public:
-    Pair(T1 first, T2 second) : first_{first}, second_{second} {}
+    Pair(T1 first, T2 second) : first_{std::move(first)}, second_{std::move(second)} {}
 
     [[nodiscard]] const T1& first() const { return first_; }
     [[nodiscard]] T1& first() { return first_; }

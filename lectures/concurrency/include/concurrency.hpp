@@ -5,7 +5,8 @@
 
 namespace conc {
 
-void print_project_info_concurrently();
+void print_project_info_concurrently(bool throw_exception = false);
+void print_project_info_concurrently_no_lock_guard(bool throw_exception = false);
 void wait_for_detached_threads(int time_to_wait);
 void return_thread_from_function();
 void test_thread_guard();
