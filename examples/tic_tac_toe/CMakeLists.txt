@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.21)
+cmake_minimum_required (VERSION 3.20)
 
 
 set(CMAKE_CXX_STANDARD 23)
@@ -14,7 +14,7 @@ target_sources("tic_tac_toe_lib"
     "src/tic_tac_toe.cpp")
 
 target_include_directories("tic_tac_toe_lib"
-    PUBLIC 
+    PUBLIC
     "include")
 
 target_link_libraries("tic_tac_toe_lib"

@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.21)
+cmake_minimum_required (VERSION 3.20)
 
 
 add_library("stl_lib")
@@ -12,7 +12,7 @@ target_sources("stl_lib"
     "src/stl.cpp" "src/repeated_vector_wrapper.cpp")
 
 target_include_directories("stl_lib"
-    PUBLIC 
+    PUBLIC
     "include")
 
 target_link_libraries("stl_lib"

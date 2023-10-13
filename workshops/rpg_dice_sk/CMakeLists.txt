@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.21)
+cmake_minimum_required (VERSION 3.20)
 
 
 add_library("rpg_dice_sk_lib")
@@ -12,7 +12,7 @@ target_sources("rpg_dice_sk_lib"
     "src/rpg_dice_sk.cpp")
 
 target_include_directories("rpg_dice_sk_lib"
-    PUBLIC 
+    PUBLIC
     "include")
 
 target_link_libraries("rpg_dice_sk_lib"

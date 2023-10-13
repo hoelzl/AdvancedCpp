@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.21)
+cmake_minimum_required (VERSION 3.20)
 
 set(CMAKE_CXX_STANDARD 20)
 
@@ -24,7 +24,7 @@ target_sources("error_handling_lib"
 
 add_executable("error_handling_test")
 
-target_sources("error_handling_test" 
+target_sources("error_handling_test"
     PRIVATE
     "error_code_with_query/error_code_with_query_test.cpp"
     "global_error_code/global_error_code_test.cpp"

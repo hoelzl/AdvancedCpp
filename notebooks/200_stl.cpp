@@ -6,17 +6,17 @@
 //       extension: .cpp
 //       format_name: light
 //       format_version: '1.5'
-//       jupytext_version: 1.13.5
+//       jupytext_version: 1.13.8
 //   kernelspec:
-//     display_name: C++17
-//     language: C++17
-//     name: xcpp17
+//     display_name: ROOT C++
+//     language: c++
+//     name: root
 // ---
 
-// + [markdown] slideshow={"slide_type": "slide"}
+// %% [markdown] slideshow={"slide_type": "slide"}
 // # The Standard Template Library
 
-// + [markdown] slideshow={"slide_type": "slide"}
+// %% [markdown] slideshow={"slide_type": "slide"}
 // ## STL Containers
 //
 // - Sequence containers
@@ -29,7 +29,7 @@
 // - (Iterators)
 // - (Algorithms)
 
-// + [markdown] slideshow={"slide_type": "subslide"}
+// %% [markdown] slideshow={"slide_type": "subslide"}
 // ## Operations on (almost) all Containers
 //
 // (See [cppreference.com](https://en.cppreference.com/w/cpp/container) for a more detailed overview.)
@@ -43,7 +43,7 @@
 //     - `reference`
 //     - `const_reference`
 
-// + [markdown] slideshow={"slide_type": "slide"}
+// %% [markdown] slideshow={"slide_type": "slide"}
 // ## Type Aliases
 //
 // A Type alias introduces a new name that refers to an existing type (similar to `typedef`):
@@ -67,7 +67,7 @@
 // for (nostd::vector::iterator it{v.begin()}; it != v.end(); ++v) { /* ... */ }
 // ```
 
-// + [markdown] slideshow={"slide_type": "subslide"}
+// %% [markdown] slideshow={"slide_type": "subslide"}
 // It is often beneficial to use the same pattern in user-defined types:
 //
 // ```c++
@@ -82,7 +82,7 @@
 // for (w : ws) { /* ... */ }
 // ```
 
-// + [markdown] slideshow={"slide_type": "slide"}
+// %% [markdown] slideshow={"slide_type": "slide"}
 // ## Operations on (almost) all Containers (cont.)
 //
 // - Construction
@@ -106,7 +106,7 @@ v2
 std::vector<int> v3{++(v2.begin()), v2.end()};
 v3
 
-// + [markdown] slideshow={"slide_type": "slide"}
+// %% [markdown] slideshow={"slide_type": "slide"}
 // ## Ranges: Iterable Types
 //
 // - It is often useful to make types iterable, in particular more utility-focused types
@@ -116,7 +116,7 @@ v3
 // - Often `begin()` and `end()` simply delegate to a member of the type
 // - In C++20 this is formalized by the [`std::ranges::range` concept](https://en.cppreference.com/w/cpp/ranges/range).
 
-// + [markdown] slideshow={"slide_type": "subslide"}
+// %% [markdown] slideshow={"slide_type": "subslide"}
 // ### The `range` Concept
 //
 // ```c++
@@ -129,14 +129,14 @@ v3
 //
 // The function [`std::ranges::begin()`](https://en.cppreference.com/w/cpp/ranges/begin) returns `t.begin()` if this is possible, similarly for [`std::ranges::end()`](https://en.cppreference.com/w/cpp/ranges/end). The value returned by `std::ranges::end()` is sometimes called a *sentinel*.
 
-// + [markdown] slideshow={"slide_type": "slide"}
+// %% [markdown] slideshow={"slide_type": "slide"}
 // ## Range-based For Loop
 //
 // Why can we loop over our `Board` with a range-based for loop?
 //
 // ```c++
 // for ([init-statement;] range-declaration : range-expression)
-//     loop-statement 
+//     loop-statement
 // ```
 //
 // expands into
@@ -151,19 +151,19 @@ v3
 //         range-declaration = *__begin;
 //         loop-statement
 //     }
-// } 
+// }
 // ```
 // **Beware!** If `range-expression` returns a reference it is dangling: "\[A\] temporary bound to a reference parameter in a function call exists until the end of the full expression containing that function call: if the function returns a reference, which outlives the full expression, it becomes a dangling reference." ([cppreference.com](https://en.cppreference.com/w/cpp/language/reference_initialization))
 //
 //
 
-// + [markdown] slideshow={"slide_type": "slide"}
+// %% [markdown] slideshow={"slide_type": "slide"}
 // ## TTT: Board
 //
 // - Allow users to iterate over `Board` instances
 // - Make the class `Board` usable by STL algorithms
 
-// + [markdown] slideshow={"slide_type": "slide"}
+// %% [markdown] slideshow={"slide_type": "slide"}
 // ## Mini Workshop: Inefficient `IntRange`
 //
 // Define a class `IntRangeV0` with the following partial signature:
@@ -195,7 +195,7 @@ std::vector<int> v{1, 2, 3}; // v contains 1, 2, 3
 v.push_back(4);              // v now contains 1, 2, 3, 4
 v
 
-// + [markdown] slideshow={"slide_type": "subslide"}
+// %% [markdown] slideshow={"slide_type": "subslide"}
 // ## Operations on (almost) all Containers (cont.)
 //
 // - Assignment
@@ -230,7 +230,7 @@ v1 < v2
 swap(v1, v2);
 v1 < v2
 
-// + [markdown] slideshow={"slide_type": "subslide"}
+// %% [markdown] slideshow={"slide_type": "subslide"}
 // ## Operations on (almost) all Containers (cont.)
 //
 // - Size
@@ -252,16 +252,16 @@ v1.size()
 v1.max_size()
 
 v1.clear();
-v1.empty()    
+v1.empty()
 
-// + [markdown] slideshow={"slide_type": "slide"}
+// %% [markdown] slideshow={"slide_type": "slide"}
 // ## Overview of Container Types
 //
 // Different container types have different trade-offs and functionality.
 //
 // Operations are typically only defined for container types for which they are efficiently implementable.
 
-// + [markdown] slideshow={"slide_type": "slide"}
+// %% [markdown] slideshow={"slide_type": "slide"}
 // ### Sequence Containers
 //
 // Operations such as
@@ -274,8 +274,8 @@ v1.empty()
 //
 // are availble for most sequence containers (where they make sense).
 
-// + [markdown] slideshow={"slide_type": "subslide"}
-// ### Sequence Containers 
+// %% [markdown] slideshow={"slide_type": "subslide"}
+// ### Sequence Containers
 //
 // - `array`: the one trick pony (but it's very good at that trick)
 //     - fixed size
@@ -297,8 +297,8 @@ a3 = a1;
 for (int i : a3)
     std::cout << i << ", ";
 
-// + [markdown] slideshow={"slide_type": "slide"}
-// ### Sequence Containers 
+// %% [markdown] slideshow={"slide_type": "slide"}
+// ### Sequence Containers
 //
 // - `vector`: the workhorse
 //     - holds elements in contiguous memory
@@ -309,7 +309,7 @@ for (int i : a3)
 //     - fast random access
 //     - insertion/deletion efficient at front and back
 
-// + [markdown] slideshow={"slide_type": "subslide"}
+// %% [markdown] slideshow={"slide_type": "subslide"}
 // ### Functionality of Vector and Deque
 //
 // - `c.push_back(elt)`
@@ -326,7 +326,7 @@ for (int i : a3)
 //
 // See [the containers library overview](https://en.cppreference.com/w/cpp/container) for a summary and the [vector](https://en.cppreference.com/w/cpp/container/vector) and [deque](https://en.cppreference.com/w/cpp/container/deque) pages for details.
 
-// + [markdown] slideshow={"slide_type": "slide"}
+// %% [markdown] slideshow={"slide_type": "slide"}
 // ### Sequence Containers
 //
 // - Lists: more one trick ponies (although they're often not great)
@@ -340,7 +340,7 @@ for (int i : a3)
 // - `list`
 //     - can iterate in both directions
 
-// + [markdown] slideshow={"slide_type": "slide"}
+// %% [markdown] slideshow={"slide_type": "slide"}
 // ## Mini Workshop:  `RingBuffer`
 //
 // Define a class `RingBuffer` with member functions
@@ -366,7 +366,7 @@ for (int i : a3)
 //
 // *Note:* You can use the project `workshops/starter_kit/` to implement your solution.
 
-// + [markdown] slideshow={"slide_type": "slide"}
+// %% [markdown] slideshow={"slide_type": "slide"}
 // ## Lambdas
 //
 // We can overload `operator()` to create *functors*, i.e., objects that can be called:
@@ -391,7 +391,7 @@ std::is_object_v<decltype(f)>
 
 typeid(f).name()
 
-// + [markdown] slideshow={"slide_type": "subslide"}
+// %% [markdown] slideshow={"slide_type": "subslide"}
 // A *lambda expression* is a shorthand notation for a functor instance. The values of lambda expressions are called *closures* or (informally) *lambdas*.
 //
 // A lambda has an (anonymous) type defined by the compiler, called its *closure type*.
@@ -408,7 +408,7 @@ typeid(lambda).name()
 
 lambda.operator()(12)
 
-// + [markdown] slideshow={"slide_type": "subslide"}
+// %% [markdown] slideshow={"slide_type": "subslide"}
 // ### Non-top-level Lambdas
 //
 // In contrast to functions, lambdas can be defined inside other functions:
@@ -418,7 +418,7 @@ int my_function() {
     auto lambda = []() { return 1; };
     return lambda() + 1;
 }
-my_function() 
+my_function()
 
 // + slideshow={"slide_type": "subslide"}
 #include <functional>
@@ -440,7 +440,7 @@ std::string foo{"My text"s};
 
 pick_function(1000)()
 
-// + [markdown] slideshow={"slide_type": "slide"}
+// %% [markdown] slideshow={"slide_type": "slide"}
 // ### Generic Lambdas
 //
 // Lambdas may have parameters declared with type specifier `auto`. The types of these parameters is deduced according to the rules for template argument deduction.
@@ -460,7 +460,7 @@ call_generic_lambda(123)
 #include <string>
 call_generic_lambda(std::string{"foo"})
 
-// + [markdown] slideshow={"slide_type": "subslide"}
+// %% [markdown] slideshow={"slide_type": "subslide"}
 // A generic lambda results in a closure type with generic call operator, *not* a generic closure type:
 //
 // ```c++
@@ -498,7 +498,7 @@ call_generic_lambdas(123, std::string{"foo"}).first
 
 call_generic_lambdas(123, std::string{"foo"}).second
 
-// + [markdown] slideshow={"slide_type": "slide"}
+// %% [markdown] slideshow={"slide_type": "slide"}
 // ## Mini Workshop:  `get_op_impl`
 //
 // Given the following enumeration:
@@ -511,7 +511,7 @@ call_generic_lambdas(123, std::string{"foo"}).second
 // - $m + n$ if `op` is `add`
 // - $m * n$ if `op` is `mul`
 
-// + [markdown] slideshow={"slide_type": "subslide"}
+// %% [markdown] slideshow={"slide_type": "subslide"}
 // (Load `ce_get_op_impl.cpp` into [Compiler Explorer](https://godbolt.org/) or go to [this link](https://godbolt.org/z/rjzKhTYPY) to get the Compiler Explorer page for discussing this solution).
 // -
 
@@ -523,7 +523,7 @@ call_generic_lambdas(123, std::string{"foo"}).second
 //
 // See `examples/stl/type_erasure.hpp`.
 
-// + [markdown] slideshow={"slide_type": "slide"}
+// %% [markdown] slideshow={"slide_type": "slide"}
 // ## Lambdas: Captures
 //
 // If lambdas are defined inside other function, we often want to access the local variable of the function inside the body of the lambda. This can be done by specifying which variables should be accessible inside the square brackets.
@@ -547,7 +547,7 @@ int capture_manually() {
 }
 capture_manually()
 
-// + [markdown] slideshow={"slide_type": "subslide"}
+// %% [markdown] slideshow={"slide_type": "subslide"}
 // We can capture by value (as above) or by reference, we can also capture all local values by value or reference:
 // -
 
@@ -579,7 +579,7 @@ int capture_4() {
 }
 capture_4()
 
-// + [markdown] slideshow={"slide_type": "subslide"}
+// %% [markdown] slideshow={"slide_type": "subslide"}
 // We can combine these features to "create functions during runtime":
 // -
 
@@ -605,7 +605,7 @@ call_fun([](int n) { return n + 1; }, 3)
 
 call_fun(make_adder(2), 3)
 
-// + [markdown] slideshow={"slide_type": "subslide"}
+// %% [markdown] slideshow={"slide_type": "subslide"}
 // #### Danger! Reference Captures may Dangle!
 // -
 
@@ -615,7 +615,7 @@ auto make_bad_adder(int n) {
 //  Uh, oh.
 call_fun(make_bad_adder(2), 3)
 
-// + [markdown] slideshow={"slide_type": "slide"}
+// %% [markdown] slideshow={"slide_type": "slide"}
 // ## Iterators
 //
 // - Provide indirect access to objects (typically objects in containers)
@@ -629,7 +629,7 @@ call_fun(make_bad_adder(2), 3)
 //
 // (See [cppreference.com](https://en.cppreference.com/w/cpp/iterator) for more details.)
 
-// + [markdown] slideshow={"slide_type": "subslide"}
+// %% [markdown] slideshow={"slide_type": "subslide"}
 // ## Iterator categories
 //
 // Since C++20 the following concepts define categories of iterators:
@@ -644,12 +644,12 @@ call_fun(make_bad_adder(2), 3)
 //
 // Requirements on `==` are defined by the `sentinel_for` concept.
 
-// + [markdown] slideshow={"slide_type": "subslide"}
+// %% [markdown] slideshow={"slide_type": "subslide"}
 // ## Example: Implementation of `RepeatedVectorWrapper`:
 //
 // We define a class `RepeatedVectorWrapper` that iterates multiple times over the same vector:
 
-// + [markdown] slideshow={"slide_type": "subslide"}
+// %% [markdown] slideshow={"slide_type": "subslide"}
 // ## Mini Workshop:  Improved `IntRange`
 //
 // Improve upon the previous implementation of `IntRange`:
@@ -673,10 +673,10 @@ call_fun(make_bad_adder(2), 3)
 // Test your implementation using Catch2.
 //
 
-// + [markdown] slideshow={"slide_type": "slide"}
+// %% [markdown] slideshow={"slide_type": "slide"}
 // ## STL Algorithms
 //
-// The STL provides many generic algorithms that can be used with any type that satisfies the `range` concept. 
+// The STL provides many generic algorithms that can be used with any type that satisfies the `range` concept.
 //
 // Algorithms
 //
@@ -684,7 +684,7 @@ call_fun(make_bad_adder(2), 3)
 // - perform no container operation, i.e., they don't add or remove elements
 // - may reorder or change the elements in the container
 
-// + [markdown] slideshow={"slide_type": "subslide"}
+// %% [markdown] slideshow={"slide_type": "subslide"}
 // ### Examples for Algorithms
 //
 // #### Non Modifying
@@ -706,7 +706,7 @@ std::all_of(v.begin(), v.end(), [](int i){ return i > 5; })
 
 std::all_of(v.begin(), v.end(), [](int i){return i > 10; })
 
-// + [markdown] slideshow={"slide_type": "subslide"}
+// %% [markdown] slideshow={"slide_type": "subslide"}
 // #### Modifying Algorithms
 //
 // - `copy`, `copy_if`: copies a range
@@ -722,32 +722,32 @@ std::all_of(v.begin(), v.end(), [](int i){return i > 10; })
 // - `sample`: selects random elements from a range
 // - `unique`, `unique_copy`: "removes" consecutive copies of elements
 
-// + [markdown] slideshow={"slide_type": "subslide"}
+// %% [markdown] slideshow={"slide_type": "subslide"}
 // #### Non-Range Algorithms
 //
 // - `swap`: swaps the values of two objects
 // - `max`, `min`, `minmax`: extrema of multiple values
 // - `clamp`: clamps a value between boundaries
 
-// + [markdown] slideshow={"slide_type": "subslide"}
+// %% [markdown] slideshow={"slide_type": "subslide"}
 // ### Mini-Workshop: Sum of Integers
 //
 // Write a function `int sum_from_to(int min, int max)` that computes the sum of all numbers from `min` to `max` (inclusive). Use an `IntRange` and an appropriate algorithm from the STL to perform the task.
 
-// + [markdown] slideshow={"slide_type": "slide"}
+// %% [markdown] slideshow={"slide_type": "slide"}
 // ## TTT: Extend the Board
 //
 // - Define a function `field_value(Position pos)` that retrieves the field at a given position
 // - There are various ways to model positions, we'll use a `std::pair<short, short>` for now
 // - Write tests that test the new functionality
 
-// + [markdown] slideshow={"slide_type": "slide"}
+// %% [markdown] slideshow={"slide_type": "slide"}
 // ## TTT: Valid Moves
 //
 // - Define a member function `Board::is_move_valid(Position pos)` that checks whether `pos` is empty
 // - Define a member function `Board::valid_moves()` that returns a set of all valid moves.
 
-// + [markdown] slideshow={"slide_type": "slide"}
+// %% [markdown] slideshow={"slide_type": "slide"}
 // ### Ordered Associative Containers
 //
 // - `set`: ordered collection of unique elements
@@ -755,7 +755,7 @@ std::all_of(v.begin(), v.end(), [](int i){return i > 10; })
 // - `multiset`: a set with non-unique members
 // - `multimap`: a dictionary with non-unique keys
 
-// + [markdown] slideshow={"slide_type": "subslide"}
+// %% [markdown] slideshow={"slide_type": "subslide"}
 // ### Mini-Workshop: Unique Integers
 //
 // Write a function `void remove_duplicates(std::vector<int>& v)` that removes all duplicates in `v`.
@@ -766,7 +766,7 @@ std::all_of(v.begin(), v.end(), [](int i){return i > 10; })
 //
 // Use STL algorithms to implement these functions.
 
-// + [markdown] slideshow={"slide_type": "slide"}
+// %% [markdown] slideshow={"slide_type": "slide"}
 // ### Unordered Associative Containers
 //
 // The unordered associative containers are similar to their ordered counterparts. They are often more efficient, but their members need to be hashable.
@@ -776,7 +776,7 @@ std::all_of(v.begin(), v.end(), [](int i){return i > 10; })
 // - `unordered_multiset`
 // - `unordered_multimap`
 
-// + [markdown] slideshow={"slide_type": "slide"}
+// %% [markdown] slideshow={"slide_type": "slide"}
 // ### Container Adaptors
 //
 // These classes are wrappers that provide a different interface but use another container for their implementation
@@ -785,12 +785,12 @@ std::all_of(v.begin(), v.end(), [](int i){return i > 10; })
 // - `queue`: A collection that returns elements in FIFO manner
 // - `priority_queue`: A collection that returns elements in priority order
 
-// + [markdown] slideshow={"slide_type": "slide"}
+// %% [markdown] slideshow={"slide_type": "slide"}
 // ## Static Variables
 //
 // Function-local static variables are initialized the first time control flow passes through them. This is true even in the presence of multiple threads.
 
-// + [markdown] slideshow={"slide_type": "slide"}
+// %% [markdown] slideshow={"slide_type": "slide"}
 // ## TTT: PlayerColor Class
 //
 // - Implement `operator<<` for `FieldValue`
@@ -799,7 +799,7 @@ std::all_of(v.begin(), v.end(), [](int i){return i > 10; })
 // - What happens if you try to compare player colors?
 // - What happens if you try to write a player color to an output stream?
 
-// + [markdown] slideshow={"slide_type": "slide"}
+// %% [markdown] slideshow={"slide_type": "slide"}
 // ## Argument Dependent Lookup
 //
 // Argument-dependent lookup (ADL) means that unqualified names *in function calls* may also refer to names in namespaces other than the current one. This makes it possible to use operators not defined in the current namespace. It has important consequences for overload resolution.
@@ -810,19 +810,19 @@ std::all_of(v.begin(), v.end(), [](int i){return i > 10; })
 // {
 //     std::cout << "Foo!\n";  // No operator<< in global namespace. std::cout is in
 //                             // namespace std, therefore std::operator<<(...) is found.
-//     
+//
 //     operator<<(std::cout, "Test\n"); // Same, using function call notation
-//  
+//
 //     std::cout << endl;      // ERROR: 'endl' is not declared in this namespace.
 //                             // Not a function call to `endl`, so ADL does not apply.
-//  
+//
 //     endl(std::cout);        // OK: function call to endl, argument in std.
-//  
+//
 //     (endl)(std::cout);      // ERROR: '(endl)' is not a function call expression.
 // }
 // ```
 
-// + [markdown] slideshow={"slide_type": "subslide"}
+// %% [markdown] slideshow={"slide_type": "subslide"}
 // ### ADL Details (Very Approximately)
 //
 // - For function call expressions (only) the following namespaces are considered for the lookup set
@@ -834,7 +834,7 @@ std::all_of(v.begin(), v.end(), [](int i){return i > 10; })
 //
 // See [cppreference.com](https://en.cppreference.com/w/cpp/language/adl) for details.
 
-// + [markdown] slideshow={"slide_type": "subslide"}
+// %% [markdown] slideshow={"slide_type": "subslide"}
 // ### Consequences of ADL
 //
 // - Operators and unqualified functions can be called in namespaces in which they are not a member
@@ -847,7 +847,7 @@ std::all_of(v.begin(), v.end(), [](int i){return i > 10; })
 // ```
 // (Calling `std::swap()` would not find user-defined overloads in the namespaces of `obj1` and `obj2`, simply calling `swap()` would potentially not find `std::swap()`.
 
-// + [markdown] slideshow={"slide_type": "slide"}
+// %% [markdown] slideshow={"slide_type": "slide"}
 // ## User-defined Operators
 //
 // See the hidden friend pattern from the previous slide.
@@ -871,7 +871,7 @@ std::all_of(v.begin(), v.end(), [](int i){return i > 10; })
 //
 // Check whether the implemnetation of `operator<<` is found if you place it in the global scope or in any of the tree namespaces.
 
-// + [markdown] slideshow={"slide_type": "slide"}
+// %% [markdown] slideshow={"slide_type": "slide"}
 // ## Function Call Processing and Overload Resolution
 //
 // Overload resolution is performed for function calls (that are not performed through pointers):
@@ -884,7 +884,7 @@ std::all_of(v.begin(), v.end(), [](int i){return i > 10; })
 //     - If multiple candidates are equally good the call is *ambiguous*
 // - The selected candidate is tested for applicability (it might, e.g., be inaccessible)
 
-// + [markdown] slideshow={"slide_type": "subslide"}
+// %% [markdown] slideshow={"slide_type": "subslide"}
 // ### Overload Resolution (strongly simplified)
 //
 // Each argument is ranked for each candidate and classified as follows:
@@ -897,18 +897,18 @@ std::all_of(v.begin(), v.end(), [](int i){return i > 10; })
 //
 // To be the best candidate, a function must be *no worse* than all other candidates for *all arguments* and *strictly better* than each other candidate for *at least one argument*.
 
-// + [markdown] slideshow={"slide_type": "slide"}
+// %% [markdown] slideshow={"slide_type": "slide"}
 // ## TTT: Perform a move
 //
 // - Implement a method `Board::move(PlayerColor, Position)`
 //
 
-// + [markdown] slideshow={"slide_type": "subslide"}
+// %% [markdown] slideshow={"slide_type": "subslide"}
 // ## Exceptions and Error Handling
 //
 // See `lectures/error_handling`. In particular `error-handling.md` in that folder contains a rather extensive discussion of various error-handling strategies.
 
-// + [markdown] slideshow={"slide_type": "slide"}
+// %% [markdown] slideshow={"slide_type": "slide"}
 // ## TTT: Winning Configurations
 //
 // Let's call a set of three posistions a *configuration*.
@@ -917,10 +917,13 @@ std::all_of(v.begin(), v.end(), [](int i){return i > 10; })
 // - Implement a member function `Board::winning_configurations()` that returns the set of all winning configurations.
 // - Implement a member function `Board::has_winning_configuration(PlayerColor pc)` that checks whether `pc` has a winning configuration.
 
-// + [markdown] slideshow={"slide_type": "slide"}
+// %% [markdown] slideshow={"slide_type": "slide"}
 // ## TTT: Printing the Board
 //
 // Implement functions:
 // - `to_char(FieldValue)` that returns `' '`, `'x'`, and `'o'` for an empty, black or white field, respectively
 // - `to_string(Board board, int prefix_len = 0)` that returns a representation of the board with `prefix_len` spaces indentation.
 //
+// -
+
+

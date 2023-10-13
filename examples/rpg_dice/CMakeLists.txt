@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.21)
+cmake_minimum_required (VERSION 3.20)
 
 set(CMAKE_CXX_STANDARD 23)
 
@@ -13,7 +13,7 @@ target_sources("rpg_dice_lib"
     "src/rpg_dice.cpp")
 
 target_include_directories("rpg_dice_lib"
-    PUBLIC 
+    PUBLIC
     "include")
 
 target_link_libraries("rpg_dice_lib"

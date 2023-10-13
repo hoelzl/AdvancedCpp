@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.21)
+cmake_minimum_required (VERSION 3.20)
 
 
 add_library("imgui_example_lib")
@@ -12,7 +12,7 @@ target_sources("imgui_example_lib"
     "src/imgui_example.cpp")
 
 target_include_directories("imgui_example_lib"
-    PUBLIC 
+    PUBLIC
     "include")
 
 target_link_libraries("imgui_example_lib"

@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.21)
+cmake_minimum_required (VERSION 3.20)
 
 
 add_library("advanced_cpp_lib")
@@ -12,7 +12,7 @@ target_sources("advanced_cpp_lib"
     "src/advanced_cpp.cpp")
 
 target_include_directories("advanced_cpp_lib"
-    PUBLIC 
+    PUBLIC
     "include")
 
 target_link_libraries("advanced_cpp_lib"

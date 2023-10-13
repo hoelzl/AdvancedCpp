@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.21)
+cmake_minimum_required (VERSION 3.20)
 
 set(CMAKE_CXX_STANDARD 23)
 
@@ -13,7 +13,7 @@ target_sources("constexpr_lib"
     "src/constexpr_demo.cpp")
 
 target_include_directories("constexpr_lib"
-    PUBLIC 
+    PUBLIC
     "include")
 
 target_link_libraries("constexpr_lib"

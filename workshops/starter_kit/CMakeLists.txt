@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.21)
+cmake_minimum_required (VERSION 3.20)
 
 
 add_library("starter_kit_lib")
@@ -12,7 +12,7 @@ target_sources("starter_kit_lib"
     "src/starter_kit.cpp")
 
 target_include_directories("starter_kit_lib"
-    PUBLIC 
+    PUBLIC
     "include")
 
 target_link_libraries("starter_kit_lib"

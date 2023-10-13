@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.21)
+cmake_minimum_required (VERSION 3.20)
 
 
 add_library("compile_time_eval_lib")
@@ -16,7 +16,7 @@ target_sources("compile_time_eval_lib"
     "src/compile_time_eval.cpp" "src/class_templates.cpp")
 
 target_include_directories("compile_time_eval_lib"
-    PUBLIC 
+    PUBLIC
     "include")
 
 target_link_libraries("compile_time_eval_lib"

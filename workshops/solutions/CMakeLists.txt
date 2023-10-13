@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.21)
+cmake_minimum_required (VERSION 3.20)
 
 
 add_library("solutions_lib")
@@ -12,7 +12,7 @@ target_sources("solutions_lib"
     "src/solutions.cpp" "src/ring_buffer.cpp" "src/int_range.cpp")
 
 target_include_directories("solutions_lib"
-    PUBLIC 
+    PUBLIC
     "include")
 
 target_link_libraries("solutions_lib"

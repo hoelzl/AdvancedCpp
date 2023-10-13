@@ -14,10 +14,10 @@
 //     name: xcpp17
 // ---
 
-// + [markdown] slideshow={"slide_type": "slide"}
+// %% [markdown] slideshow={"slide_type": "slide"}
 // # Functions and Lambdas
 
-// + [markdown] slideshow={"slide_type": "slide"}
+// %% [markdown] slideshow={"slide_type": "slide"}
 // ## Preliminaries: Example Projects
 //
 // The `AdvancedCpp` project contains a number of subfolders:
@@ -30,12 +30,12 @@
 //     - `workshops/solutions_xxx`: solution for the workshops
 // - `lectures`: code for demonstration purposes during the lectures where no live-coding takes place
 
-// + [markdown] slideshow={"slide_type": "slide"}
+// %% [markdown] slideshow={"slide_type": "slide"}
 // - All projects are built with CMake; dependencies for projects where they are needed are installed with [vcpkg](https://vcpkg.io/en/index.html).
 // - I tried to organize the project so that all important subprojects can be built without additional dependencies.
 // - `examples/advanced_cpp` is a prototypical project to demonstrate how all other subprojects are set up
 
-// + [markdown] slideshow={"slide_type": "slide"}
+// %% [markdown] slideshow={"slide_type": "slide"}
 // ## Preliminaries: Catch2
 //
 // In order to get working software we need to write tests as we build the system. In this course we use the [Catch2](https://github.com/catchorg/Catch2) framework for writing tests.
@@ -54,8 +54,8 @@
 // - Tests are compiled into an executable
 //     - Each test case name must be unique in the executable or no test is run
 
-// + [markdown] slideshow={"slide_type": "subslide"}
-// - Tags 
+// %% [markdown] slideshow={"slide_type": "subslide"}
+// - Tags
 //     - Are enclosed in square brackets, e.g., `[backend]` or `[slow]`
 //     - Can be used to, run only a subset of the tests by passing them on the command line
 //     - The special tag `[.]` causes tests to be skipped by default
@@ -65,7 +65,7 @@
 //     - `SCENARIO` corresponds to `TEST_CASE`
 //     - `GIVEN`, `WHEN`, and `THEN` correspond to `SECTION`
 
-// + [markdown] slideshow={"slide_type": "subslide"}
+// %% [markdown] slideshow={"slide_type": "subslide"}
 // ### Test Assertions
 //
 // - Catch uses "natural expressions" for testing
@@ -82,7 +82,7 @@
 //
 // Other macros provide, e.g., matchers for exception strings, etc.
 
-// + [markdown] slideshow={"slide_type": "slide"}
+// %% [markdown] slideshow={"slide_type": "slide"}
 // ## First Example: Tic Tac Toe
 //
 // Let's implement the game of tic-tac-toe in a procedural manner.
@@ -90,20 +90,20 @@
 // ![tic-tac-toe](img/tic_tac_toe.png)
 //
 // We'll "overengineer" this solution to show off more features of C++.
-// + [markdown] slideshow={"slide_type": "slide"}
+// %% [markdown] slideshow={"slide_type": "slide"}
 // ## TTT: Field and Board
 //
 // - Define a scoped enumeration `FieldValue` representing the value of a field on the board
 // - Define a class `Board` containing an array of 9 fields
 
-// + [markdown] slideshow={"slide_type": "subslide"}
+// %% [markdown] slideshow={"slide_type": "subslide"}
 // ## Representing the Board
 //
 // - The board consists of 9 fields
 // - We need a data structure with storage for exactly 9 values
 // - What would you choose?
 
-// + [markdown] slideshow={"slide_type": "subslide"}
+// %% [markdown] slideshow={"slide_type": "subslide"}
 // ### Class `std::array`
 //
 // - Alternative to built-in arrays
@@ -111,10 +111,10 @@
 //     - Does not decay, not interchangable with pointer
 //     - Therefore, number of elements stays part of the type
 //     - Invariant for polymorphic types
-//     
+//
 // (*) In cases where you need a fixed-size storage. If you need variable size storage `std::vector` is almost always superior to both.
 
-// + [markdown] slideshow={"slide_type": "slide"}
+// %% [markdown] slideshow={"slide_type": "slide"}
 // ## The [C++ Core Guidelines](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines)
 //
 // The [C++ Core Guidelines](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines) are a set of rules/guidance that help writing more reliable and usable C++ code.
@@ -128,7 +128,7 @@
 //
 // - [SL.con.1: Prefer using STL array or vector instead of a C array](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rsl-arrays)
 
-// + [markdown] slideshow={"slide_type": "slide"}
+// %% [markdown] slideshow={"slide_type": "slide"}
 // ### Types, Objects, Values, Variables
 //
 // - A *type* restrict the operations for an entity and provides semantic meaning to its sequence of bits ([details](https://en.cppreference.com/w/cpp/language/type))
@@ -140,14 +140,14 @@
 // - An *object* is memory that holds a value of some type ([details](https://en.cppreference.com/w/cpp/language/object))
 // - A *variable* is a named object
 
-// + [markdown] slideshow={"slide_type": "slide"}
+// %% [markdown] slideshow={"slide_type": "slide"}
 // ### Declarations and Definitions
 //
 // - A declaration is a statement that introduce names into a program ([details](https://en.cppreference.com/w/cpp/language/declarations))
 // - A definition is a declaration that is sufficient to use the named entity
 // - A name may have multiple declarations but generally only one definition
 
-// + [markdown] slideshow={"slide_type": "slide"}
+// %% [markdown] slideshow={"slide_type": "slide"}
 // ## Pointers
 //
 // Valid pointers can
@@ -158,7 +158,7 @@
 //
 // All other pointers are invalid.
 
-// + [markdown] slideshow={"slide_type": "subslide"}
+// %% [markdown] slideshow={"slide_type": "subslide"}
 // ### Some Caveats
 //
 // - Pointers have no influence on the lifetime of an object; there is no way to check whether the pointed-to object is still alive
@@ -175,7 +175,7 @@ std::less{}(&i, &j)
 int ia[5]{};
 ia < &ia[3] // OK
 
-// + [markdown] slideshow={"slide_type": "subslide"}
+// %% [markdown] slideshow={"slide_type": "subslide"}
 // ### Syntax
 
 // + slideshow={"slide_type": "subslide"}
@@ -216,7 +216,7 @@ int (Widget::*pmw2)(int){&Widget::foo};
 Widget* pw{&w};
 (pw->*pmw2)(5)
 
-// + [markdown] slideshow={"slide_type": "subslide"}
+// %% [markdown] slideshow={"slide_type": "subslide"}
 // ### Arrays and Pointers
 //
 // - In C++ arrays and pointers are very closely related
@@ -233,7 +233,7 @@ int* pi{ia};
 int plus1(int* pi) { return *pi + 1; }
 plus1(ia)
 
-// + [markdown] slideshow={"slide_type": "subslide"}
+// %% [markdown] slideshow={"slide_type": "subslide"}
 // When using `auto` with arrays they decay into pointers:
 // -
 
@@ -257,7 +257,7 @@ std::is_same_v<decltype(pi2), decltype(ia)>
 
 std::is_same_v<decltype(pi2), decltype(pi)>
 
-// + [markdown] slideshow={"slide_type": "subslide"}
+// %% [markdown] slideshow={"slide_type": "subslide"}
 // `decltype(entity-or-expression)` inspects the type of `entity-or-expression`:
 //
 // - `decltype(entity)` yields the type of `entity`, if `entity` is an identifier for a variable or a class member that is not enclosed in parentheses
@@ -322,7 +322,7 @@ std::is_same_v<decltype(bar), int(int(&)[])>
 
 baz(ia)
 
-// + [markdown] slideshow={"slide_type": "subslide"}
+// %% [markdown] slideshow={"slide_type": "subslide"}
 // From [cppreference.com](https://en.cppreference.com/w/cpp/language/function):
 //
 // The type of each function parameter in the parameter list is determined according to the following rules:
@@ -350,7 +350,7 @@ ia[2]
 
 // (This is how the built-in index operator is defined.)
 
-// + [markdown] slideshow={"slide_type": "subslide"}
+// %% [markdown] slideshow={"slide_type": "subslide"}
 // Of course, according to the definition, it's perfectly legal to write...
 // -
 
@@ -363,7 +363,7 @@ i[ia]
 
 // ... that's just common sense, right?
 
-// + [markdown] slideshow={"slide_type": "slide"}
+// %% [markdown] slideshow={"slide_type": "slide"}
 // ## Back to Pointers...
 // -
 

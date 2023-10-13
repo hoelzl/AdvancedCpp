@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.21)
+cmake_minimum_required (VERSION 3.20)
 
 
 add_library("resources_lib")
@@ -12,7 +12,7 @@ target_sources("resources_lib"
     "src/resources.cpp")
 
 target_include_directories("resources_lib"
-    PUBLIC 
+    PUBLIC
     "include")
 
 target_link_libraries("resources_lib"

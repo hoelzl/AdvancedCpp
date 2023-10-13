@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.21)
+cmake_minimum_required (VERSION 3.20)
 
 
 add_library("concurrency_lib")
@@ -12,7 +12,7 @@ target_sources("concurrency_lib"
     "src/concurrency.cpp")
 
 target_include_directories("concurrency_lib"
-    PUBLIC 
+    PUBLIC
     "include")
 
 target_link_libraries("concurrency_lib"

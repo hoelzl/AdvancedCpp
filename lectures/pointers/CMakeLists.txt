@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.21)
+cmake_minimum_required (VERSION 3.20)
 
 
 add_library("pointers_lib")
@@ -12,7 +12,7 @@ target_sources("pointers_lib"
     "src/pointers.cpp" "src/array_dangers.cpp" "src/shapes.cpp")
 
 target_include_directories("pointers_lib"
-    PUBLIC 
+    PUBLIC
     "include")
 
 target_link_libraries("pointers_lib"
