@@ -178,7 +178,7 @@ ia < &ia[3] // OK
 // %% [markdown] slideshow={"slide_type": "subslide"}
 // ### Syntax
 
-// + slideshow={"slide_type": "subslide"}
+// %% slideshow={"slide_type": "subslide"}
 int* foo;                     // pointer to int
 int** bar;                    // pointer to pointer to int
 const int* baz;               // pointer to const int
@@ -194,7 +194,7 @@ int*& rpi{foo};          // (lvalue) reference to pointer to int
 int (*f)(double);        // pointer to a function taking a double, returning an int
 int *g(double);          // function taking a double returning a pointer to int
 
-// + slideshow={"slide_type": "subslide"}
+// %% slideshow={"slide_type": "subslide"}
 int ai[3];                // array of int
 int aai[3][4];            // "two-dimensional" array (array of array of int)
 int* api[4];              // array of pointer to int
@@ -224,7 +224,7 @@ Widget* pw{&w};
 // - In many situations, arrays *decay* to pointers, i.e., they are (silently) converted into pointers without using the address-of operator
 //
 
-// + slideshow={"slide_type": "-"}
+// %% slideshow={"slide_type": "-"}
 int ia[]{1, 2, 3, 4, 5};
 int* pi{ia};
 *(pi + 2)
@@ -239,7 +239,7 @@ plus1(ia)
 
 auto pi2{ia}; // pi2 is an `int*` not an `int[]`
 
-// + slideshow={"slide_type": "subslide"}
+// %% slideshow={"slide_type": "subslide"}
 #include <type_traits>
 std::is_same<decltype(pi2), int[]>::value
 // -
@@ -248,7 +248,7 @@ std::is_same_v<decltype(pi2), int*>
 
 std::is_same_v<std::decay_t<int[]>, int*>
 
-// + slideshow={"slide_type": "-"}
+// %% slideshow={"slide_type": "-"}
 #include <type_traits>
 int ia[]{1, 2, 3, 4, 5};
 auto pi2{ia};
@@ -265,7 +265,7 @@ std::is_same_v<decltype(pi2), decltype(pi)>
 //
 // (This is a complex way of saying, it is important whether you enclose the argument of decltype in parentheses.)
 
-// + slideshow={"slide_type": "subslide"}
+// %% slideshow={"slide_type": "subslide"}
 const int* foo;
 // The declared type of foo is const int*...
 std::is_same_v<decltype(foo), const int*>
@@ -280,7 +280,7 @@ std::is_same_v<decltype((foo)), const int*>
 // ... therefore decltype returns a reference type
 std::is_same_v<decltype((foo)), const int*&>
 
-// + slideshow={"slide_type": "subslide"}
+// %% slideshow={"slide_type": "subslide"}
 // Back to arrays: You can declare functions with array type
 int first(int ia[]) { return ia[0]; }
 
@@ -291,7 +291,7 @@ int* pi{&i};
 
 first(pi)
 
-// + slideshow={"slide_type": "-"}
+// %% slideshow={"slide_type": "-"}
 std::is_same_v<decltype(first), int(int[])>
 // -
 
@@ -299,10 +299,10 @@ std::is_same_v<decltype(first), int(int*)>
 
 std::is_same_v<int(int[]), int(int*)>
 
-// + slideshow={"slide_type": "-"}
+// %% slideshow={"slide_type": "-"}
 std::is_same_v<int(int(&)[]), int(int*&)>
 
-// + slideshow={"slide_type": "subslide"}
+// %% slideshow={"slide_type": "subslide"}
 int foo(int (&x)[5]) { return x[0]; }
 // -
 
@@ -332,7 +332,7 @@ baz(ia)
 // - If the type is a function type F, it is replaced by the type "pointer to F"
 // - \[...\]
 
-// + slideshow={"slide_type": "subslide"}
+// %% slideshow={"slide_type": "subslide"}
 int ia[]{1, 2, 3, 4, 5};
 ia[1]
 // -
@@ -341,10 +341,10 @@ ia[1]
 
 ia + 0
 
-// + slideshow={"slide_type": "-"}
+// %% slideshow={"slide_type": "-"}
 ia[2]
 
-// + slideshow={"slide_type": "-"}
+// %% slideshow={"slide_type": "-"}
 *(ia + 2)
 // -
 
@@ -375,23 +375,23 @@ i[ia]
 
 // ### Guidelines
 //
-// - [I.13: Do not pass an array as a single pointer](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#i13-do-not-pass-an-array-as-a-single-pointer)
-// - [F.22: Use `T*` or `owner<T*>` to designate a single object](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rf-ptr)
-// - [SL.str.4: Use `char*` to refer to a single character](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rstr-char*)
-// - [ES.62: Don’t compare pointers into different arrays](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Res-arr2)
+// %% [I.13: Do not pass an array as a single pointer](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#i13-do-not-pass-an-array-as-a-single-pointer)
+// %% [F.22: Use `T*` or `owner<T*>` to designate a single object](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rf-ptr)
+// %% [SL.str.4: Use `char*` to refer to a single character](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rstr-char*)
+// %% [ES.62: Don’t compare pointers into different arrays](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Res-arr2)
 
 // ### Summary of Relevant Guidelines
 //
-// - [SL.con.1: Prefer using STL array or vector instead of a C array](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rsl-arrays)
-// - [I.13: Do not pass an array as a single pointer](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#i13-do-not-pass-an-array-as-a-single-pointer)
-// - [F.22: Use `T*` or `owner<T*>` to designate a single object](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rf-ptr)
-// - [SL.str.4: Use `char*` to refer to a single character](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rstr-char*)
-// - [F.23: Use a `not_null<T>` to indicate that “null” is not a valid value](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rf-nullptr)
-// - [F.24: Use a `span<T>` or a `span_p<T>` to designate a half-open sequence](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rf-range)
-// - [F.25: Use a `zstring` or a `not_null<zstring>` to designate a C-style string](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rf-zstring)
-// - [F.42: Return a `T*` to indicate a position (only)](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rf-return-ptr)
-// - [F.43: Never (directly or indirectly) return a pointer or a reference to a local object](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rf-dangle)
-// - [R.3: A raw pointer (a `T*`) is non-owning](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rr-ptr)
-// - [ES.62: Don’t compare pointers into different arrays](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Res-arr2)
-// - [ES.65: Don’t dereference an invalid pointer](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Res-deref)
-// - [SL.str.11: Use `gsl::span<char>` rather than `std::string_view` when you need to mutate a string](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rstr-span)
+// %% [SL.con.1: Prefer using STL array or vector instead of a C array](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rsl-arrays)
+// %% [I.13: Do not pass an array as a single pointer](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#i13-do-not-pass-an-array-as-a-single-pointer)
+// %% [F.22: Use `T*` or `owner<T*>` to designate a single object](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rf-ptr)
+// %% [SL.str.4: Use `char*` to refer to a single character](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rstr-char*)
+// %% [F.23: Use a `not_null<T>` to indicate that “null” is not a valid value](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rf-nullptr)
+// %% [F.24: Use a `span<T>` or a `span_p<T>` to designate a half-open sequence](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rf-range)
+// %% [F.25: Use a `zstring` or a `not_null<zstring>` to designate a C-style string](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rf-zstring)
+// %% [F.42: Return a `T*` to indicate a position (only)](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rf-return-ptr)
+// %% [F.43: Never (directly or indirectly) return a pointer or a reference to a local object](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rf-dangle)
+// %% [R.3: A raw pointer (a `T*`) is non-owning](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rr-ptr)
+// %% [ES.62: Don’t compare pointers into different arrays](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Res-arr2)
+// %% [ES.65: Don’t dereference an invalid pointer](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Res-deref)
+// %% [SL.str.11: Use `gsl::span<char>` rather than `std::string_view` when you need to mutate a string](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rstr-span)
